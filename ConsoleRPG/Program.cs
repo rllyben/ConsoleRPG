@@ -73,6 +73,10 @@ namespace ConsoleRPG
             {
                 case '0': break;
                 case '1': Roumen(); break;
+                case '2': break;
+                case '3': break;
+                case '4': break;
+                default : break;
             }
 
         }
@@ -120,8 +124,8 @@ namespace ConsoleRPG
             switch (roumenBlacksmith)
             {
                 case '0': break;
-                case '1': james.BlacksmithShop(); break;
-                case '2': break;
+                case '1': james.BlacksmithWeapons(); break;
+                case '2': james.BlacksmithArmor(); break;
                 case '3': break;
                 case '4': break;
                 case '5': break;

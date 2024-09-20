@@ -22,7 +22,7 @@ namespace ConsoleRPG
             Console.WriteLine("back with 0");
         }
 
-        public void BlacksmithShop()
+        public void BlacksmithWeapons()
         {
             Console.Clear();
 
@@ -30,8 +30,19 @@ namespace ConsoleRPG
             Console.WriteLine("1. Adventurer Bow (lvl: 1; dmg: 5; actionSpeed: 2) 10$\n" +
                               "2. Iron Sword (lvl: 5; dmg: 15; actionSpeed: 1) 20$\n" +
                               "3. Iron Hammer (lvl: 15; dmg: 80 actionSpeed: 5)  40$");
-            Console.WriteLine("which one do you want to buy?\nback with 0");
+            Console.WriteLine("which one do you want to buy?\n\nback with 0");
             Console.ReadKey();
+        }
+        public void BlacksmithArmor()
+        {
+            Console.WriteLine($"\n{_name} has the following Armor for you");
+            Console.WriteLine("1. Lether Helmet (lvl: 1; max hp: 5;) 10$\n" +
+                              "2. Lether Chestplate (lvl: 1; max hp: 15;) 20$\n" +
+                              "3. Lether Leggins (lvl: 1; max hp: 10)  15$\n" +
+                              "4. Lether Boots (lvl: 1; max hp 5;) 10$");
+            Console.WriteLine("which one do you want to buy?\n\nback with 0");
+            Console.ReadKey();
+
         }
 
     }
