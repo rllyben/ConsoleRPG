@@ -1,11 +1,15 @@
 ﻿using ConsoleRPG;
+using ConsoleRPG.Cities;
 
 namespace ConsoleRPG
 {
     internal class Program
     {
-        static Blacksmith james = new Blacksmith() { _name = "James" };
-        static Hero hero;
+        public static Hero hero;
+        public static Roumen roumen = new Roumen();
+        public static Elderine elderine = new Elderine();
+        public static Uruga uruga = new Uruga();
+        public static Adelia adelia = new Adelia();
         static void Main(string[] args)
         {
             bool GameRun = true;
@@ -17,6 +21,7 @@ namespace ConsoleRPG
             do
             {
                 char mainAction = ' ';
+                hero.MaxHealth();
                 if (hero.CurrentHealth() > hero.MaxHealth())
                     hero.Healer();
 
@@ -72,66 +77,15 @@ namespace ConsoleRPG
             switch (adventureAction)
             {
                 case '0': break;
-                case '1': Roumen(); break;
-                case '2': break;
-                case '3': break;
-                case '4': break;
-                default : break;
+                case '1': roumen.RoumenAction(); break;
+                case '2': elderine.ElderineAction(); break;
+                case '3': uruga.UrugaAction(); break;
+                case '4': adelia.AdeliaAction(); break;
+                default : Adventure(); break;
             }
 
         }
-        static void Roumen()
-        {
-            char roumenAction = ' ';
-            Console.Clear();
 
-            while (roumenAction == ' ')
-            {
-                Console.WriteLine("\nYou enter Roumen. What do you want to do?\n" +
-                                  "1. Search for Quests           2. Go to the Healer\n" +
-                                  "3. Enter the Forest of Mist    4. Go to the Sandy Beach\n" +
-                                  "5. Go to the Blacksmith");
-                Console.WriteLine("back with 0");
-
-                roumenAction = Console.ReadKey().KeyChar;
-            }
-
-            switch(roumenAction)
-            {
-                case '0': break;
-                case '1':
-                    Console.WriteLine("\nQuests are currently unavailable");
-                    Console.ReadKey(); Roumen(); break;
-                case '2':
-                    hero.Healer(); Console.WriteLine("\nThe Healer heals you to your full HP");
-                    Console.ReadKey(); Roumen(); break;
-                case '3': break;
-                case '4': break;
-                case '5': RoumenBlacksmith(); break;
-            }
-
-        }
-        static void RoumenBlacksmith()
-        {
-            char roumenBlacksmith = ' ';
-
-            while (roumenBlacksmith == ' ')
-            {
-                james.StandartAction();
-                roumenBlacksmith = Console.ReadKey().KeyChar;
-            }
-
-            switch (roumenBlacksmith)
-            {
-                case '0': break;
-                case '1': james.BlacksmithWeapons(); break;
-                case '2': james.BlacksmithArmor(); break;
-                case '3': break;
-                case '4': break;
-                case '5': break;
-                case '6': break;
-            }
-        }
         static void Shop()
         {
             Console.WriteLine("The shop is currently unavailable!");
