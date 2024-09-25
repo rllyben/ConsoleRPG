@@ -1,15 +1,14 @@
-﻿using ConsoleRPG;
-using ConsoleRPG.Cities;
+﻿using ConsoleRPG.Loactions;
 
 namespace ConsoleRPG
 {
     internal class Program
     {
         public static Hero hero;
-        public static Roumen roumen = new Roumen();
-        public static Elderine elderine = new Elderine();
-        public static Uruga uruga = new Uruga();
-        public static Adelia adelia = new Adelia();
+        public static City roumen = new City("Roumen");
+        public static City elderine = new City("Elderine");
+        public static City uruga = new City("Uruga");
+        public static City adelia = new City("Adelia");
         static void Main(string[] args)
         {
             bool GameRun = true;
@@ -21,8 +20,8 @@ namespace ConsoleRPG
             do
             {
                 char mainAction = ' ';
-                hero.MaxHealth();
-                if (hero.CurrentHealth() > hero.MaxHealth())
+                hero.MaximalHealth();
+                if (hero.CurrentHealth() > hero.MaximalHealth())
                     hero.Healer();
 
                 while (mainAction == ' ')
@@ -55,7 +54,7 @@ namespace ConsoleRPG
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("\n" + hero._name + "   Level:" + hero.Level());
             Console.ResetColor();
-            Console.WriteLine("\n       Max HP: " + hero.MaxHealth() + "\n       dmg: " + hero.Damage() + "\n       action speed: " + hero.ActionSpeed() + "\n");
+            Console.WriteLine("\n       Max HP: " + hero.MaximalHealth() + "\n       dmg: " + hero.DamageOut() + "\n       action speed: " + hero.ActionSpeedOut() + "\n");
         }
         static void Adventure()
         {
@@ -77,10 +76,10 @@ namespace ConsoleRPG
             switch (adventureAction)
             {
                 case '0': break;
-                case '1': roumen.RoumenAction(); break;
-                case '2': elderine.ElderineAction(); break;
-                case '3': uruga.UrugaAction(); break;
-                case '4': adelia.AdeliaAction(); break;
+                case '1': roumen.StandartLocationAction(); break;
+                case '2': elderine.StandartLocationAction(); break;
+                case '3': uruga.StandartLocationAction(); break;
+                case '4': adelia.StandartLocationAction(); break;
                 default : Adventure(); break;
             }
 

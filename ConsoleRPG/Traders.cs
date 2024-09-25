@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG
 {
-    internal class Blacksmith
+    internal class Traders
     {
-        public string _name;
+        string _name;
+
+        public Traders(string name)
+        {
+            _name = name;
+        }
 
         public void StandartAction()
         {

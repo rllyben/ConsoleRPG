@@ -13,35 +13,35 @@ namespace ConsoleRPG
         {
             _name = name;
         }
-        private static int _maxHealth { get; set; } = 100;
-        private static int _curHealth { get; set; } = 100;
-        private static int _lvl { get; set; } = 1;
-        private static int _damage { get; set; } = 1;
-        private static float _actionSpeed { get; set; } = 0.5F;
+        private static int MaxHealth { get; set; } = 100;
+        private static int CurHealth { get; set; } = 100;
+        private static int Levl { get; set; } = 1;
+        private static int Damage { get; set; } = 1;
+        private static float ActionSpeed { get; set; } = 0.5F;
 
-        internal int MaxHealth()
+        internal int MaximalHealth()
         {
-            return _maxHealth;
+            return MaxHealth;
         }
         internal int CurrentHealth()
         {
-            return _curHealth;
+            return CurHealth;
         }
         internal int Level()
         {
-            return _lvl;
+            return Levl;
         }
-        internal int Damage()
+        internal int DamageOut()
         {
-            return _damage;
+            return Damage;
         }
-        internal float ActionSpeed()
+        internal float ActionSpeedOut()
         {
-            return _actionSpeed;
+            return ActionSpeed;
         }
         internal void Healer()
         {
-            _curHealth = _maxHealth;
+            CurHealth = MaxHealth;
         }
 
     }
