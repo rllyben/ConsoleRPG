@@ -32,9 +32,6 @@ namespace ConsoleRPG
             Console.Clear();
 
             Console.WriteLine($"\n{_name} has the following Weapons for you");
-            Console.WriteLine("1. Adventurer Bow (lvl: 1; dmg: 5; actionSpeed: 2) 10$\n" +
-                              "2. Iron Sword (lvl: 5; dmg: 15; actionSpeed: 1) 20$\n" +
-                              "3. Iron Hammer (lvl: 15; dmg: 80 actionSpeed: 5)  40$");
             Console.WriteLine("which one do you want to buy?\n\nback with 0");
             Console.ReadKey();
         }

@@ -8,8 +8,9 @@ namespace ConsoleRPG.Loactions
 {
     internal class Location
     {
-        string _location;
-        public Location(string locationname) { _location = locationname; }
+        protected static string _location;
+        protected static int _levelZone;
+        public Location(string locationname, int levelZone) { _location = locationname; _levelZone = levelZone; }
 
         internal void StandartLocationAction()
         {
@@ -19,9 +20,9 @@ namespace ConsoleRPG.Loactions
             {
                 Console.WriteLine($"You enter {_location}.\n" +
                     "What do you want to do?\n" +
-                    "1. Look for Quests             2. Go to the Healer\n" +
-                    "3.                             4.\n" +
-                    "5.                             6.\n");
+                    "1. Look for Quests             2. \n" +
+                    "3.                             4. \n" +
+                    "5.                             6. \n");
                 Console.WriteLine("0. Back");
 
                 locationAction = Console.ReadKey().KeyChar;
@@ -30,6 +31,7 @@ namespace ConsoleRPG.Loactions
             switch (locationAction)
             {
                 case '0': break;
+            }
 
         }
 

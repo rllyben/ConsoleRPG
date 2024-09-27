@@ -5,10 +5,10 @@ namespace ConsoleRPG
     internal class Program
     {
         public static Hero hero;
-        public static City roumen = new City("Roumen");
-        public static City elderine = new City("Elderine");
-        public static City uruga = new City("Uruga");
-        public static City adelia = new City("Adelia");
+        public static City roumen = new City("Roumen", 1);
+        public static City elderine = new City("Elderine", 20);
+        public static City uruga = new City("Uruga", 60);
+        public static City adelia = new City("Adelia", 110);
         static void Main(string[] args)
         {
             bool GameRun = true;
@@ -47,7 +47,7 @@ namespace ConsoleRPG
             
         }
 
-        static void Stats()
+        internal static void Stats()
         {
             Console.Clear();
 
@@ -56,7 +56,7 @@ namespace ConsoleRPG
             Console.ResetColor();
             Console.WriteLine("\n       Max HP: " + hero.MaximalHealth() + "\n       dmg: " + hero.DamageOut() + "\n       action speed: " + hero.ActionSpeedOut() + "\n");
         }
-        static void Adventure()
+        internal static void Adventure()
         {
             char adventureAction = ' ';
             Console.Clear();
@@ -85,7 +85,7 @@ namespace ConsoleRPG
 
         }
 
-        static void Shop()
+        internal static void Shop()
         {
             Console.WriteLine("The shop is currently unavailable!");
             Console.ReadKey();
