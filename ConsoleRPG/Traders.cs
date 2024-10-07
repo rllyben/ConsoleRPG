@@ -8,6 +8,8 @@ namespace ConsoleRPG
 {
     internal class Traders
     {
+        char smithAction;
+        public static bool backCheck = false;
         string _name;
 
         public Traders(string name)
@@ -15,8 +17,10 @@ namespace ConsoleRPG
             _name = name;
         }
 
-        public void StandartAction()
+        public void StandartSmithAction()
         {
+            backCheck = false;
+            smithAction = ' ';
             Console.Clear();
 
             Console.WriteLine($"\nYou go to the {_name} the Blacksmith");
@@ -25,18 +29,34 @@ namespace ConsoleRPG
                               "3. Sell loot             4. Smith a Weapon\n" +
                               "5. Smith an Armor        6. upgrade your Weapon\n");
             Console.WriteLine("back with 0");
+
+            switch (smithAction)
+            {
+                case '0': backCheck = true; break;
+            }
+
         }
 
-        public void BlacksmithWeapons()
+        public void SmithWeapons()
         {
+            backCheck = false;
+            smithAction = ' ';
             Console.Clear();
 
             Console.WriteLine($"\n{_name} has the following Weapons for you");
             Console.WriteLine("which one do you want to buy?\n\nback with 0");
             Console.ReadKey();
+
+            switch (smithAction)
+            {
+                case '0': backCheck = true; break;
+            }
+
         }
-        public void BlacksmithArmor()
+        public void SmithArmor()
         {
+            backCheck = false;
+            smithAction = ' ';
             Console.WriteLine($"\n{_name} has the following Armor for you");
             Console.WriteLine("1. Lether Helmet (lvl: 1; max hp: 5;) 10$\n" +
                               "2. Lether Chestplate (lvl: 1; max hp: 15;) 20$\n" +
@@ -44,6 +64,11 @@ namespace ConsoleRPG
                               "4. Lether Boots (lvl: 1; max hp 5;) 10$");
             Console.WriteLine("which one do you want to buy?\n\nback with 0");
             Console.ReadKey();
+
+            switch (smithAction)
+            {
+                case '0': backCheck = true; break;
+            }
 
         }
 

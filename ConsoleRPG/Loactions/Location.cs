@@ -8,13 +8,16 @@ namespace ConsoleRPG.Loactions
 {
     internal class Location
     {
+        char locationAction;
+        public static bool backCheck = false;
         protected static string _location;
         protected static int _levelZone;
         public Location(string locationname, int levelZone) { _location = locationname; _levelZone = levelZone; }
 
         internal void StandartLocationAction()
         {
-            char locationAction = ' ';
+            backCheck = false;
+            locationAction = ' ';
 
             while (locationAction == ' ')
             {
@@ -30,7 +33,11 @@ namespace ConsoleRPG.Loactions
 
             switch (locationAction)
             {
-                case '0': break;
+                case '0': backCheck = true; break;
+                case '1': 
+                    Console.WriteLine("Quests are currently unavailable.");
+                    Console.ReadKey();
+                    StandartLocationAction(); break;
             }
 
         }
