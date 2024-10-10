@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ConsoleRPG.Fighting;
 
 namespace ConsoleRPG.Loactions
 {
@@ -84,12 +85,16 @@ namespace ConsoleRPG.Loactions
                     Console.WriteLine("Quests are currently unavailable.");
                     Thread.Sleep(2000);
                     StandartLocationAction(currentLocation); break;
+                case '2':
+                    Fight.Fighting(1, 5 ,1);
+                    StandartLocationAction(currentLocation);
+                    break;
                 default:
                     bool healer = false;
                     short action = (short)locationAction;
-                    action -= 48;
+                    action -= 49;
 
-                    if (action >= 3 && action < 3 + ConnectedLocations.Count)
+                    if (action >= 2 && action < 2 + ConnectedLocations.Count)
                     {
                         Location nextLocation = currentLocation.ConnectedLocations[action-2];
                         StandartLocationAction(nextLocation);

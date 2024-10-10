@@ -8,7 +8,7 @@ namespace ConsoleRPG.Fighting
 {
     internal class Fight
     {
-        public void Fighting(int monsterDmg, int monsterHP ,float monsterSpeed)
+        public static void Fighting(int mobDmg, int monsterHP ,float monsterSpeed)
         {
             int heroDmg = Program.hero.DamageOut();
 
@@ -17,20 +17,27 @@ namespace ConsoleRPG.Fighting
                 float heroSpeed = Program.hero.ActionSpeedOut();
                 float MobSpeed = monsterSpeed;
 
-                while (heroSpeed > 0 && MobSpeed > 0)
+                while (heroSpeed > 0 && MobSpeed > 0 && monsterHP > 0)
                 {
-                    if (heroSpeed > MobSpeed)
+                    Random rnd = new Random();
+                    if (heroSpeed < MobSpeed)
                     {
-                        while (heroSpeed > MobSpeed)
+                        while (heroSpeed < MobSpeed)
                         {
+                            int mobHP = monsterHP;
+                            monsterHP = monsterHP - (heroDmg + rnd.Next(heroDmg - 1, heroDmg*2));
+                            Console.WriteLine();
+                            Console.WriteLine($"You attack the Monster and deal {mobHP-monsterHP} damage!");
                             MobSpeed -= heroSpeed;
+                            Thread.Sleep(1000);
                         }
 
                     }
                     else
                     {
-                        while (MobSpeed > heroSpeed)
+                        while (MobSpeed <= heroSpeed)
                         {
+                            Program.hero.CurrentHealth(true, mobDmg);
                             heroSpeed -= MobSpeed;
                         }
 
@@ -39,6 +46,10 @@ namespace ConsoleRPG.Fighting
                 }
 
             }
+            if (monsterHP <= 0)
+                Console.WriteLine("You killed the Monster!");
+                Thread.Sleep(2000);
+                return;
 
         }
 
