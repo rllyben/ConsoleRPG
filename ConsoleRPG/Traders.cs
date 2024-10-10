@@ -3,11 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRPG;
 
 namespace ConsoleRPG
 {
     internal class Traders
     {
+        if (true)
+        {
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items longSword = new Items("Long Sword", 75);
+        public static Items broadSword = new Items("Broad Sword", 240);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        public static Items shortSword = new Items("Short Sword", 12);
+        }
         char smithAction;
         public static bool backCheck = false;
         string _name;

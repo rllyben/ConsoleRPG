@@ -49,7 +49,7 @@ namespace ConsoleRPG.Fighting
             if (monsterHP <= 0)
                 Console.WriteLine("You killed the Monster!");
                 Thread.Sleep(2000);
-                return;
+                return; 
 
         }
 
