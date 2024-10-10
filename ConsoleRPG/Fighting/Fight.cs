@@ -10,7 +10,8 @@ namespace ConsoleRPG.Fighting
     {
         public static void Fighting(int mobDmg, int monsterHP ,float monsterSpeed)
         {
-            int heroDmg = Program.hero.DamageOut();
+            int minHeroDmg = Program.hero.MinDamageOut();
+            int maxHeroDmg = Program.hero.MaxDamageOut() + 1;
 
             while (Program.hero.CurrentHealth()  > 0 && monsterHP > 0)
             {
@@ -25,7 +26,7 @@ namespace ConsoleRPG.Fighting
                         while (heroSpeed < MobSpeed)
                         {
                             int mobHP = monsterHP;
-                            monsterHP = monsterHP - (heroDmg + rnd.Next(heroDmg - 1, heroDmg*2));
+                            monsterHP = monsterHP - (rnd.Next(minHeroDmg, maxHeroDmg));
                             Console.WriteLine();
                             Console.WriteLine($"You attack the Monster and deal {mobHP-monsterHP} damage!");
                             MobSpeed -= heroSpeed;

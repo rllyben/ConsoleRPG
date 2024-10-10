@@ -17,7 +17,8 @@ namespace ConsoleRPG
         protected static int MaxHealth { get; set; } = 100;
         protected static int CurHealth { get; set; } = 100;
         protected static int Levl { get; set; } = 1;
-        protected static int Damage { get; set; } = 1;
+        protected static int minDamage { get; set; } = 1;
+        protected static int maxDamage { get; set; } = 1;
         protected static float ActionSpeed { get; set; } = 0.5F;
 
         List<Items> Inventorry = new List<Items>();
@@ -45,9 +46,13 @@ namespace ConsoleRPG
         {
             return Levl;
         }
-        internal int DamageOut()
+        internal int MaxDamageOut()
         {
-            return Damage;
+            return maxDamage;
+        }
+        internal int MinDamageOut()
+        {
+            return minDamage;
         }
         internal float ActionSpeedOut()
         {

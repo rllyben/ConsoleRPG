@@ -141,7 +141,9 @@ namespace ConsoleRPG
                 plain.AddConnection(adelia);
                 plain.AddConnection(thornCave);
                 thornCave.AddConnection(plain);
-            }while(false);
+
+                Traders.ItemDeclaration();
+            } while(false);
 
             bool GameRun = true;
 
@@ -186,7 +188,7 @@ namespace ConsoleRPG
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine($"\n{hero._name}   Level: {hero.Level()}");
             Console.ResetColor();
-            Console.WriteLine($"\n       Max HP: {hero.MaximalHealth()}\n       dmg: {hero.DamageOut()}\n       action speed: {hero.ActionSpeedOut()}\n");
+            Console.WriteLine($"\n       Max HP: {hero.MaximalHealth()}\n       dmg: {hero.MinDamageOut()} ~ {hero.MaxDamageOut()}\n       action speed: {hero.ActionSpeedOut()}\n");
         }
         internal static void Adventure()
         {

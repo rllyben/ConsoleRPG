@@ -9,19 +9,21 @@ namespace ConsoleRPG
 {
     internal class Items
     {
-        public Items(string name, int price, int maxHP = 0, int level = 0, int dmg = 0, float speed = 0) 
+        public Items(string name, int price, int maxHP = 0, int level = 0, int minDmg = 0, int maxDmg = 0, float speed = 0) 
         {
             ItemName = name;
             Cost = price;
             MaxHealth = maxHP;
             Level = level;
-            Damage = dmg;
+            MinDamage = minDmg;
+            MaxDamage = maxDmg;
             ActionSpeed = speed;
         }
         protected string ItemName {get; set;}
         protected int MaxHealth { get; set; }
         protected int Level { get; set; }
-        protected int Damage { get; set; }
+        protected int MinDamage { get; set; }
+        protected int MaxDamage { get; set; }
         protected float ActionSpeed { get; set; }
         protected int Cost { get; set; }
 
