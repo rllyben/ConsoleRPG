@@ -27,6 +27,35 @@ namespace ConsoleRPG
         protected float ActionSpeed { get; set; }
         protected int Cost { get; set; }
 
+        internal string GetItemName()
+        {
+            return ItemName;
+        }
+        internal int GetMaxHealth()
+        {
+            return MaxHealth;
+        }        
+        internal int GetLevel()
+        {
+            return Level;
+        }        
+        internal int GetMinDamage()
+        {
+            return MinDamage;
+        }        
+        internal int GetMaxDamage()
+        {
+            return MaxDamage;
+        }        
+        internal float GetActionSpeed()
+        {
+            return ActionSpeed;
+        }
+        internal int GetCost()
+        {
+            return Cost;
+        }
+
     }
 
 }

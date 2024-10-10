@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRPG;
 
 namespace ConsoleRPG.Loactions
 {
@@ -11,11 +12,10 @@ namespace ConsoleRPG.Loactions
         char cityAction;
         public static bool backCheck = false;
         public City(string locationname, int levelZone) : base(locationname, levelZone) { }
-
-        Traders james = new Traders("James");
-        Traders karl = new Traders("Karl");
-        Traders hans = new Traders("Hans");
-        Traders alexia = new Traders("Alexia");
+        public static Traders james = new Traders("James");
+        public static Traders karl = new Traders("Karl");
+        public static Traders hans = new Traders("Hans");
+        public static Traders alexia = new Traders("Alexia");
 
         internal void StandatCityAction(Location currentLocation)
         {
@@ -48,7 +48,7 @@ namespace ConsoleRPG.Loactions
                 default:
                     short action = (short)cityAction;
                     action -= 48;
-                    if (action >= 3 && action < 3 + ConnectedLocations.Count)
+                    if (action >= 4 && action < 4 + ConnectedLocations.Count)
                     {
                         Location nextLocation = currentLocation.ConnectedLocations[action - 3];
                         StandartLocationAction(nextLocation);
@@ -61,6 +61,10 @@ namespace ConsoleRPG.Loactions
                         Thread.Sleep(2000);
                         StandartLocationAction(currentLocation);
                     }
+                    else if (action == 3)
+                    {
+                        currentLocation.Trader[TraderCount-1].StandartSmithAction(currentLocation.Trader[TraderCount-1]);
+                    }
                     else if (action != 0)
                     {
                         Console.WriteLine();
@@ -68,6 +72,7 @@ namespace ConsoleRPG.Loactions
                         Thread.Sleep(1000);
                         StandartLocationAction(currentLocation);
                     }
+                    StandatCityAction(currentLocation);
                     break;
             }
 

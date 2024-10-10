@@ -13,7 +13,7 @@ namespace ConsoleRPG.Fighting
         {
             MaxHealth = setHealth;
             ActionSpeed = setActionspeed;
-            Damage = setDmg;
+            MaxDamage = setDmg;
             Levl = lvl;
         }
 

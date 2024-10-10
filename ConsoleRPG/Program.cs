@@ -74,6 +74,7 @@ namespace ConsoleRPG
                 roumen.AddConnection(tideForest);
                 roumen.AddConnection(beach);
                 roumen.AddConnection(sea);
+                roumen.AddTrader(City.james);
                 tideForest.AddConnection(roumen);
                 tideForest.AddConnection(beach);
                 tideForest.AddConnection(caveEcho);
@@ -94,8 +95,10 @@ namespace ConsoleRPG
                 elderine.AddConnection(sea);
                 elderine.AddConnection(moonTomb);
                 elderine.AddConnection(brokePrison);
+                elderine.AddTrader(City.karl);
                 sandHill.AddConnection(burnHill);
                 sandHill.AddConnection(moonTomb);
+                sandHill.AddTrader(Location.rohan);
                 burnHill.AddConnection(sea);
                 burnHill.AddConnection(sandHill);
                 moonTomb.AddConnection(elderine);
@@ -123,6 +126,7 @@ namespace ConsoleRPG
                 uruga.AddConnection(caveGold);
                 uruga.AddConnection(elvenWoods);
                 uruga.AddConnection(slumberForest);
+                uruga.AddTrader(City.hans);
                 elvenWoods.AddConnection(uruga);
                 elvenWoods.AddConnection(slumberForest);
                 slumberForest.AddConnection(uruga);
@@ -134,17 +138,17 @@ namespace ConsoleRPG
                 swamp.AddConnection(ruins);
                 ruins.AddConnection(swamp);
                 ruins.AddConnection(darkLand);
+                ruins.AddTrader(Location.marcudos);
                 darkLand.AddConnection(ruins);
                 darkLand.AddConnection(adelia);
                 adelia.AddConnection(darkLand);
                 adelia.AddConnection(plain);
+                adelia.AddTrader(City.alexia);
                 plain.AddConnection(adelia);
                 plain.AddConnection(thornCave);
                 thornCave.AddConnection(plain);
-
-                Traders.ItemDeclaration();
             } while(false);
-
+            
             bool GameRun = true;
 
             Console.WriteLine("please name your caracter to start:");

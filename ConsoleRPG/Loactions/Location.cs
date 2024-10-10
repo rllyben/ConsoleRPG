@@ -5,20 +5,26 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ConsoleRPG;
 using ConsoleRPG.Fighting;
 
 namespace ConsoleRPG.Loactions
 {
     internal class Location
     {
+        public static Traders rohan = new Traders("Rohan");
+        public static Traders marcudos = new Traders("Marcudos");
+
         char locationAction;
         public static bool backCheck = false;
         protected string LocationName { get; set; }
         protected static int _levelZone;
         protected static int _IDcounter = 1;
         public int ID { get; set; }
+        public int TraderCount { get; set; }
         public List<Location> ConnectedLocations { get; set; }
-        public Location(string locationname, int levelZone) { LocationName = locationname; _levelZone = levelZone; ID = _IDcounter; _IDcounter++; ConnectedLocations = new List<Location>(); }
+        public List<Traders> Trader { get; set; }
+        public Location(string locationname, int levelZone) { LocationName = locationname; _levelZone = levelZone; ID = _IDcounter; _IDcounter++; ConnectedLocations = new List<Location>(); Trader = new List<Traders>();}
         internal void IDcheck()
         {
             Console.WriteLine(ID + LocationName);
@@ -27,7 +33,12 @@ namespace ConsoleRPG.Loactions
         {
             ConnectedLocations.Add(location);
         }
-        internal void StandartLocationAction(Location currentLocation, bool isLocation = true)
+        public void AddTrader(Traders trader)
+        {
+            Trader.Add(trader);
+            TraderCount++;
+        }
+        internal void StandartLocationAction(Location currentLocation, bool isLocation = false, bool isSemiCityLocation = false)
         {
             if (isLocation && (currentLocation.ID == 1 || currentLocation.ID == 7 || currentLocation.ID == 18 || currentLocation.ID == 26))
             {
@@ -52,8 +63,16 @@ namespace ConsoleRPG.Loactions
                 if (isLocation == false)
                 {
                     Console.Write("1. Look for Quests           2. Go to the Healer\n");
+                    Console.WriteLine($"3. Go to {currentLocation.Trader[TraderCount-1].GetTraderName()}");
                 }
                 if (isLocation)
+                {
+                    for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
+                    {
+                        Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                    }
+                }
+                else if (isSemiCityLocation)
                 {
                     for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
                     {
@@ -64,7 +83,7 @@ namespace ConsoleRPG.Loactions
                 {
                     for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 4}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
                 }
 
@@ -106,6 +125,7 @@ namespace ConsoleRPG.Loactions
                         Thread.Sleep(1000);
                         StandartLocationAction(currentLocation);
                     }
+                    StandartLocationAction(currentLocation);
                     break;
             }
 
