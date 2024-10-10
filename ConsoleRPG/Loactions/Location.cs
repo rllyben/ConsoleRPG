@@ -47,7 +47,7 @@ namespace ConsoleRPG.Loactions
                 Console.WriteLine($"You enter {currentLocation.LocationName}.");
                 Console.WriteLine("What do you want to do?");
                 if (isLocation == true)
-                    Console.WriteLine($"1. Look for Quests");
+                    Console.WriteLine($"1. Look for Quests           2. Fight a Monster");
                 if (isLocation == false)
                 {
                     Console.Write("1. Look for Quests           2. Go to the Healer\n");
@@ -56,7 +56,7 @@ namespace ConsoleRPG.Loactions
                 {
                     for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 2}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
                 }
                 else
@@ -87,9 +87,9 @@ namespace ConsoleRPG.Loactions
                 default:
                     bool healer = false;
                     short action = (short)locationAction;
-                    action -= 49;
+                    action -= 48;
 
-                    if (action >= 2 && action < 2 + ConnectedLocations.Count)
+                    if (action >= 3 && action < 3 + ConnectedLocations.Count)
                     {
                         Location nextLocation = currentLocation.ConnectedLocations[action-2];
                         StandartLocationAction(nextLocation);

@@ -13,11 +13,11 @@ namespace ConsoleRPG
         {
             _name = name;
         }
-        private static int MaxHealth { get; set; } = 100;
-        private static int CurHealth { get; set; } = 100;
-        private static int Levl { get; set; } = 1;
-        private static int Damage { get; set; } = 1;
-        private static float ActionSpeed { get; set; } = 0.5F;
+        protected static int MaxHealth { get; set; } = 100;
+        protected static int CurHealth { get; set; } = 100;
+        protected static int Levl { get; set; } = 1;
+        protected static int Damage { get; set; } = 1;
+        protected static float ActionSpeed { get; set; } = 0.5F;
 
         internal int MaximalHealth()
         {
