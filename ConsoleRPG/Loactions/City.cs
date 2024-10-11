@@ -33,7 +33,7 @@ namespace ConsoleRPG.Loactions
                 StandartLocationAction(currentLocation, false);
                 Console.WriteLine($"{ConnectedLocations.Count + 4}. open inventory");                   
                 Console.WriteLine();
-                Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.MaxHealth}/{Program.hero.CurHealth} Money: {Program.hero.Cash}");
+                Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 

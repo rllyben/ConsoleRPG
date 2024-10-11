@@ -1,49 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleRPG;
+using ConsoleRPG.Items;
 using ConsoleRPG.Loactions;
 
 namespace ConsoleRPG
 {
     internal class Traders
     {
-        private static Items shortSword = new Items("Short Sword", 12, 0, 1, 4, 7, 1.1F);
-        private static Items longSword = new Items("Long Sword", 75, 0, 8, 12, 20, 1.1F);
-        private static Items broadSword = new Items("Broad Sword", 240, 0, 15, 19, 33, 1.1F);
-        private static Items roumenSword = new Items("Roumen Sword", 6000, 0, 20, 26, 44, 1.1F);
-        private static Items bridgeSword = new Items("Bridge Sword", 18000, 0, 30, 45, 78, 1.1F);
-        private static Items cutlasSword = new Items("Cutlas", 38000, 0, 40, 65, 112, 1.1F);
-        private static Items edgedSword = new Items("Edged Sword", 69000, 0, 50, 85, 146, 1.1F);
-        private static Items steelSword = new Items("Steel Sword", 6000, 0, 20, 61, 87, 1.3F);
-        private static Items crusaderSword = new Items("Crusader", 18000, 0, 30, 108, 154, 1.3F);
-        private static Items twohandedSword = new Items("Zweihander", 38000, 0, 40, 155, 221, 1.3F);
-        private static Items busterSword = new Items("Buster Sword", 69000, 0, 50, 202, 287, 1.3F);
-        private static Items steelAxe = new Items("Steel Axe", 6000, 0, 20, 96, 134, 1.5F);
-        private static Items hideAxe = new Items("Hide Axe", 18000, 0, 30, 170, 235, 1.5F);
-        private static Items twoHandedAxe = new Items("Two Handed Axe", 38000, 0, 40, 243, 337, 1.5F);
-        private static Items poleAxe = new Items("Pole Axe", 69000, 0, 50, 316, 438, 1.5F);
-        private static Items splitterSword = new Items("Splitter", 290000, 0, 60, 105, 181, 1.1F);
-        private static Items avantSword = new Items("Avent Garde Sword", 440000, 0, 70, 131, 226, 1.1F);
-        private static Items sperpentSword = new Items("Serpent Sword", 640000, 0, 80, 164, 282, 1.1F);
-        private static Items claymoreSword = new Items("Claymore", 290000, 0, 60, 250, 356, 1.3F);
-        private static Items flambergeSword = new Items("Flamberge", 440000, 0, 70, 312, 444, 1.3F);
-        private static Items giantSword = new Items("Giand Sword", 640000, 0, 80, 389, 555, 1.3F);
-        private static Items halbendAxe = new Items("Halberd", 290000, 0, 60, 392, 543, 1.5F);
-        private static Items vikingAxe = new Items("Viking Axe", 440000, 0, 70, 490, 678, 1.5F);
-        private static Items giantAxe = new Items("Giand Axe", 640000, 0, 80, 613, 850, 1.5F);
-        private static Items vulcanSword = new Items("Vulcan Sword", 890000, 0, 90, 275, 423, 1.1F);
-        private static Items hellasSword = new Items("Hellas Sword", 2230000, 0, 100, 412, 634, 1.1F);
-        private static Items gedSword = new Items("Ged Sword", 3080000, 0, 108, 618, 951, 1.1F);
-        private static Items titanicSword = new Items("Titanic Sword", 890000, 0, 90, 541, 832, 1.3F);
-        private static Items valorSword = new Items("Valor Sword", 2230000, 0, 100, 811, 1248, 1.3F);
-        private static Items gorgonSword = new Items("Gorgon Sword", 3080000, 0, 108, 1216, 1872, 1.3F);
-        private static Items titanicAxe = new Items("Titanic Axe", 890000, 0, 90, 829, 1275, 1.5F);
-        private static Items valorAxe = new Items("Valor Axe", 2230000, 0, 100, 1243, 1912, 1.5F);
-        private static Items gorgonAxe = new Items("Gorgon Axe", 3080000, 0, 108, 1864, 2868, 1.5F);
-        public List<Items> TraderItems { get; set; }
+        private static Weapons shortSword = new Weapons("Short Sword", 12, 1, 4, 7, 1.1F);
+        private static Weapons longSword = new Weapons("Long Sword", 75, 8, 12, 20, 1.1F);
+        private static Weapons broadSword = new Weapons("Broad Sword", 240, 15, 19, 33, 1.1F);
+        private static Armor leatherBoots = new Armor("Leatehr Boots", 13, 0, 1, 2, 0, 1, 0);
+        private static Armor leatherHelmet = new Armor("Leatehr Helmet", 20, 0, 1, 4, 1, 2, 1);
+        private static Armor leatherPants = new Armor("Leatehr Pants", 35, 0, 1, 6, 2, 4, 0);
+        private static Armor leatherShirt = new Armor("Leatehr Shirt", 61, 50, 1, 9, 4, 7, 0);
+        private static Armor chainBoots = new Armor("Chain Boots", 80, 0, 8, 9, 4, 8, 0);
+        private static Armor chainHelmet = new Armor("Chain Helmet", 120, 0, 8, 11, 5, 10, 4);
+        private static Armor chainPants = new Armor("Chain Pants", 200, 0, 8, 14, 7, 12, 0);
+        private static Shield wooddenShield = new Shield("Wodden Shield", 10, 0, 1, 5, 0, 0, 0, 1);
+        private static Shield buckler = new Shield("Buckler", 55, 0, 8, 14, 3, 0, 0, 2);
+        private static Weapons roumenSword = new Weapons("Roumen Sword", 6000, 20, 26, 44, 1.1F);
+        private static Weapons bridgeSword = new Weapons("Bridge Sword", 18000, 30, 45, 78, 1.1F);
+        private static Weapons cutlasSword = new Weapons("Cutlas", 38000, 40, 65, 112, 1.1F);
+        private static Weapons edgedSword = new Weapons("Edged Sword", 69000, 50, 85, 146, 1.1F);
+        private static Weapons steelSword = new Weapons("Steel Sword", 6000, 20, 61, 87, 1.3F);
+        private static Weapons crusaderSword = new Weapons("Crusader", 18000, 30, 108, 154, 1.3F);
+        private static Weapons twohandedSword = new Weapons("Zweihander", 38000, 40, 155, 221, 1.3F);
+        private static Weapons busterSword = new Weapons("Buster Sword", 69000, 50, 202, 287, 1.3F);
+        private static Weapons steelAxe = new Weapons("Steel Axe", 6000, 20, 96, 134, 1.5F);
+        private static Weapons hideAxe = new Weapons("Hide Axe", 18000, 30, 170, 235, 1.5F);
+        private static Weapons twoHandedAxe = new Weapons("Two Handed Axe", 38000, 40, 243, 337, 1.5F);
+        private static Weapons poleAxe = new Weapons("Pole Axe", 69000, 50, 316, 438, 1.5F);
+        private static Weapons splitterSword = new Weapons("Splitter", 290000, 60, 105, 181, 1.1F);
+        private static Weapons avantSword = new Weapons("Avent Garde Sword", 440000, 70, 131, 226, 1.1F);
+        private static Weapons sperpentSword = new Weapons("Serpent Sword", 640000, 80, 164, 282, 1.1F);
+        private static Weapons claymoreSword = new Weapons("Claymore", 290000, 60, 250, 356, 1.3F);
+        private static Weapons flambergeSword = new Weapons("Flamberge", 440000, 70, 312, 444, 1.3F);
+        private static Weapons giantSword = new Weapons("Giand Sword", 640000, 80, 389, 555, 1.3F);
+        private static Weapons halbendAxe = new Weapons("Halberd", 290000, 60, 392, 543, 1.5F);
+        private static Weapons vikingAxe = new Weapons("Viking Axe", 440000, 70, 490, 678, 1.5F);
+        private static Weapons giantAxe = new Weapons("Giand Axe", 640000, 80, 613, 850, 1.5F);
+        private static Weapons vulcanSword = new Weapons("Vulcan Sword", 890000, 90, 275, 423, 1.1F);
+        private static Weapons hellasSword = new Weapons("Hellas Sword", 2230000, 100, 412, 634, 1.1F);
+        private static Weapons gedSword = new Weapons("Ged Sword", 3080000, 108, 618, 951, 1.1F);
+        private static Weapons titanicSword = new Weapons("Titanic Sword", 890000, 90, 541, 832, 1.3F);
+        private static Weapons valorSword = new Weapons("Valor Sword", 2230000, 100, 811, 1248, 1.3F);
+        private static Weapons gorgonSword = new Weapons("Gorgon Sword", 3080000, 108, 1216, 1872, 1.3F);
+        private static Weapons titanicAxe = new Weapons("Titanic Axe", 890000, 90, 829, 1275, 1.5F);
+        private static Weapons valorAxe = new Weapons("Valor Axe", 2230000, 100, 1243, 1912, 1.5F);
+        private static Weapons gorgonAxe = new Weapons("Gorgon Axe", 3080000, 108, 1864, 2868, 1.5F);
+        public List<Item> TraderItems { get; set; }
 
         char smithAction;
         public static bool backCheck = false;
@@ -51,10 +62,10 @@ namespace ConsoleRPG
 
         public Traders(string name)
         {
-            TraderItems = new List<Items>();
+            TraderItems = new List<Item>();
             TraderName = name;
         }
-        public void AddItem(Items item)
+        public void AddItem(Item item)
         {
             TraderItems.Add(item);              
         }
@@ -175,7 +186,10 @@ namespace ConsoleRPG
             Console.WriteLine($"\n{currentTrader.TraderName} has the following Weapons for you");
             for (byte count = 0; count < currentTrader.TraderItems.Count; count++)
             {
-                Console.WriteLine($"{count + 1}. {currentTrader.TraderItems[count].ItemName} Level: {currentTrader.TraderItems[count].Level}Dmg: {currentTrader.TraderItems[count].MinDamage} ~ {currentTrader.TraderItems[count].MaxDamage} Attack Rate: {currentTrader.TraderItems[count].ActionSpeed} Cost: {currentTrader.TraderItems[count].Cost}");
+                char posiChar = Convert.ToChar(count + 49);
+                if (count + 49   >= 58)
+                    posiChar = Convert.ToChar(count + 88);
+                Console.WriteLine($"{posiChar}. {currentTrader.TraderItems[count].ItemName} Level: {currentTrader.TraderItems[count].Level}Dmg: {currentTrader.TraderItems[count].MinDamage} ~ {currentTrader.TraderItems[count].MaxDamage} Attack Rate: {currentTrader.TraderItems[count].ActionSpeed} Cost: {currentTrader.TraderItems[count].Cost}");
             }
             Console.WriteLine();
             Console.WriteLine($"You have {Program.hero.ReadCash()} Money");
@@ -187,8 +201,18 @@ namespace ConsoleRPG
             {
                 case '0': backCheck = true; break;
                 default:
+                    
                     short action = (short)smithAction;
                     action -= 49;
+                    if (action > 8 && action < 48)
+                    {
+                        action -= 100;
+                    }
+                    else if (action >= 48)
+                    {
+                        action -= 39;
+                    }
+
                     if (action >= 0 && action < 0 + currentTrader.TraderItems.Count)
                     {
                         if (Program.hero.ReadCash() < currentTrader.TraderItems[action].Cost)

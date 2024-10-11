@@ -9,14 +9,18 @@ namespace ConsoleRPG.Fighting
 {
     internal class Monster : Hero
     {
-        public Monster(string name, int setHealth, float setActionspeed, int setMinDmg, int setMaxDmg, int lvl) : base(name) 
+        public Monster(string name, int currentHealth, float actionSpeed, int level, int minDamage, int maxDamage, int defanse, int giveXP) : base(name) 
         {
-            MaxHealth = setHealth;
-            ActionSpeed = setActionspeed;
-            MaxDamage = setMaxDmg;
-            MinDamage = setMinDmg;
-            Level = lvl;
+            CurrentHealth = currentHealth;
+            ActionSpeed = actionSpeed;
+            Level = level;
+            MinDamage = minDamage;
+            MaxDamage = maxDamage;
+            Defanse = defanse;
+            GiveXP = giveXP;
         }
+
+        public int GiveXP {get; set;}
 
     }
 

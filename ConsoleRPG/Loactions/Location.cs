@@ -14,9 +14,18 @@ namespace ConsoleRPG.Loactions
     {
         public static Traders rohan = new Traders("Rohan");
         public static Traders marcudos = new Traders("Marcudos");
+        public static Monster slime = new Monster("Slime", 26, 1.9F, 1, 1, 1, 0, 1);
+        public static Monster heroSlime = new Monster("Hero Slime", 110, 1.9F, 2, 29, 36, 15, 10);
+        public static Monster mushroom = new Monster("Mushroom", 38, 1.9F, 2, 12, 12, 4, 4);             
+        public static Monster mandragora = new Monster("Mandragora", 47, 1.9F, 3, 16, 17, 15, 6);
+        public static Monster imp = new Monster("Imp", 57, 1.9F, 4, 26, 28, 13, 10);
+        public static Monster mushroomFighter = new Monster("Mushroom Fighter", 186, 1.9F, 4, 65, 67, 34, 10);
+        public static Monster fireMushroom = new Monster("Fire Mushroom", 90, 1.9F, 5, 29, 33, 14, 15);
+        public static Monster boardImp = new Monster("Board Imp", 90, 1.9F, 5, 36, 40, 12, 15);
+        public static Monster gangImp = new Monster("Gang Imp", 123, 1.9F, 7, 47, 55, 35, 21);
 
         char locationAction;
-        public static bool backCheck = false;
+        public static bool backCheck = false; // 4(116);7(203); 29DEF; 19(190); 26(260); 10DEF; 12(180); 16(240); 15DEF; 4(136); 6(204); 34DEF; 8(160); 10(200); 20DEF
         protected string LocationName { get; set; }
         protected int LevelZone { get; set; }
         protected static int _IDcounter = 1;
@@ -96,7 +105,7 @@ namespace ConsoleRPG.Loactions
                     return;
 
                 Console.WriteLine();
-                Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.MaxHealth}/{Program.hero.CurHealth} Money: {Program.hero.Cash}");
+                Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 

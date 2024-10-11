@@ -8,27 +8,56 @@ using System.Text.Json;
 using ConsoleRPG;
 using ConsoleRPG.Fighting;
 using System.Runtime.CompilerServices;
+using System.Collections;
+using ConsoleRPG.Items;
 
 namespace ConsoleRPG
 {
     internal class Hero
     {
-        public List<Items> Inventorry { get; set; } 
+        public List<Item> Inventorry { get; set; } 
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
-        public int CurHealth { get; set; } = 100;
+        public int CurrentHealth {get; set;}
+        public int STR  {get; set;} = 6;
+        public int DEX {get; set;} = 3;
+        public int END {get; set;} = 5;
+        public int INT {get; set;} = 1;
+        public int SPR {get; set;} = 1;
         public int Level { get; set; } = 1;
-        public int MaxHealth { get; set; } = 100;
         public int Experience { get; set; } = 0;
-        public int MinDamage { get; set; } = 5;
-        public int MaxDamage { get; set; } = 10;
         public float ActionSpeed { get; set; } = 0.5F;
-        private static                          int NewItem {get; set;} = 0;
+        public int StatPoints {get; set;} = 1;
+        public int MinDamage {get; set;}
+        public int MaxDamage {get; set;}
+        public int Aim {get; set;}
+        public int MagicalDamage {get; set;}
+        public int MagicalDefanse {get; set;}
+        public int Defanse {get; set;}
+        public int Evasion {get; set;}
+        public float CritChance {get; set;}
+        public float BlockChance {get; set;} = 0;
+        public int MaximalHealth {get; set;}
+        public int MaxiamlManaPoints {get; set;}
+        public int ManaPoints {get; set;}
+        private static int NewItem {get; set;} = 0;
         private int ItemID { get; set; }
         public Hero(string name)
         {
-            Inventorry = new List<Items>();
+            Inventorry = new List<Item>();
             Name = name;
+            MinDamage = STR;
+            MaxDamage = MinDamage;
+            Aim = DEX;
+            MagicalDamage = INT;
+            MagicalDefanse = SPR;
+            Defanse = END;
+            Evasion = DEX;
+            CritChance = SPR * 0.2F;
+            MaximalHealth = END * 10;
+            MaxiamlManaPoints = SPR * 10;
+            ManaPoints = MaxiamlManaPoints;
+            CurrentHealth = MaximalHealth;
         }
         public override string ToString()
         {
@@ -54,13 +83,13 @@ namespace ConsoleRPG
             if(false)Console.WriteLine(jsonData);
             return JsonSerializer.Deserialize<Hero>(jsonData);
         }
-        internal void GetItem(Items item)
+        internal void GetItem(Item item)
         {
             Inventorry.Add(item);
             if (item.Level <= Program.hero.Level)
             {
-                MinDamage = Inventorry[NewItem].MinDamage;
-                MaxDamage = Inventorry[NewItem].MaxDamage;
+                MinDamage += Inventorry[NewItem].MinDamage;
+                MaxDamage += Inventorry[NewItem].MaxDamage;
             }
             ItemID = NewItem;
             NewItem++;
@@ -70,8 +99,8 @@ namespace ConsoleRPG
             var InvSize = Inventorry.Count;
             if ( InvSize > 0 && Inventorry[InvSize - 1].Level <= Program.hero.Level)
             {
-                MinDamage = Inventorry[InvSize - 1].MinDamage;
-                MaxDamage = Inventorry[InvSize - 1].MaxDamage;
+                MinDamage += Inventorry[InvSize - 1].MinDamage;
+                MaxDamage += Inventorry[InvSize - 1].MaxDamage;
             }
 
         }
@@ -105,20 +134,18 @@ namespace ConsoleRPG
             Console.WriteLine($"Money: {Cash}");
 
         }
-        internal int CurrentHealth(bool fight = false, int mobMinDmg = 0, int mobMaxDmg = 0)
+        internal void FightHero(int mobMinDmg = 0, int mobMaxDmg = 0)
         {
-            if (fight)
-            {
-                int healthSave = CurHealth;
-                Random rnd = new Random();
-                CurHealth -= rnd.Next(mobMinDmg, mobMaxDmg);
-                Console.WriteLine();
-                Console.WriteLine($"You get attacked by the Monster and lost {healthSave-CurHealth}HP!");
-                Console.WriteLine($"You have {CurHealth}HP left");
-                return CurHealth;
-            }
-
-            return CurHealth;
+            int healthSave = CurrentHealth;
+            Random rnd = new Random();
+            int DamageTaken = rnd.Next(mobMinDmg, mobMaxDmg) - Defanse;
+            if(DamageTaken <= 0)
+                DamageTaken = 1;
+            CurrentHealth = CurrentHealth - DamageTaken;  
+            Console.WriteLine();
+            Console.WriteLine($"You get attacked by the Monster and lost {healthSave - CurrentHealth}HP!");
+            Console.WriteLine($"You have {CurrentHealth}HP left");
+            return;
         }
         internal void GetExperience(int xp)
         {
@@ -127,19 +154,73 @@ namespace ConsoleRPG
             {
                 Experience = Experience - (Level * Level * 2);
                 Level++;
-                MaxHealth = Level * 100;
+                STRIncrease(4);
+                DEXIncrease(2);
+                ENDIncrease(4);
+                INTIncrease(0);
+                SPRIncrease(1);
                 Console.WriteLine($"You reached Level:{Level}!");
                 Program.hero.CheckItems();
             }
 
         }
+        internal void STRIncrease(int increase)
+        {
+            for(int count = 0; count < increase; count++)
+            {
+                SPR++;
+                MinDamage = SPR;
+                MaxDamage = SPR;
+                CheckItems();
+            }
+        }
+        internal void DEXIncrease(int increase)
+        {
+            for(int count = 0; count < increase; count++)
+            {
+                DEX++;
+                Aim = DEX;
+                Evasion = DEX;
+                CheckItems();
+            }
+        }
+        internal void ENDIncrease(int increase)
+        {
+            for(int count = 0; count < increase; count++)
+            {
+                END++;
+                Defanse = END;
+                MaximalHealth = 27 + END * 5;
+                CheckItems();
+            }
+        }
+        internal void INTIncrease(int increase)
+        {
+            for(int count = 0; count < increase; count++)
+            {
+                INT++;
+                MagicalDamage = INT;
+                CheckItems();
+            }
+        }
+        internal void SPRIncrease(int increase)
+        {
+            for(int count = 0; count < increase; count++)
+            {
+                SPR++;
+                MagicalDefanse = SPR;
+                MaxiamlManaPoints = 5 + SPR * 5;
+                CheckItems();
+            }
+        }
+
         internal void LoseExperience()
         {
-            Experience = Experience;
+            Experience = Experience - (Level * Level * 2) / 100;
         }
         internal void Healer()
         {
-            CurHealth = MaxHealth;
+            CurrentHealth = MaximalHealth;
         }
 
     }

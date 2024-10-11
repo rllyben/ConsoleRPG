@@ -13,7 +13,7 @@ namespace ConsoleRPG.Fighting
             int minHeroDmg = Program.hero.MinDamage;
             int maxHeroDmg = Program.hero.MaxDamage + 1;
 
-            while (Program.hero.CurrentHealth()  > 0 && monsterHP > 0)
+            while (Program.hero.CurrentHealth > 0 && monsterHP > 0)
             {
                 float heroSpeed = Program.hero.ActionSpeed;
                 float MobSpeed = monsterSpeed;
@@ -38,7 +38,7 @@ namespace ConsoleRPG.Fighting
                     {
                         while (MobSpeed <= heroSpeed)
                         {
-                            Program.hero.CurrentHealth(true, mobMinDmg, mobMaxDmg);
+                            Program.hero.FightHero(mobMinDmg, mobMaxDmg);
                             heroSpeed -= MobSpeed;
                         }
 
@@ -49,15 +49,15 @@ namespace ConsoleRPG.Fighting
             }
             if (monsterHP <= 0)
             {
-                Console.WriteLine($"You killed the Monster! You have {Program.hero.CurrentHealth()}HP left.");
+                Console.WriteLine($"You killed the Monster! You have {Program.hero.CurrentHealth}HP left.");
                 Program.hero.GetCash(mobMinDmg * 2);
                 Program.hero.GetExperience(mobMinDmg);
                 Thread.Sleep(1000);
             }
-            else if (Program.hero.CurrentHealth() <= 0)
+            else if (Program.hero.CurrentHealth <= 0)
             {
                 Console.WriteLine($"You Died! You lose {Program.hero.MinDamage * 2} Money");
-                Program.hero.PayCash(Program.hero.MinDamage * 2);
+                Program.hero.LoseExperience();
                 Thread.Sleep(2000);
             }
                 return; 

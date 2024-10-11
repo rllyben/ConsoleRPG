@@ -5,27 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleRPG
+namespace ConsoleRPG.Items
 {
-    internal class Items
+    internal class Item
     {
-        public Items(string itemName, int cost, int maxHealth = 0, int level = 0, int minDamage = 0, int maxDamage = 0, float actionSpeed = 0) 
+        public static Item crabClaw = new Item("Crab's Pincers");
+        public static Item blueCrabMeat = new Item("Blue Crab Meat");
+        public Item(string itemName) 
         {
             ItemName = itemName;
-            Cost = cost;
-            MaxHealth = maxHealth;
-            Level = level;
-            MinDamage = minDamage;
-            MaxDamage = maxDamage;
-            ActionSpeed = actionSpeed;
         }
         public string ItemName {get; set;}
         public int Cost { get; set; }
-        public int MaxHealth { get; set; }
         public int Level { get; set; }
         public int MinDamage { get; set; }
         public int MaxDamage { get; set; }
         public float ActionSpeed { get; set; }
+        public int Defance { get; set; }
+        public int MagicalDefance { get; set; }
+        public int MaxHealth { get; set; }
+        public int HealPotantial {get; set;}
+        public int Evation {get; set;}
+        public int Aim {get; set;}
 
     }
 
