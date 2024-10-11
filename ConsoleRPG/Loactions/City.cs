@@ -31,8 +31,9 @@ namespace ConsoleRPG.Loactions
                     temp.StandartLocationAction(currentLocation, true);
                 }
                 StandartLocationAction(currentLocation, false);
+                Console.WriteLine($"{ConnectedLocations.Count + 4}. open inventory");                   
                 Console.WriteLine();
-                Console.WriteLine($"{Hero.hero.GetName()}: Level: {Hero.hero.Level()} XP: {Hero.hero.ReadExperience()}/{Hero.hero.Level() * Hero.hero.Level() * 2} HP: {Hero.hero.MaximalHealth()}/{Hero.hero.CurrentHealth()} Money: {Hero.hero.ReadCash()}");
+                Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.MaxHealth}/{Program.hero.CurHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 
@@ -59,13 +60,17 @@ namespace ConsoleRPG.Loactions
                     {
                         Console.WriteLine();
                         Console.WriteLine("The Healer Heals you to your full HP");
-                        Hero.hero.Healer();
+                        Program.hero.Healer();
                         Thread.Sleep(2000);
                         StandartLocationAction(currentLocation);
                     }
                     else if (action == 3)
                     {
                         currentLocation.Trader[TraderCount-1].StandartSmithAction(currentLocation.Trader[TraderCount-1]);
+                    }
+                    else if (action == 4 + ConnectedLocations.Count)
+                    {
+
                     }
                     else if (action != 0)
                     {

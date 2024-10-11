@@ -96,7 +96,7 @@ namespace ConsoleRPG.Loactions
                     return;
 
                 Console.WriteLine();
-                Console.WriteLine($"{Hero.hero.GetName()}: Level: {Hero.hero.Level()}  XP: {Hero.hero.ReadExperience()}/{Hero.hero.Level() * Hero.hero.Level() * 2}  HP: {Hero.hero.MaximalHealth()}/{Hero.hero.CurrentHealth()} Money: {Hero.hero.ReadCash()}");
+                Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.MaxHealth}/{Program.hero.CurHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 

@@ -7,6 +7,7 @@ namespace ConsoleRPG
     {
         static char mainAction;
         static char adventureAction;
+        public static Hero hero;
         public static City roumen = new City("Roumen", 1);
         public static Location tideForest = new Location("Forest of Tides", 3);
         public static Location beach = new Location("Sand Beach", 7);
@@ -39,7 +40,7 @@ namespace ConsoleRPG
 
         static void Main(string[] args)
         {
-            if (false)
+            if (false)              
             {
                 roumen.IDcheck();
                 tideForest.IDcheck();
@@ -70,114 +71,107 @@ namespace ConsoleRPG
                 plain.IDcheck();
                 thornCave.IDcheck();
             }
-            do {
-                roumen.AddConnection(tideForest);
-                roumen.AddConnection(beach);
-                roumen.AddConnection(sea);
-                roumen.AddTrader(City.james);
-                tideForest.AddConnection(roumen);
-                tideForest.AddConnection(beach);
-                tideForest.AddConnection(caveEcho);
-                beach.AddConnection(roumen);
-                beach.AddConnection(tideForest);
-                beach.AddConnection(caveEcho);
-                beach.AddConnection(mistForest);
-                caveEcho.AddConnection(tideForest);
-                caveEcho.AddConnection(beach);
-                caveEcho.AddConnection(sea);
-                mistForest.AddConnection(beach);
-                mistForest.AddConnection(sea);
-                mistForest.AddConnection(elderine);
-                sea.AddConnection(roumen);
-                sea.AddConnection(caveEcho);
-                sea.AddConnection(mistForest);
-                sea.AddConnection(elderine);
-                sea.AddConnection(burnHill);
-                elderine.AddConnection(mistForest);
-                elderine.AddConnection(sea);
-                elderine.AddConnection(moonTomb);
-                elderine.AddConnection(brokePrison);
-                elderine.AddTrader(City.karl);
-                sandHill.AddConnection(burnHill);
-                sandHill.AddConnection(moonTomb);
-                sandHill.AddTrader(Location.rohan);
-                burnHill.AddConnection(sea);
-                burnHill.AddConnection(sandHill);
-                moonTomb.AddConnection(elderine);
-                moonTomb.AddConnection(sandHill);
-                moonTomb.AddConnection(passageI);
-                passageI.AddConnection(moonTomb);
-                passageI.AddConnection(vineTomb);
-                caveWind.AddConnection(moonTomb);
-                caveWind.AddConnection(camp);
-                vineTomb.AddConnection(passageI);
-                vineTomb.AddConnection(camp);
-                camp.AddConnection(caveWind);
-                camp.AddConnection(vineTomb);
-                camp.AddConnection(brokePrison);
-                brokePrison.AddConnection(camp);
-                brokePrison.AddConnection(elderine);
-                brokePrison.AddConnection(execution);
-                brokePrison.AddConnection(passageII);
-                execution.AddConnection(brokePrison);
-                execution.AddConnection(uruga);
-                passageII.AddConnection(brokePrison);
-                passageII.AddConnection(uruga);
-                uruga.AddConnection(execution);
-                uruga.AddConnection(passageII);
-                uruga.AddConnection(caveGold);
-                uruga.AddConnection(elvenWoods);
-                uruga.AddConnection(slumberForest);
-                uruga.AddTrader(City.hans);
-                elvenWoods.AddConnection(uruga);
-                elvenWoods.AddConnection(slumberForest);
-                slumberForest.AddConnection(uruga);
-                slumberForest.AddConnection(elvenWoods);
-                slumberForest.AddConnection(rock);
-                rock.AddConnection(slumberForest);
-                rock.AddConnection(swamp);
-                swamp.AddConnection(rock);
-                swamp.AddConnection(ruins);
-                ruins.AddConnection(swamp);
-                ruins.AddConnection(darkLand);
-                ruins.AddTrader(Location.marcudos);
-                darkLand.AddConnection(ruins);
-                darkLand.AddConnection(adelia);
-                adelia.AddConnection(darkLand);
-                adelia.AddConnection(plain);
-                adelia.AddTrader(City.alexia);
-                plain.AddConnection(adelia);
-                plain.AddConnection(thornCave);
-                thornCave.AddConnection(plain);
 
-                Traders.TraderItemInitilation();
-            } while(false);
-            
+            roumen.AddConnection(tideForest);
+            roumen.AddConnection(beach);
+            roumen.AddConnection(sea);
+            roumen.AddTrader(City.james);
+            tideForest.AddConnection(roumen);
+            tideForest.AddConnection(beach);
+            tideForest.AddConnection(caveEcho);
+            beach.AddConnection(roumen);
+            beach.AddConnection(tideForest);
+            beach.AddConnection(caveEcho);
+            beach.AddConnection(mistForest);
+            caveEcho.AddConnection(tideForest);
+            caveEcho.AddConnection(beach);
+            caveEcho.AddConnection(sea);
+            mistForest.AddConnection(beach);
+            mistForest.AddConnection(sea);
+            mistForest.AddConnection(elderine);
+            sea.AddConnection(roumen);
+            sea.AddConnection(caveEcho);
+            sea.AddConnection(mistForest);
+            sea.AddConnection(elderine);
+            sea.AddConnection(burnHill);
+            elderine.AddConnection(mistForest);
+            elderine.AddConnection(sea);
+            elderine.AddConnection(moonTomb);
+            elderine.AddConnection(brokePrison);
+            elderine.AddTrader(City.karl);
+            sandHill.AddConnection(burnHill);
+            sandHill.AddConnection(moonTomb);
+            sandHill.AddTrader(Location.rohan);
+            burnHill.AddConnection(sea);
+            burnHill.AddConnection(sandHill);
+            moonTomb.AddConnection(elderine);
+            moonTomb.AddConnection(sandHill);
+            moonTomb.AddConnection(passageI);
+            passageI.AddConnection(moonTomb);
+            passageI.AddConnection(vineTomb);
+            caveWind.AddConnection(moonTomb);
+            caveWind.AddConnection(camp);
+            vineTomb.AddConnection(passageI);
+            vineTomb.AddConnection(camp);
+            camp.AddConnection(caveWind);
+            camp.AddConnection(vineTomb);
+            camp.AddConnection(brokePrison);
+            brokePrison.AddConnection(camp);
+            brokePrison.AddConnection(elderine);
+            brokePrison.AddConnection(execution);
+            brokePrison.AddConnection(passageII);
+            execution.AddConnection(brokePrison);
+            execution.AddConnection(uruga);
+            passageII.AddConnection(brokePrison);
+            passageII.AddConnection(uruga);
+            uruga.AddConnection(execution);
+            uruga.AddConnection(passageII);
+            uruga.AddConnection(caveGold);
+            uruga.AddConnection(elvenWoods);
+            uruga.AddConnection(slumberForest);
+            uruga.AddTrader(City.hans);
+            elvenWoods.AddConnection(uruga);
+            elvenWoods.AddConnection(slumberForest);
+            slumberForest.AddConnection(uruga);
+            slumberForest.AddConnection(elvenWoods);
+            slumberForest.AddConnection(rock);
+            rock.AddConnection(slumberForest);
+            rock.AddConnection(swamp);
+            swamp.AddConnection(rock);
+            swamp.AddConnection(ruins);
+            ruins.AddConnection(swamp);
+            ruins.AddConnection(darkLand);
+            ruins.AddTrader(Location.marcudos);
+            darkLand.AddConnection(ruins);
+            darkLand.AddConnection(adelia);
+            adelia.AddConnection(darkLand);
+            adelia.AddConnection(plain);
+            adelia.AddTrader(City.alexia);
+            plain.AddConnection(adelia);
+            plain.AddConnection(thornCave);
+            thornCave.AddConnection(plain);
+
+            Traders.TraderItemInitilation();
+
             bool GameRun = true;
-            Hero.LoadHero("player");
-            if (Hero.hero != null)
-            {
-                Console.WriteLine($"Hero {Hero.hero.Name} loaded successfully.");
-                Thread.Sleep(2000);
-            }
-            else
-            {
-                Console.WriteLine("No hero with that name was found.");
-                Thread.Sleep(2000);
 
-                Console.Clear();
-
-                Console.WriteLine("please name your caracter to start:");
-                Hero.CrateHero();
-                Console.WriteLine($"Your character name is: {Hero.hero.GetName()}");
+            try
+            {
+                hero = Hero.LoadHero("player");
+                hero.CheckItems();
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            Console.WriteLine($"Hero {hero} loaded successfully.");
+            Thread.Sleep(1000);
 
             do
             {
                 mainAction = ' ';
-                Hero.hero.MaximalHealth();
-                if (Hero.hero.CurrentHealth() > Hero.hero.MaximalHealth())
-                    Hero.hero.Healer();
+                if (hero.CurrentHealth() > hero.MaxHealth)
+                    hero.Healer();
 
                 while (mainAction == ' ')
                 {
@@ -192,25 +186,32 @@ namespace ConsoleRPG
 
                 switch (mainAction)
                 {
-                    case '0': Hero.hero.SaveHero(); GameRun = false; break;
+                    case '0': hero.SaveHero(); GameRun = false; break;
                     case '1': Stats(); break;
                     case '2': Adventure(); break;
                     case '3': Shop(); break;
-                    case '4': Hero.hero.ShowInventorry(Hero.hero); break;
+                    case '4': hero.ShowInventorry(hero); break;
                     default: Console.WriteLine("Wrong input please try again:"); mainAction = ' '; break;
                 }
 
             } while (GameRun);
             
         }
+        internal static void CharacterCreation()
+        {
+        Console.Clear();
+        Console.WriteLine("please name your caracter to start:");
+        hero = new Hero(Console.ReadLine());
+        Console.WriteLine($"Your character name is: {hero}");
+        }
         internal static void Stats()
         {
             Console.Clear();
 
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"\n{Hero.hero.GetName()}   Level: {Hero.hero.Level()}");
+            Console.WriteLine($"\n{hero}   Level: {hero.Level}");
             Console.ResetColor();
-            Console.WriteLine($"\n       HP: {Hero.hero.MaximalHealth()} / {Hero.hero.CurrentHealth()}\n       dmg: {Hero.hero.MinDamageOut()} ~ {Hero.hero.MaxDamageOut()}\n       action speed: {Hero.hero.ActionSpeedOut()}\n");
+            Console.WriteLine($"\n       HP: {hero.MaxHealth} / {hero.CurrentHealth()}\n       dmg: {hero.MinDamage} ~ {hero.MaxDamage}\n       action speed: {hero.ActionSpeed}\n");
         }
         internal static void Adventure()
         {

@@ -10,12 +10,12 @@ namespace ConsoleRPG.Fighting
     {
         public static void Fighting(int mobMinDmg, int mobMaxDmg, int monsterHP ,float monsterSpeed)
         {
-            int minHeroDmg = Hero.hero.MinDamageOut();
-            int maxHeroDmg = Hero.hero.MaxDamageOut() + 1;
+            int minHeroDmg = Program.hero.MinDamage;
+            int maxHeroDmg = Program.hero.MaxDamage + 1;
 
-            while (Hero.hero.CurrentHealth()  > 0 && monsterHP > 0)
+            while (Program.hero.CurrentHealth()  > 0 && monsterHP > 0)
             {
-                float heroSpeed = Hero.hero.ActionSpeedOut();
+                float heroSpeed = Program.hero.ActionSpeed;
                 float MobSpeed = monsterSpeed;
 
                 while (heroSpeed > 0 && MobSpeed > 0 && monsterHP > 0)
@@ -38,7 +38,7 @@ namespace ConsoleRPG.Fighting
                     {
                         while (MobSpeed <= heroSpeed)
                         {
-                            Hero.hero.CurrentHealth(true, mobMinDmg, mobMaxDmg);
+                            Program.hero.CurrentHealth(true, mobMinDmg, mobMaxDmg);
                             heroSpeed -= MobSpeed;
                         }
 
@@ -49,15 +49,15 @@ namespace ConsoleRPG.Fighting
             }
             if (monsterHP <= 0)
             {
-                Console.WriteLine($"You killed the Monster! You have {Hero.hero.CurrentHealth()}HP left.");
-                Hero.hero.GetCash(mobMinDmg * 2);
-                Hero.hero.GetExperience(mobMinDmg);
+                Console.WriteLine($"You killed the Monster! You have {Program.hero.CurrentHealth()}HP left.");
+                Program.hero.GetCash(mobMinDmg * 2);
+                Program.hero.GetExperience(mobMinDmg);
                 Thread.Sleep(1000);
             }
-            else if (Hero.hero.CurrentHealth() <= 0)
+            else if (Program.hero.CurrentHealth() <= 0)
             {
-                Console.WriteLine($"You Died! You lose {Hero.hero.MinDamageOut() * 2} Money");
-                Hero.hero.PayCash(Hero.hero.MinDamageOut() * 2);
+                Console.WriteLine($"You Died! You lose {Program.hero.MinDamage * 2} Money");
+                Program.hero.PayCash(Program.hero.MinDamage * 2);
                 Thread.Sleep(2000);
             }
                 return; 

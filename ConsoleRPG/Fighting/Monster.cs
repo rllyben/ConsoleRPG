@@ -15,7 +15,7 @@ namespace ConsoleRPG.Fighting
             ActionSpeed = setActionspeed;
             MaxDamage = setMaxDmg;
             MinDamage = setMinDmg;
-            Levl = lvl;
+            Level = lvl;
         }
 
     }

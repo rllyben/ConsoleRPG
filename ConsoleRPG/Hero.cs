@@ -13,35 +13,26 @@ namespace ConsoleRPG
 {
     internal class Hero
     {
-        public static Hero hero;
-        List<Items> Inventorry { get; set; }
+        public List<Items> Inventorry { get; set; } 
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
         public int CurHealth { get; set; } = 100;
-        public int Levl { get; set; } = 1;
+        public int Level { get; set; } = 1;
         public int MaxHealth { get; set; } = 100;
         public int Experience { get; set; } = 0;
         public int MinDamage { get; set; } = 5;
         public int MaxDamage { get; set; } = 10;
         public float ActionSpeed { get; set; } = 0.5F;
-        public int _newItem = 0;
-        public int ItemID { get; set; }
-        public Hero(string name, int cash = 0, int tempHealth = 100, int lvl = 1, int maxHP = 100, int xp = 0, int minDmg = 1, int maxDmg = 5, float speed = 0.5F)
+        private int NewItem {get; set;} = 0;
+        private int ItemID { get; set; }
+        public Hero(string name)
         {
             Inventorry = new List<Items>();
             Name = name;
-            Cash = cash;
-            CurHealth = tempHealth;
-            Levl = lvl;
-            MaxHealth = maxHP;
-            Experience = xp;
-            MinDamage = minDmg;
-            MaxDamage = maxDmg;
         }
-
-        public static void CrateHero()
+        public override string ToString()
         {
-            hero = new Hero(Console.ReadLine());
+            return Name;
         }
         public void SaveHero()
         {
@@ -56,32 +47,31 @@ namespace ConsoleRPG
 
             if (!File.Exists(filePath))
             {
-                Console.WriteLine("Hero not found!");
-                Thread.Sleep(500);
-                return null;
+                throw new Exception("Hero not found!");
             }
 
             string jsonData = File.ReadAllText(filePath);
-            Hero hero = new Hero(JsonSerializer.Deserialize<Hero>(jsonData));
-            return hero;
+            if(false)Console.WriteLine(jsonData);
+            return JsonSerializer.Deserialize<Hero>(jsonData);
         }
         internal void GetItem(Items item)
         {
             Inventorry.Add(item);
-            if (item.GetLevel() <= Levl)
+            if (item.Level <= Program.hero.Level)
             {
-                MinDamage = Inventorry[_newItem].GetMinDamage();
-                MaxDamage = Inventorry[_newItem].GetMaxDamage();
+                MinDamage = Inventorry[NewItem].MinDamage;
+                MaxDamage = Inventorry[NewItem].MaxDamage;
             }
-            ItemID = _newItem;
-            _newItem++;
+            ItemID = NewItem;
+            NewItem++;
         }
         internal void CheckItems()
         {
-            if (Hero.hero.Inventorry.Count > 0 && Hero.hero.Inventorry[_newItem - 1].GetLevel() <= Levl)
+            var InvSize = Inventorry.Count;
+            if ( InvSize > 0 && Inventorry[InvSize - 1].Level <= Program.hero.Level)
             {
-                MinDamage = Inventorry[_newItem - 1].GetMinDamage();
-                MaxDamage = Inventorry[_newItem - 1].GetMaxDamage();
+                MinDamage = Inventorry[InvSize - 1].MinDamage;
+                MaxDamage = Inventorry[InvSize - 1].MaxDamage;
             }
 
         }
@@ -110,19 +100,10 @@ namespace ConsoleRPG
             Console.WriteLine();
             for (int count = 0; count < player.Inventorry.Count; count++)
             {
-                Console.WriteLine($"{count + 1}. {player.Inventorry[count].GetItemName()}");
+                Console.WriteLine($"{count + 1}. {player.Inventorry[count].ItemName}");
             }
             Console.WriteLine($"Money: {Cash}");
 
-        }
-
-        internal string GetName()
-        {
-            return Name;
-        }
-        internal int MaximalHealth()
-        {
-            return MaxHealth;
         }
         internal int CurrentHealth(bool fight = false, int mobMinDmg = 0, int mobMaxDmg = 0)
         {
@@ -139,42 +120,22 @@ namespace ConsoleRPG
 
             return CurHealth;
         }
-        internal int Level()
-        {
-            return Levl;
-        }
-        internal int ReadExperience()
-        {
-            return Experience;
-        }
         internal void GetExperience(int xp)
         {
             Experience += xp;
-            if (Experience > (Levl * Levl*2))
+            if (Experience > (Level * Level * 2))
             {
-                Experience = 0;
-                Levl++;
-                MaxHealth = Levl * 100;
-                Console.WriteLine($"You reached Level:{Levl}!");
-                Hero.hero.CheckItems();
+                Experience = Experience - (Level * Level * 2);
+                Level++;
+                MaxHealth = Level * 100;
+                Console.WriteLine($"You reached Level:{Level}!");
+                Program.hero.CheckItems();
             }
 
         }
         internal void LoseExperience()
         {
             Experience = Experience;
-        }
-        internal int MaxDamageOut()
-        {
-            return MaxDamage;
-        }
-        internal int MinDamageOut()
-        {
-            return MinDamage;
-        }
-        internal float ActionSpeedOut()
-        {
-            return ActionSpeed;
         }
         internal void Healer()
         {
