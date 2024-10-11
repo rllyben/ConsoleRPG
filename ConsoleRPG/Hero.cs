@@ -23,7 +23,7 @@ namespace ConsoleRPG
         public int MinDamage { get; set; } = 5;
         public int MaxDamage { get; set; } = 10;
         public float ActionSpeed { get; set; } = 0.5F;
-        private int NewItem {get; set;} = 0;
+        private static                          int NewItem {get; set;} = 0;
         private int ItemID { get; set; }
         public Hero(string name)
         {

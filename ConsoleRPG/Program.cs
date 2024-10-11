@@ -163,6 +163,7 @@ namespace ConsoleRPG
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                CharacterCreation();
             }
             Console.WriteLine($"Hero {hero} loaded successfully.");
             Thread.Sleep(1000);

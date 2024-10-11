@@ -175,7 +175,7 @@ namespace ConsoleRPG
             Console.WriteLine($"\n{currentTrader.TraderName} has the following Weapons for you");
             for (byte count = 0; count < currentTrader.TraderItems.Count; count++)
             {
-                Console.WriteLine($"{count + 1}. {currentTrader.TraderItems[count].ItemName} Dmg: {currentTrader.TraderItems[count].MinDamage} ~ {currentTrader.TraderItems[count].MaxDamage} Attack Rate: {currentTrader.TraderItems[count].ActionSpeed} Cost: {currentTrader.TraderItems[count].Cost}");
+                Console.WriteLine($"{count + 1}. {currentTrader.TraderItems[count].ItemName} Level: {currentTrader.TraderItems[count].Level}Dmg: {currentTrader.TraderItems[count].MinDamage} ~ {currentTrader.TraderItems[count].MaxDamage} Attack Rate: {currentTrader.TraderItems[count].ActionSpeed} Cost: {currentTrader.TraderItems[count].Cost}");
             }
             Console.WriteLine();
             Console.WriteLine($"You have {Program.hero.ReadCash()} Money");
