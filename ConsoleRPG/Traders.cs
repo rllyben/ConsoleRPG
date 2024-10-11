@@ -178,7 +178,7 @@ namespace ConsoleRPG
                 Console.WriteLine($"{count + 1}. {currentTrader.TraderItems[count].GetItemName()} Dmg: {currentTrader.TraderItems[count].GetMinDamage()} ~ {currentTrader.TraderItems[count].GetMaxDamage()} Attack Rate: {currentTrader.TraderItems[count].GetActionSpeed()} Cost: {currentTrader.TraderItems[count].GetCost()}");
             }
             Console.WriteLine();
-            Console.WriteLine($"You have {Program.hero.ReadCash()} Money");
+            Console.WriteLine($"You have {Hero.hero.ReadCash()} Money");
             Console.WriteLine();
             Console.WriteLine("which one do you want to buy?\n\nback with 0");
             smithAction = Console.ReadKey().KeyChar;
@@ -191,7 +191,7 @@ namespace ConsoleRPG
                     action -= 49;
                     if (action >= 0 && action < 0 + currentTrader.TraderItems.Count)
                     {
-                        if (Program.hero.ReadCash() < currentTrader.TraderItems[action].GetCost())
+                        if (Hero.hero.ReadCash() < currentTrader.TraderItems[action].GetCost())
                         {
                             Console.WriteLine("You don't have enough money!");
                             Thread.Sleep(1000);
@@ -199,8 +199,8 @@ namespace ConsoleRPG
                         }
                         else
                         {
-                            Program.hero.GetItem(currentTrader.TraderItems[action]);
-                            Program.hero.PayCash(currentTrader.TraderItems[action].GetCost());
+                            Hero.hero.GetItem(currentTrader.TraderItems[action]);
+                            Hero.hero.PayCash(currentTrader.TraderItems[action].GetCost());
                         }
                             
                     }

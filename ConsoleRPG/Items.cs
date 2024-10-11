@@ -19,13 +19,13 @@ namespace ConsoleRPG
             MaxDamage = maxDmg;
             ActionSpeed = speed;
         }
-        protected string ItemName {get; set;}
-        protected int MaxHealth { get; set; }
-        protected int Level { get; set; }
-        protected int MinDamage { get; set; }
-        protected int MaxDamage { get; set; }
-        protected float ActionSpeed { get; set; }
-        protected int Cost { get; set; }
+        public string ItemName {get; set;}
+        public int MaxHealth { get; set; }
+        public int Level { get; set; }
+        public int MinDamage { get; set; }
+        public int MaxDamage { get; set; }
+        public float ActionSpeed { get; set; }
+        public int Cost { get; set; }
 
         internal string GetItemName()
         {

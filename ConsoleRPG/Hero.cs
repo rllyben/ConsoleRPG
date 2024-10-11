@@ -3,31 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Text.Json;
 using ConsoleRPG;
 using ConsoleRPG.Fighting;
+using System.Runtime.CompilerServices;
 
 namespace ConsoleRPG
 {
     internal class Hero
     {
+        public static Hero hero;
         List<Items> Inventorry { get; set; }
-        private int Cash { get; set; } = 0;
-        private string Name { get; set; }
-        protected static int CurHealth { get; set; } = 100;
-        protected static int Levl { get; set; } = 1;
-        protected static int MaxHealth { get; set; } = 100;
-        protected static int Experience { get; set; } = 0;
-        protected static int MinDamage { get; set; } = 5;
-        protected static int MaxDamage { get; set; } = 10;
-        protected static float ActionSpeed { get; set; } = 0.5F;
-        protected static int _newItem = 0;
-        protected int ItemID { get; set; }
-        public Hero(string name)
+        public int Cash { get; set; } = 0;
+        public string Name { get; set; }
+        public int CurHealth { get; set; } = 100;
+        public int Levl { get; set; } = 1;
+        public int MaxHealth { get; set; } = 100;
+        public int Experience { get; set; } = 0;
+        public int MinDamage { get; set; } = 5;
+        public int MaxDamage { get; set; } = 10;
+        public float ActionSpeed { get; set; } = 0.5F;
+        public int _newItem = 0;
+        public int ItemID { get; set; }
+        public Hero(string name, int cash = 0, int tempHealth = 100, int lvl = 1, int maxHP = 100, int xp = 0, int minDmg = 1, int maxDmg = 5, float speed = 0.5F)
         {
             Inventorry = new List<Items>();
             Name = name;
+            Cash = cash;
+            CurHealth = tempHealth;
+            Levl = lvl;
+            MaxHealth = maxHP;
+            Experience = xp;
+            MinDamage = minDmg;
+            MaxDamage = maxDmg;
         }
 
+        public static void CrateHero()
+        {
+            hero = new Hero(Console.ReadLine());
+        }
+        public void SaveHero()
+        {
+            string filePath = $"player_hero.json";
+            string jsonData = JsonSerializer.Serialize(this);
+            File.WriteAllText(filePath, jsonData);
+            Console.WriteLine($"Hero saved to {filePath}");
+        }
+        public static Hero LoadHero(string name)
+        {
+            string filePath = $"{name}_hero.json";
+
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("Hero not found!");
+                Thread.Sleep(500);
+                return null;
+            }
+
+            string jsonData = File.ReadAllText(filePath);
+            Hero hero = new Hero(JsonSerializer.Deserialize<Hero>(jsonData));
+            return hero;
+        }
         internal void GetItem(Items item)
         {
             Inventorry.Add(item);
@@ -41,7 +78,7 @@ namespace ConsoleRPG
         }
         internal void CheckItems()
         {
-            if (Program.hero.Inventorry.Count > 0 && Program.hero.Inventorry[_newItem - 1].GetLevel() <= Levl)
+            if (Hero.hero.Inventorry.Count > 0 && Hero.hero.Inventorry[_newItem - 1].GetLevel() <= Levl)
             {
                 MinDamage = Inventorry[_newItem - 1].GetMinDamage();
                 MaxDamage = Inventorry[_newItem - 1].GetMaxDamage();
@@ -66,14 +103,14 @@ namespace ConsoleRPG
             Cash -= amount;
         }
 
-        internal void ShowInventorry(Hero hero)
+        internal void ShowInventorry(Hero player)
         {
             Console.WriteLine();
             Console.WriteLine("Inventorry");
             Console.WriteLine();
-            for (int count = 0; count < hero.Inventorry.Count; count++)
+            for (int count = 0; count < player.Inventorry.Count; count++)
             {
-                Console.WriteLine($"{count + 1}. {hero.Inventorry[count].GetItemName()}");
+                Console.WriteLine($"{count + 1}. {player.Inventorry[count].GetItemName()}");
             }
             Console.WriteLine($"Money: {Cash}");
 
@@ -119,7 +156,7 @@ namespace ConsoleRPG
                 Levl++;
                 MaxHealth = Levl * 100;
                 Console.WriteLine($"You reached Level:{Levl}!");
-                Program.hero.CheckItems();
+                Hero.hero.CheckItems();
             }
 
         }

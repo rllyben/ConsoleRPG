@@ -32,7 +32,7 @@ namespace ConsoleRPG.Loactions
                 }
                 StandartLocationAction(currentLocation, false);
                 Console.WriteLine();
-                Console.WriteLine($"{Program.hero.GetName()}: Level: {Program.hero.Level()} XP: {Program.hero.ReadExperience()}/{Program.hero.Level() * Program.hero.Level() * 2} HP: {Program.hero.MaximalHealth()}/{Program.hero.CurrentHealth()} Money: {Program.hero.ReadCash()}");
+                Console.WriteLine($"{Hero.hero.GetName()}: Level: {Hero.hero.Level()} XP: {Hero.hero.ReadExperience()}/{Hero.hero.Level() * Hero.hero.Level() * 2} HP: {Hero.hero.MaximalHealth()}/{Hero.hero.CurrentHealth()} Money: {Hero.hero.ReadCash()}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 
@@ -59,7 +59,7 @@ namespace ConsoleRPG.Loactions
                     {
                         Console.WriteLine();
                         Console.WriteLine("The Healer Heals you to your full HP");
-                        Program.hero.Healer();
+                        Hero.hero.Healer();
                         Thread.Sleep(2000);
                         StandartLocationAction(currentLocation);
                     }

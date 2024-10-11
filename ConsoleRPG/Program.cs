@@ -1,4 +1,5 @@
 ﻿using ConsoleRPG.Loactions;
+using System.Text.Json;
 
 namespace ConsoleRPG
 {
@@ -6,7 +7,6 @@ namespace ConsoleRPG
     {
         static char mainAction;
         static char adventureAction;
-        public static Hero hero;
         public static City roumen = new City("Roumen", 1);
         public static Location tideForest = new Location("Forest of Tides", 3);
         public static Location beach = new Location("Sand Beach", 7);
@@ -39,7 +39,7 @@ namespace ConsoleRPG
 
         static void Main(string[] args)
         {
-            if (true)
+            if (false)
             {
                 roumen.IDcheck();
                 tideForest.IDcheck();
@@ -154,24 +154,37 @@ namespace ConsoleRPG
             } while(false);
             
             bool GameRun = true;
+            Hero.LoadHero("player");
+            if (Hero.hero != null)
+            {
+                Console.WriteLine($"Hero {Hero.hero.Name} loaded successfully.");
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                Console.WriteLine("No hero with that name was found.");
+                Thread.Sleep(2000);
 
-            Console.WriteLine("please name your caracter to start:");
-            hero = new Hero(Console.ReadLine());
-            Console.WriteLine($"Your character name is: {hero.GetName()}");
+                Console.Clear();
+
+                Console.WriteLine("please name your caracter to start:");
+                Hero.CrateHero();
+                Console.WriteLine($"Your character name is: {Hero.hero.GetName()}");
+            }
 
             do
             {
                 mainAction = ' ';
-                hero.MaximalHealth();
-                if (hero.CurrentHealth() > hero.MaximalHealth()) 
-                    hero.Healer();
+                Hero.hero.MaximalHealth();
+                if (Hero.hero.CurrentHealth() > Hero.hero.MaximalHealth())
+                    Hero.hero.Healer();
 
                 while (mainAction == ' ')
                 {
                     Console.WriteLine("\nMain Menue:" +
                         "\n1. stats        2. adventure" +
                         "\n3. shop         4. inventorry" +
-                        "\n0. exit");
+                        "\n0. save and exit");
 
                     mainAction = Console.ReadKey().KeyChar;
 
@@ -179,26 +192,25 @@ namespace ConsoleRPG
 
                 switch (mainAction)
                 {
-                    case '0': GameRun = false; break;
+                    case '0': Hero.hero.SaveHero(); GameRun = false; break;
                     case '1': Stats(); break;
                     case '2': Adventure(); break;
                     case '3': Shop(); break;
-                    case '4': hero.ShowInventorry(hero); break;
+                    case '4': Hero.hero.ShowInventorry(Hero.hero); break;
                     default: Console.WriteLine("Wrong input please try again:"); mainAction = ' '; break;
                 }
 
             } while (GameRun);
             
         }
-
         internal static void Stats()
         {
             Console.Clear();
 
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"\n{hero.GetName()}   Level: {hero.Level()}");
+            Console.WriteLine($"\n{Hero.hero.GetName()}   Level: {Hero.hero.Level()}");
             Console.ResetColor();
-            Console.WriteLine($"\n       HP: {hero.MaximalHealth()} / {hero.CurrentHealth()}\n       dmg: {hero.MinDamageOut()} ~ {hero.MaxDamageOut()}\n       action speed: {hero.ActionSpeedOut()}\n");
+            Console.WriteLine($"\n       HP: {Hero.hero.MaximalHealth()} / {Hero.hero.CurrentHealth()}\n       dmg: {Hero.hero.MinDamageOut()} ~ {Hero.hero.MaxDamageOut()}\n       action speed: {Hero.hero.ActionSpeedOut()}\n");
         }
         internal static void Adventure()
         {
