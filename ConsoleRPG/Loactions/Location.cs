@@ -118,14 +118,14 @@ namespace ConsoleRPG.Loactions
                 Console.WriteLine();
                 Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
-                Console.WriteLine("0. Back");
+                Console.WriteLine("0. Back");                           
 
                 locationAction = Console.ReadKey().KeyChar;
             }
 
             switch (locationAction)
             {
-                case '0': backCheck = true; break;
+                case '0': backCheck = true; break;      
                 case '1':
                     Console.WriteLine();
                     Console.WriteLine("Quests are currently unavailable.");
