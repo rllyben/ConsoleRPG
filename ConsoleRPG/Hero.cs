@@ -20,10 +20,15 @@ namespace ConsoleRPG
         public string Name { get; set; }
         public int CurrentHealth {get; set;}
         public int STR  {get; set;} = 6;
+        public int STRIncreased {get; set;} = 0;
         public int DEX {get; set;} = 3;
+        public int DEXIncreased {get; set;} = 0;
         public int END {get; set;} = 5;
+        public int ENDIncreased {get; set;} = 0;
         public int INT {get; set;} = 1;
+        public int INTIncreased {get; set;} = 0;
         public int SPR {get; set;} = 1;
+        public int SPRIncreased {get; set;} = 0;
         public int Level { get; set; } = 1;
         public int Experience { get; set; } = 0;
         public float ActionSpeed { get; set; } = 0.5F;
@@ -154,6 +159,7 @@ namespace ConsoleRPG
             {
                 Experience = Experience - (Level * Level * 2);
                 Level++;
+                StatPoints++;
                 STRIncrease(4);
                 DEXIncrease(2);
                 ENDIncrease(4);
@@ -164,15 +170,57 @@ namespace ConsoleRPG
             }
 
         }
+        internal void SetStatpoints()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine($"\n{Name}   Level: {Level} Free Points: {StatPoints}");
+            Console.WriteLine($"STR: {STR} + {STRIncreased}     (Increases Damage)");
+            Console.WriteLine($"DEX: {DEX} + {DEXIncreased}     (Increases Evation and Aim)");
+            Console.WriteLine($"END: {END} + {ENDIncreased}     (Increases Defance, Block Rate and HP)");
+            Console.WriteLine($"INT: {INT} + {INTIncreased}     (Increases Magical Damage)");
+            Console.WriteLine($"SPR: {SPR} + {SPRIncreased}     (Increases Magical Defance, Crit Rate and MP)");
+            Console.ResetColor();
+            if (StatPoints > 0)
+            {
+                Console.WriteLine("Where Do you want to set your Point?");
+                Console.WriteLine();
+                Console.WriteLine("Back with 0");
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "STR": STRIncrease(1); StatPoints--; STRIncreased++; SetStatpoints(); break;
+                    case "DEX": DEXIncrease(1); StatPoints--; DEXIncreased++; SetStatpoints(); break;
+                    case "END": ENDIncrease(1); StatPoints--; ENDIncreased++; SetStatpoints(); break;
+                    case "INT": INTIncrease(1); StatPoints--; INTIncreased++; SetStatpoints(); break;
+                    case "SPR": SPRIncrease(1); StatPoints--; SPRIncreased++; SetStatpoints(); break;
+                    case "0": break;
+                    default: Console.WriteLine("Wrong input please try again!"); SetStatpoints(); break;
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Back with 0");
+                char back = Console.ReadKey().KeyChar;
+                switch (back)
+                {
+                    case '0': break;
+                    default: Console.WriteLine("Wrong input please try again!"); SetStatpoints(); break;
+                }
+            }
+
+        }
         internal void STRIncrease(int increase)
         {
             for(int count = 0; count < increase; count++)
             {
-                SPR++;
+                STR++;
                 MinDamage = SPR;
                 MaxDamage = SPR;
                 CheckItems();
             }
+            return;
         }
         internal void DEXIncrease(int increase)
         {
@@ -183,6 +231,7 @@ namespace ConsoleRPG
                 Evasion = DEX;
                 CheckItems();
             }
+            return;
         }
         internal void ENDIncrease(int increase)
         {
@@ -193,6 +242,7 @@ namespace ConsoleRPG
                 MaximalHealth = 27 + END * 5;
                 CheckItems();
             }
+            return;
         }
         internal void INTIncrease(int increase)
         {
@@ -202,6 +252,7 @@ namespace ConsoleRPG
                 MagicalDamage = INT;
                 CheckItems();
             }
+            return;
         }
         internal void SPRIncrease(int increase)
         {
@@ -212,6 +263,7 @@ namespace ConsoleRPG
                 MaxiamlManaPoints = 5 + SPR * 5;
                 CheckItems();
             }
+            return;
         }
 
         internal void LoseExperience()

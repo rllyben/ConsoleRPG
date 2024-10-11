@@ -37,39 +37,11 @@ namespace ConsoleRPG
         public static City adelia = new City("Adelia", 110);
         public static Location plain = new Location("Kahal Plain", 111);
         public static Location thornCave = new Location("Thron Cave", 115);
-        public static Quest babySteps = new Quest("Baby Steps", 0, 1, 7, 52);
-        public static Quest moreBabySteps = new Quest("More Baby Steps", 0, 1, 10, 52);
-        public static Quest theChiefOfRoumen = new Quest("The Chief of Roumen", 0, 1, 13, 52);
-        public static Quest onYourOwn = new Quest("On Your Own", 0, 2, 10, 52);
-        public static Quest masterZach = new Quest("Master Zach", 0, 2, 30, 63);
-        public static ToDo masterZachsKills = new ToDo(Location.slime.Name, 5, 0);
-        public static Quest MischievousMonsters = new Quest("Mischievous Monsters", 0, 3, 30, 66);
-        public static ToDo MischievousMonstersKills = new ToDo(Location.mushroom.Name, 5, 0);
-        public static Quest LetsUseASkill = new Quest("Let's Use a Skill", 0, 3, 50, 60);
-        public static ToDo LetsUseASkillKills = new ToDo(Location.mandragora.Name, 5, 0);
-        public static Quest questAlert = new Quest("Have you heard about the Quest alert?", 0, 5, 20, 120);
-        public static Quest delinquentImps = new Quest("Delinquent Imps", 0, 5, 108, 103);
-        public static ToDo delinquentImpsKills = new ToDo(Location.imp.Name, 5, 0);
-        public static Quest mushroomAssault = new Quest("Mushroom Assoult", 0, 5, 108, 90);
-        public static ToDo mushroomAssaultKills = new ToDo(Location.fireMushroom.Name, 8, 0);
-        public static Quest essentialGift = new Quest("Essential gift", 0, 7, 0, 8500);
-        public static Quest holyPromise = new Quest("Holy Promise", 0, 7, 0, 300);
-        public static Quest impLeader = new Quest("Imp Leader", 0, 7, 100, 124);
-        public static ToDo impLeaderKills = new ToDo(Location.mushroom.Name, 5, 0);
-        public static Quest slowSlime = new Quest("Slow Slime", 0, 7, 100, 124);
-        public static ToDo slowSlimeKills = new ToDo(Location.mushroom.Name, 5, 0);
-        public static Quest crabClaws = new Quest("Crab Claws", 0, 7, 100, 124);
-        public static ToDo crabClawsItems = new ToDo(Item.crabClaw.ItemName, 8, 0);
-        public static Quest guildAcademy = new Quest("Guild Academy", 0, 8, 0, 300);
-        public static Quest blueCrabDish = new Quest("Blue Crab Dish", 0, 8, 300, 126);
-        public static ToDo blueCrabDishItems = new ToDo(Item.blueCrabMeat.ItemName, 6, 0);
-        public static Quest beatSpeedyHoneyings = new Quest("Beat Speedy Honeyings", 0, 8, 0, 300);
-        public static Quest vanashingTownsmen = new Quest("Vanashing Townsmen", 0, 8, 0, 300);
 
 
         static void Main(string[] args)
         {
-            if (false)              
+            if (false)
             {
                 roumen.IDcheck();
                 tideForest.IDcheck();
@@ -241,7 +213,22 @@ namespace ConsoleRPG
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine($"\n{hero}   Level: {hero.Level}");
             Console.ResetColor();
-            Console.WriteLine($"\n       HP: {hero.MaximalHealth} / {hero.CurrentHealth}\n       dmg: {hero.MinDamage} ~ {hero.MaxDamage}\n       action speed: {hero.ActionSpeed}\n");
+            Console.WriteLine($"\n       HP: {hero.MaximalHealth} / {hero.CurrentHealth}\n       dmg: {hero.MinDamage} ~ {hero.MaxDamage}\n       action speed: {hero.ActionSpeed}\n\n Free Statpoints: {hero.StatPoints}");
+            Console.WriteLine();
+            Console.WriteLine("Do you want to set Stat Points? [Y/N]");
+            char statPoints = Console.ReadKey().KeyChar;
+            switch (statPoints)
+            {
+                case 'Y':
+                case 'y': hero.SetStatpoints(); break;
+                case 'N':
+                case 'n': break;
+                default: 
+                    Console.WriteLine("Worng input please try again!");
+                    Thread.Sleep(1000);
+                    Stats(); break; 
+            }
+            
         }
         internal static void Adventure()
         {
