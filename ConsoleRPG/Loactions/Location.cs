@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -66,25 +67,33 @@ namespace ConsoleRPG.Loactions
             while (locationAction == ' ')
             {
                 if (currentLocation.ID == 8 || currentLocation.ID == 24)
+                {
                     isSemiCityLocation = true;
+                    isLocation = false;
+                }
                 Console.WriteLine($"You enter {currentLocation.LocationName}.");
                 Console.WriteLine("What do you want to do?");
-                if (isLocation == true)
+                if (isSemiCityLocation)
+                {
                     Console.WriteLine($"1. Look for Quests           2. Fight a Monster");
-                if (isLocation == false)
+                    Console.WriteLine($"3. Go to {currentLocation.Trader[TraderCount-1].GetTraderName()}");
+                }
+                else if (isLocation)
+                    Console.WriteLine($"1. Look for Quests           2. Fight a Monster");
+                else
                 {
                     Console.Write("1. Look for Quests           2. Go to the Healer\n");
                     Console.WriteLine($"3. Go to {currentLocation.Trader[TraderCount-1].GetTraderName()}");
                 }
-                if (isLocation)
+                if (isSemiCityLocation)
                 {
                     for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 4}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
 
                 }
-                else if (isSemiCityLocation)
+                else if (isLocation)
                 {
                     for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
                     {
@@ -101,9 +110,11 @@ namespace ConsoleRPG.Loactions
 
                 }
 
-                if (isLocation == false)
+                if (isLocation || isSemiCityLocation);
+                else
+                {
                     return;
-
+                }
                 Console.WriteLine();
                 Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
@@ -129,10 +140,19 @@ namespace ConsoleRPG.Loactions
                     short action = (short)locationAction;
                     action -= 49;
 
-                    if (action >= 2 && action < 2 + currentLocation.ConnectedLocations.Count)
+                    if (isSemiCityLocation && action >= 3 && action < 3 + currentLocation.ConnectedLocations.Count)
+                    {
+                        Location nextLocation = currentLocation.ConnectedLocations[action-4];
+                        StandartLocationAction(nextLocation);
+                    }
+                    else if (isLocation && action >= 2 && action < 2 + currentLocation.ConnectedLocations.Count)
                     {
                         Location nextLocation = currentLocation.ConnectedLocations[action-2];
                         StandartLocationAction(nextLocation);
+                    }
+                    else if (action == 2)
+                    {
+                        currentLocation.Trader[TraderCount-1].StandartSmithAction(currentLocation.Trader[TraderCount-1]);
                     }
                     else if (action != 0)
                     {
