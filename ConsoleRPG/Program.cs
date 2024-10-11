@@ -179,7 +179,7 @@ namespace ConsoleRPG
                 {
                     Console.WriteLine("\nMain Menue:" +
                         "\n1. stats        2. adventure" +
-                        "\n3. shop         4. inventorry" +
+                        "\n3. shop         4. inventory" +
                         "\n0. save and exit");
 
                     mainAction = Console.ReadKey().KeyChar;
@@ -192,7 +192,7 @@ namespace ConsoleRPG
                     case '1': Stats(); break;
                     case '2': Adventure(); break;
                     case '3': Shop(); break;
-                    case '4': hero.ShowInventorry(hero); break;
+                    case '4': hero.ShowInventory(); break;
                     default: Console.WriteLine("Wrong input please try again:"); mainAction = ' '; break;
                 }
 
@@ -202,7 +202,7 @@ namespace ConsoleRPG
         internal static void CharacterCreation()
         {
         Console.Clear();
-        Console.WriteLine("please name your caracter to start:");
+        Console.WriteLine("please name your character to start:");
         hero = new Hero(Console.ReadLine());
         Console.WriteLine($"Your character name is: {hero}");
         }

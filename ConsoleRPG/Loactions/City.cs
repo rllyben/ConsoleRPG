@@ -70,7 +70,7 @@ namespace ConsoleRPG.Loactions
                     }
                     else if (action == 4 + ConnectedLocations.Count)
                     {
-
+                        Program.hero.ShowInventory();
                     }
                     else if (action != 0)
                     {

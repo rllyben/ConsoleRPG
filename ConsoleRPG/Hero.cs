@@ -15,7 +15,7 @@ namespace ConsoleRPG
 {
     internal class Hero
     {
-        public List<Item> Inventorry { get; set; } 
+        public List<Item> Inventory { get; set; } 
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
         public int CurrentHealth {get; set;}
@@ -49,7 +49,7 @@ namespace ConsoleRPG
         private int ItemID { get; set; }
         public Hero(string name)
         {
-            Inventorry = new List<Item>();
+            Inventory = new List<Item>();
             Name = name;
             MinDamage = STR;
             MaxDamage = MinDamage;
@@ -90,22 +90,22 @@ namespace ConsoleRPG
         }
         internal void GetItem(Item item)
         {
-            Inventorry.Add(item);
+            Inventory.Add(item);
             if (item.Level <= Program.hero.Level)
             {
-                MinDamage += Inventorry[NewItem].MinDamage;
-                MaxDamage += Inventorry[NewItem].MaxDamage;
+                MinDamage += Inventory[NewItem].MinDamage;
+                MaxDamage += Inventory[NewItem].MaxDamage;
             }
             ItemID = NewItem;
             NewItem++;
         }
         internal void CheckItems()
         {
-            var InvSize = Inventorry.Count;
-            if ( InvSize > 0 && Inventorry[InvSize - 1].Level <= Program.hero.Level)
+            var InvSize = Inventory.Count;
+            if ( InvSize > 0 && Inventory[InvSize - 1].Level <= Program.hero.Level)
             {
-                MinDamage += Inventorry[InvSize - 1].MinDamage;
-                MaxDamage += Inventorry[InvSize - 1].MaxDamage;
+                MinDamage += Inventory[InvSize - 1].MinDamage;
+                MaxDamage += Inventory[InvSize - 1].MaxDamage;
             }
 
         }
@@ -127,17 +127,19 @@ namespace ConsoleRPG
             Cash -= amount;
         }
 
-        internal void ShowInventorry(Hero player)
+        internal void ShowInventory()
         {
             Console.WriteLine();
             Console.WriteLine("Inventorry");
             Console.WriteLine();
-            for (int count = 0; count < player.Inventorry.Count; count++)
+            for (int count = 0; count < Inventory.Count; count++)
             {
-                Console.WriteLine($"{count + 1}. {player.Inventorry[count].ItemName}");
+                Console.WriteLine($"{count + 1}. {Inventory[count].ItemName}");
             }
             Console.WriteLine($"Money: {Cash}");
-
+            Console.WriteLine();
+            Console.WriteLine("close with any Key");
+            Console.ReadKey(); 
         }
         internal void FightHero(int mobMinDmg = 0, int mobMaxDmg = 0)
         {
