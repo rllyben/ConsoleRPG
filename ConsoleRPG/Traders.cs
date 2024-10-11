@@ -115,6 +115,16 @@ namespace ConsoleRPG
             City.alexia.AddItem(halbendAxe);
             City.alexia.AddItem(vikingAxe);
             City.alexia.AddItem(giantAxe);
+
+            if (false)
+            {
+                Console.WriteLine("james:" + City.james.TraderItems.Count);
+                Console.WriteLine("karl:" + City.karl.TraderItems.Count);
+                Console.WriteLine("rohan:" + Location.rohan.TraderItems.Count);
+                Console.WriteLine("hans:" + City.hans.TraderItems.Count);
+                Console.WriteLine("marcudos:" + Location.marcudos.TraderItems.Count);
+                Console.WriteLine("alexia:" + City.alexia.TraderItems.Count);
+            }
         }
 
         public string GetTraderName()
@@ -124,6 +134,10 @@ namespace ConsoleRPG
 
         public void StandartSmithAction(Traders currentTrader)
         {
+            if (false)
+            {
+                Console.WriteLine(currentTrader.TraderItems.Count);
+            }
             backCheck = false;
             smithAction = ' ';
             Console.Clear();
@@ -133,6 +147,7 @@ namespace ConsoleRPG
             Console.WriteLine("1. Buy a Weapon          2. Buy an Armor\n" +
                               "3. Sell loot             4. Smith a Weapon\n" +
                               "5. Smith an Armor        6. upgrade your Weapon\n");
+            Console.WriteLine();
             Console.WriteLine("back with 0");
 
             smithAction = Console.ReadKey().KeyChar;
@@ -148,6 +163,11 @@ namespace ConsoleRPG
 
         public void SmithWeapons(Traders currentTrader)
         {
+
+            if (false)
+            {
+                Console.WriteLine(currentTrader.TraderItems.Count);
+            }
             backCheck = false;
             smithAction = ' ';
             Console.Clear();
@@ -157,13 +177,43 @@ namespace ConsoleRPG
             {
                 Console.WriteLine($"{count + 1}. {currentTrader.TraderItems[count].GetItemName()} Dmg: {currentTrader.TraderItems[count].GetMinDamage()} ~ {currentTrader.TraderItems[count].GetMaxDamage()} Attack Rate: {currentTrader.TraderItems[count].GetActionSpeed()} Cost: {currentTrader.TraderItems[count].GetCost()}");
             }
+            Console.WriteLine();
+            Console.WriteLine($"You have {Program.hero.ReadCash()} Money");
+            Console.WriteLine();
             Console.WriteLine("which one do you want to buy?\n\nback with 0");
-            Console.ReadKey();
+            smithAction = Console.ReadKey().KeyChar;
 
             switch (smithAction)
             {
                 case '0': backCheck = true; break;
-                default: StandartSmithAction(currentTrader); break;
+                default:
+                    short action = (short)smithAction;
+                    action -= 49;
+                    if (action >= 0 && action < 0 + currentTrader.TraderItems.Count)
+                    {
+                        if (Program.hero.ReadCash() < currentTrader.TraderItems[action].GetCost())
+                        {
+                            Console.WriteLine("You don't have enough money!");
+                            Thread.Sleep(1000);
+                            SmithWeapons(currentTrader);
+                        }
+                        else
+                        {
+                            Program.hero.GetItem(currentTrader.TraderItems[action]);
+                            Program.hero.PayCash(currentTrader.TraderItems[action].GetCost());
+                        }
+                            
+                    }
+                    else if (action != 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Wrong input please try again!");
+                        Thread.Sleep(1000);
+                        SmithWeapons(currentTrader);
+                    }
+
+
+                    StandartSmithAction(currentTrader); break;
             }
 
         }

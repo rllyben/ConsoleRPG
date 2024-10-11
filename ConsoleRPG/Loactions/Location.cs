@@ -18,13 +18,13 @@ namespace ConsoleRPG.Loactions
         char locationAction;
         public static bool backCheck = false;
         protected string LocationName { get; set; }
-        protected static int _levelZone;
+        protected int LevelZone { get; set; }
         protected static int _IDcounter = 1;
         public int ID { get; set; }
         public int TraderCount { get; set; }
         public List<Location> ConnectedLocations { get; set; }
         public List<Traders> Trader { get; set; }
-        public Location(string locationname, int levelZone) { LocationName = locationname; _levelZone = levelZone; ID = _IDcounter; _IDcounter++; ConnectedLocations = new List<Location>(); Trader = new List<Traders>();}
+        public Location(string locationname, int levelZone) { LocationName = locationname; LevelZone = levelZone; ID = _IDcounter; _IDcounter++; ConnectedLocations = new List<Location>(); Trader = new List<Traders>();}
         internal void IDcheck()
         {
             Console.WriteLine(ID + LocationName);
@@ -38,7 +38,7 @@ namespace ConsoleRPG.Loactions
             Trader.Add(trader);
             TraderCount++;
         }
-        internal void StandartLocationAction(Location currentLocation, bool isLocation = false, bool isSemiCityLocation = false)
+        internal void StandartLocationAction(Location currentLocation, bool isLocation = true, bool isSemiCityLocation = false)
         {
             if (isLocation && (currentLocation.ID == 1 || currentLocation.ID == 7 || currentLocation.ID == 18 || currentLocation.ID == 26))
             {
@@ -56,6 +56,8 @@ namespace ConsoleRPG.Loactions
 
             while (locationAction == ' ')
             {
+                if (currentLocation.ID == 8 || currentLocation.ID == 24)
+                    isSemiCityLocation = true;
                 Console.WriteLine($"You enter {currentLocation.LocationName}.");
                 Console.WriteLine("What do you want to do?");
                 if (isLocation == true)
@@ -71,6 +73,7 @@ namespace ConsoleRPG.Loactions
                     {
                         Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
+
                 }
                 else if (isSemiCityLocation)
                 {
@@ -78,6 +81,7 @@ namespace ConsoleRPG.Loactions
                     {
                         Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
+
                 }
                 else
                 {
@@ -85,11 +89,14 @@ namespace ConsoleRPG.Loactions
                     {
                         Console.WriteLine($"{count + 4}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
                     }
+
                 }
 
                 if (isLocation == false)
                     return;
 
+                Console.WriteLine();
+                Console.WriteLine($"{Program.hero.GetName()}: Level: {Program.hero.Level()}  XP: {Program.hero.ReadExperience()}/{Program.hero.Level() * Program.hero.Level() * 2}  HP: {Program.hero.MaximalHealth()}/{Program.hero.CurrentHealth()} Money: {Program.hero.ReadCash()}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 
@@ -105,7 +112,7 @@ namespace ConsoleRPG.Loactions
                     Thread.Sleep(2000);
                     StandartLocationAction(currentLocation); break;
                 case '2':
-                    Fight.Fighting(1, 5 ,1);
+                    Fight.Fighting(currentLocation.LevelZone, currentLocation.LevelZone*2, currentLocation.LevelZone*5 ,1);
                     StandartLocationAction(currentLocation);
                     break;
                 default:
@@ -113,7 +120,7 @@ namespace ConsoleRPG.Loactions
                     short action = (short)locationAction;
                     action -= 49;
 
-                    if (action >= 2 && action < 2 + ConnectedLocations.Count)
+                    if (action >= 2 && action < 2 + currentLocation.ConnectedLocations.Count)
                     {
                         Location nextLocation = currentLocation.ConnectedLocations[action-2];
                         StandartLocationAction(nextLocation);
@@ -127,6 +134,8 @@ namespace ConsoleRPG.Loactions
                     }
                     StandartLocationAction(currentLocation);
                     break;
+
+
             }
 
         }

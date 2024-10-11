@@ -32,6 +32,8 @@ namespace ConsoleRPG.Loactions
                 }
                 StandartLocationAction(currentLocation, false);
                 Console.WriteLine();
+                Console.WriteLine($"{Program.hero.GetName()}: Level: {Program.hero.Level()} XP: {Program.hero.ReadExperience()}/{Program.hero.Level() * Program.hero.Level() * 2} HP: {Program.hero.MaximalHealth()}/{Program.hero.CurrentHealth()} Money: {Program.hero.ReadCash()}");
+                Console.WriteLine();
                 Console.WriteLine("0. Back");
 
                 cityAction = Console.ReadKey().KeyChar;
@@ -50,7 +52,7 @@ namespace ConsoleRPG.Loactions
                     action -= 48;
                     if (action >= 4 && action < 4 + ConnectedLocations.Count)
                     {
-                        Location nextLocation = currentLocation.ConnectedLocations[action - 3];
+                        Location nextLocation = currentLocation.ConnectedLocations[action - 4];
                         StandartLocationAction(nextLocation);
                     }
                     else if (action == 2)

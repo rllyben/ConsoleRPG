@@ -39,7 +39,7 @@ namespace ConsoleRPG
 
         static void Main(string[] args)
         {
-            if (false)
+            if (true)
             {
                 roumen.IDcheck();
                 tideForest.IDcheck();
@@ -78,6 +78,7 @@ namespace ConsoleRPG
                 tideForest.AddConnection(roumen);
                 tideForest.AddConnection(beach);
                 tideForest.AddConnection(caveEcho);
+                beach.AddConnection(roumen);
                 beach.AddConnection(tideForest);
                 beach.AddConnection(caveEcho);
                 beach.AddConnection(mistForest);
@@ -87,6 +88,7 @@ namespace ConsoleRPG
                 mistForest.AddConnection(beach);
                 mistForest.AddConnection(sea);
                 mistForest.AddConnection(elderine);
+                sea.AddConnection(roumen);
                 sea.AddConnection(caveEcho);
                 sea.AddConnection(mistForest);
                 sea.AddConnection(elderine);
@@ -147,13 +149,15 @@ namespace ConsoleRPG
                 plain.AddConnection(adelia);
                 plain.AddConnection(thornCave);
                 thornCave.AddConnection(plain);
+
+                Traders.TraderItemInitilation();
             } while(false);
             
             bool GameRun = true;
 
             Console.WriteLine("please name your caracter to start:");
             hero = new Hero(Console.ReadLine());
-            Console.WriteLine($"Your character name is: {hero._name}");
+            Console.WriteLine($"Your character name is: {hero.GetName()}");
 
             do
             {
@@ -166,7 +170,8 @@ namespace ConsoleRPG
                 {
                     Console.WriteLine("\nMain Menue:" +
                         "\n1. stats        2. adventure" +
-                        "\n3. shop         0. exit");
+                        "\n3. shop         4. inventorry" +
+                        "\n0. exit");
 
                     mainAction = Console.ReadKey().KeyChar;
 
@@ -178,6 +183,7 @@ namespace ConsoleRPG
                     case '1': Stats(); break;
                     case '2': Adventure(); break;
                     case '3': Shop(); break;
+                    case '4': hero.ShowInventorry(hero); break;
                     default: Console.WriteLine("Wrong input please try again:"); mainAction = ' '; break;
                 }
 
@@ -190,9 +196,9 @@ namespace ConsoleRPG
             Console.Clear();
 
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"\n{hero._name}   Level: {hero.Level()}");
+            Console.WriteLine($"\n{hero.GetName()}   Level: {hero.Level()}");
             Console.ResetColor();
-            Console.WriteLine($"\n       Max HP: {hero.MaximalHealth()}\n       dmg: {hero.MinDamageOut()} ~ {hero.MaxDamageOut()}\n       action speed: {hero.ActionSpeedOut()}\n");
+            Console.WriteLine($"\n       HP: {hero.MaximalHealth()} / {hero.CurrentHealth()}\n       dmg: {hero.MinDamageOut()} ~ {hero.MaxDamageOut()}\n       action speed: {hero.ActionSpeedOut()}\n");
         }
         internal static void Adventure()
         {
