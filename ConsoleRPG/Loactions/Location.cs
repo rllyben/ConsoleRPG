@@ -130,7 +130,12 @@ namespace ConsoleRPG.Loactions
                 case '2':
                     Random rnd = new Random();
                     int monsterNumber = rnd.Next(0, Monsters.Count);
-                    Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinDamage, Monsters[monsterNumber].MaxDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
+                    if (Monsters[monsterNumber].MaxDamage <= 0)
+                    {
+                    Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinMagicalDamage, Monsters[monsterNumber].MaxMagicalDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
+                    }
+                    else
+                        Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinDamage, Monsters[monsterNumber].MaxDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
                     StandartLocationAction(currentLocation);
                     break;
                 default:
