@@ -128,7 +128,9 @@ namespace ConsoleRPG.Loactions
                     Thread.Sleep(2000);
                     StandartLocationAction(currentLocation); break;
                 case '2':
-                    Fight.Fighting(currentLocation.LevelZone, currentLocation.LevelZone*2, currentLocation.LevelZone*5 ,1);
+                    Random rnd = new Random();
+                    int monsterNumber = rnd.Next(0, Monsters.Count);
+                    Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinDamage, Monsters[monsterNumber].MaxDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
                     StandartLocationAction(currentLocation);
                     break;
                 default:
