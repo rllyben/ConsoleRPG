@@ -31,7 +31,7 @@ namespace ConsoleRPG.Loactions
                     temp.StandartLocationAction(currentLocation, true);
                 }
                 StandartLocationAction(currentLocation, false);
-                Console.WriteLine($"{ConnectedLocations.Count + 4}. open inventory");                   
+                Console.WriteLine($"{ConnectedLocations.Count + 4}. open main menue");                   
                 Console.WriteLine();
                 Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
@@ -70,7 +70,7 @@ namespace ConsoleRPG.Loactions
                     }
                     else if (action == 4 + ConnectedLocations.Count)
                     {
-                        Program.hero.ShowInventory();
+                        Program.MainMenue();
                     }
                     else if (action != 0)
                     {

@@ -36,7 +36,8 @@ namespace ConsoleRPG
         public int MinDamage {get; set;}
         public int MaxDamage {get; set;}
         public int Aim {get; set;}
-        public int MagicalDamage {get; set;}
+        public int MinMagicalDamage {get; set;}
+        public int MaxMagicalDamage {get; set;}
         public int MagicalDefanse {get; set;}
         public int Defanse {get; set;}
         public int Evasion {get; set;}
@@ -54,7 +55,8 @@ namespace ConsoleRPG
             MinDamage = STR;
             MaxDamage = MinDamage;
             Aim = DEX;
-            MagicalDamage = INT;
+            MinMagicalDamage = INT;
+            MaxMagicalDamage = MinMagicalDamage;
             MagicalDefanse = SPR;
             Defanse = END;
             Evasion = DEX;
@@ -156,19 +158,23 @@ namespace ConsoleRPG
         }
         internal void GetExperience(int xp)
         {
-            Experience += xp;
-            if (Experience > (Level * Level * 2))
+            if (Level < 60)
             {
-                Experience = Experience - (Level * Level * 2);
-                Level++;
-                StatPoints++;
-                STRIncrease(4);
-                DEXIncrease(2);
-                ENDIncrease(4);
-                INTIncrease(0);
-                SPRIncrease(1);
-                Console.WriteLine($"You reached Level:{Level}!");
-                Program.hero.CheckItems();
+                Experience += xp;
+                if (Experience > (Level * Level * 2))
+                {
+                    Experience = Experience - (Level * Level * 2);
+                    Level++;
+                    StatPoints++;
+                    STRIncrease(4);
+                    DEXIncrease(2);
+                    ENDIncrease(4);
+                    INTIncrease(0);
+                    SPRIncrease(1);
+                    Console.WriteLine($"You reached Level:{Level}!");
+                    Program.hero.CheckItems();
+                }
+
             }
 
         }
@@ -251,7 +257,8 @@ namespace ConsoleRPG
             for(int count = 0; count < increase; count++)
             {
                 INT++;
-                MagicalDamage = INT;
+                MaxMagicalDamage = INT;
+                MinMagicalDamage = INT;
                 CheckItems();
             }
             return;

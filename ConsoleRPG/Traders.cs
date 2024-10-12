@@ -166,13 +166,13 @@ namespace ConsoleRPG
             switch (smithAction)
             {
                 case '0': backCheck = true; break;
-                case '1': SmithWeapons(currentTrader); break;
+                case '1': SmithBuyWeapons(currentTrader); break;                
                 default: StandartSmithAction(currentTrader); break;
             }
 
         }
 
-        public void SmithWeapons(Traders currentTrader)
+        public void SmithBuyWeapons(Traders currentTrader)
         {
 
             if (false)
@@ -219,7 +219,7 @@ namespace ConsoleRPG
                         {
                             Console.WriteLine("You don't have enough money!");
                             Thread.Sleep(1000);
-                            SmithWeapons(currentTrader);
+                            SmithBuyWeapons(currentTrader);
                         }
                         else
                         {
@@ -233,7 +233,7 @@ namespace ConsoleRPG
                         Console.WriteLine();
                         Console.WriteLine("Wrong input please try again!");
                         Thread.Sleep(1000);
-                        SmithWeapons(currentTrader);
+                        SmithBuyWeapons(currentTrader);
                     }
 
 
