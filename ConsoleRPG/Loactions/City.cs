@@ -46,7 +46,7 @@ namespace ConsoleRPG.Loactions
                     Console.WriteLine();
                     Console.WriteLine("Quests are currently unavailable.");
                     Thread.Sleep(2000);
-                    StandartLocationAction(); break;
+                    StandatCityAction(); break;
                 default:
                     short action = (short)cityAction;
                     action -= 48;
