@@ -17,40 +17,37 @@ namespace ConsoleRPG.Fighting
             {
                 float heroSpeed = Program.hero.ActionSpeed;
                 float MobSpeed = monsterSpeed;
-
-                while (monsterHP > 0 && Program.hero.CurrentHealth > 0)
+                Random rnd = new Random();
+                if (heroSpeed < MobSpeed)
                 {
-                    Random rnd = new Random();
-                    if (heroSpeed < MobSpeed)
+                    while (heroSpeed < MobSpeed)
                     {
-                        while (heroSpeed < MobSpeed)
-                        {
-                            int mobHP = monsterHP;
-                            monsterHP = monsterHP - (rnd.Next(minHeroDmg, maxHeroDmg) / monsterDef);
-                            Console.WriteLine();
-                            Console.WriteLine($"You attack the {monsterName} and deal {mobHP-monsterHP} damage!");
-                            Console.WriteLine($"The Monster has {monsterHP}HP left");
-                            MobSpeed -= heroSpeed;
-                        }
-
-                    }
-                    else
-                    {
-                        while (MobSpeed <= heroSpeed)
-                        {
-                            Program.hero.FightHero(monsterName, minMonsterDmg, maxMonsterDmg);
-                            heroSpeed -= MobSpeed;
-                        }
-
+                        int mobHP = monsterHP;
+                        monsterHP = monsterHP - (rnd.Next(minHeroDmg, maxHeroDmg) / monsterDef);
+                        Console.WriteLine();
+                        Console.WriteLine($"You attack the {monsterName} and deal {mobHP - monsterHP} damage!");
+                        Console.WriteLine($"The Monster has {monsterHP}HP left");
+                        MobSpeed -= heroSpeed;
                     }
 
                 }
+                if (MobSpeed <= heroSpeed)
+                {
+                    while (MobSpeed <= heroSpeed)
+                    {
+                        Program.hero.FightHero(monsterName, minMonsterDmg, maxMonsterDmg);
+                        heroSpeed -= MobSpeed;
+                    }
+
+                }
+
 
             }
             if (monsterHP <= 0)
             {
                 Console.WriteLine($"You killed the Monster! You have {Program.hero.CurrentHealth}HP left.");
                 Program.hero.GetExperience(monsterXp);
+                Program.hero.GetCash(monsterXp);
                 Thread.Sleep(1000);
             }
             else if (Program.hero.CurrentHealth <= 0)

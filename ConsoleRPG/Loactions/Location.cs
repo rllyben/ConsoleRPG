@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using ConsoleRPG;
 using ConsoleRPG.Fighting;
+using Microsoft.VisualBasic.FileIO;
 
 namespace ConsoleRPG.Loactions
 {
@@ -26,7 +27,17 @@ namespace ConsoleRPG.Loactions
         public List<Location> ConnectedLocations { get; set; }
         public List<Traders> Trader { get; set; }
         public List<Monster> Monsters { get; set; }
-        public Location(string locationname, int levelZone) { LocationName = locationname; LevelZone = levelZone; ID = _IDcounter; _IDcounter++; ConnectedLocations = new List<Location>(); Trader = new List<Traders>();}
+        public Location(string locationname, int levelZone) { 
+            
+            LocationName = locationname; 
+            LevelZone = levelZone; 
+            ID = _IDcounter; 
+            _IDcounter++; 
+            ConnectedLocations = new List<Location>(); 
+            Trader = new List<Traders>();
+            Monsters = new List<Monster>();
+            
+        }
         internal void IDcheck()
         {
             Console.WriteLine(ID + LocationName);
@@ -44,12 +55,12 @@ namespace ConsoleRPG.Loactions
             Trader.Add(trader);
             TraderCount++;
         }
-        internal void StandartLocationAction(Location currentLocation, bool isLocation = true, bool isSemiCityLocation = false)
+        internal void StandartLocationAction(bool isLocation = true, bool isSemiCityLocation = false, Location currentLocation = null)
         {
-            if (isLocation && (currentLocation.ID == 1 || currentLocation.ID == 7 || currentLocation.ID == 18 || currentLocation.ID == 26))
+            if (isLocation && (ID == 1 || ID == 7 || ID == 18 || ID == 26))
             {
                 City temp = currentLocation as City;
-                temp.StandatCityAction(currentLocation);
+                temp.StandatCityAction();
             }
             else 
                 Console.Clear();
@@ -62,46 +73,46 @@ namespace ConsoleRPG.Loactions
 
             while (locationAction == ' ')
             {
-                if (currentLocation.ID == 8 || currentLocation.ID == 24)
+                if (ID == 8 || ID == 24)
                 {
                     isSemiCityLocation = true;
                     isLocation = false;
                 }
-                Console.WriteLine($"You enter {currentLocation.LocationName}.");
+                Console.WriteLine($"You enter {LocationName}.");
                 Console.WriteLine("What do you want to do?");
                 if (isSemiCityLocation)
                 {
                     Console.WriteLine($"1. Look for Quests           2. Fight a Monster");
-                    Console.WriteLine($"3. Go to {currentLocation.Trader[TraderCount-1].GetTraderName()}");
+                    Console.WriteLine($"3. Go to {Trader[TraderCount-1].GetTraderName()}");
                 }
                 else if (isLocation)
                     Console.WriteLine($"1. Look for Quests           2. Fight a Monster");
                 else
                 {
                     Console.Write("1. Look for Quests           2. Go to the Healer\n");
-                    Console.WriteLine($"3. Go to {currentLocation.Trader[TraderCount-1].GetTraderName()}");
+                    Console.WriteLine($"3. Go to {Trader[TraderCount-1].GetTraderName()}");
                 }
                 if (isSemiCityLocation)
                 {
-                    for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
+                    for (short count = 0; count < ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 4}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 4}. Go to {ConnectedLocations[count].LocationName}");
                     }
 
                 }
                 else if (isLocation)
                 {
-                    for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
+                    for (short count = 0; count < ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 3}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 3}. Go to {ConnectedLocations[count].LocationName}");
                     }
 
                 }
                 else
                 {
-                    for (short count = 0; count < currentLocation.ConnectedLocations.Count; count++)
+                    for (short count = 0; count < ConnectedLocations.Count; count++)
                     {
-                        Console.WriteLine($"{count + 4}. Go to {currentLocation.ConnectedLocations[count].LocationName}");
+                        Console.WriteLine($"{count + 4}. Go to {ConnectedLocations[count].LocationName}");
                     }
 
                 }
@@ -126,7 +137,7 @@ namespace ConsoleRPG.Loactions
                     Console.WriteLine();
                     Console.WriteLine("Quests are currently unavailable.");
                     Thread.Sleep(2000);
-                    StandartLocationAction(currentLocation); break;
+                    StandartLocationAction(); break;
                 case '2':
                     Random rnd = new Random();
                     int monsterNumber = rnd.Next(0, Monsters.Count);
@@ -136,35 +147,35 @@ namespace ConsoleRPG.Loactions
                     }
                     else
                         Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinDamage, Monsters[monsterNumber].MaxDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
-                    StandartLocationAction(currentLocation);
+                    StandartLocationAction();
                     break;
                 default:
                     bool healer = false;
                     short action = (short)locationAction;
                     action -= 49;
 
-                    if (isSemiCityLocation && action >= 3 && action < 3 + currentLocation.ConnectedLocations.Count)
+                    if (isSemiCityLocation && action >= 3 && action < 3 + ConnectedLocations.Count)
                     {
-                        Location nextLocation = currentLocation.ConnectedLocations[action-4];
-                        StandartLocationAction(nextLocation);
+                        Location nextLocation = ConnectedLocations[action-4];
+                        nextLocation.StandartLocationAction(true, true, nextLocation);
                     }
-                    else if (isLocation && action >= 2 && action < 2 + currentLocation.ConnectedLocations.Count)
+                    else if (isLocation && action >= 2 && action < 2 + ConnectedLocations.Count)
                     {
-                        Location nextLocation = currentLocation.ConnectedLocations[action-2];
-                        StandartLocationAction(nextLocation);
+                        Location nextLocation = ConnectedLocations[action-2];
+                        nextLocation.StandartLocationAction(true, false, nextLocation);
                     }
                     else if (action == 2)
                     {
-                        currentLocation.Trader[TraderCount-1].StandartSmithAction(currentLocation.Trader[TraderCount-1]);
+                        Trader[TraderCount-1].StandartSmithAction(Trader[TraderCount-1]);
                     }
                     else if (action != 0)
                     {
                         Console.WriteLine();
                         Console.WriteLine("Wrong input please try again!");
                         Thread.Sleep(1000);
-                        StandartLocationAction(currentLocation);
+                        StandartLocationAction();
                     }
-                    StandartLocationAction(currentLocation);
+                    StandartLocationAction();
                     break;
 
 

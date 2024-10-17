@@ -33,21 +33,21 @@ namespace ConsoleRPG
         public int Experience { get; set; } = 0;
         public float ActionSpeed { get; set; } = 0.5F;
         public int StatPoints {get; set;} = 1;
-        public int MinDamage {get; set;}
-        public int MaxDamage {get; set;}
-        public int Aim {get; set;}
-        public int MinMagicalDamage {get; set;}
-        public int MaxMagicalDamage {get; set;}
-        public int MagicalDefanse {get; set;}
-        public int Defanse {get; set;}
-        public int Evasion {get; set;}
-        public float CritChance {get; set;}
+        public int MinDamage { get; set; } = 0;
+        public int MaxDamage { get; set; } = 0;
+        public int Aim { get; set; } = 0;
+        public int MinMagicalDamage { get; set; } = 0;
+        public int MaxMagicalDamage { get; set; } = 0;
+        public int MagicalDefanse { get; set; } = 0;
+        public int Defanse { get; set; } = 0;
+        public int Evasion { get; set; } = 0;
+        public float CritChance { get; set; } = 0;
         public float BlockChance {get; set;} = 0;
-        public int MaximalHealth {get; set;}
-        public int MaxiamlManaPoints {get; set;}
-        public int ManaPoints {get; set;}
+        public int MaximalHealth { get; set; } = 0;
+        public int MaxiamlManaPoints { get; set; } = 0;
+        public int ManaPoints { get; set; } = 0;
         private static int NewItem {get; set;} = 0;
-        private int ItemID { get; set; }
+        private int ItemID { get; set; } = 0;
         public Hero(string name)
         {
             Inventory = new List<Item>();

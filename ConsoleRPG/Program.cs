@@ -295,8 +295,6 @@ namespace ConsoleRPG
 
             Traders.TraderItemInitilation();
 
-            bool GameRun = true;
-
             try
             {
                 hero = Hero.LoadHero("player");
@@ -322,16 +320,12 @@ namespace ConsoleRPG
             if (hero.CurrentHealth > hero.MaximalHealth)
                 hero.Healer();
 
-            while (mainAction == ' ')
-            {
-                Console.WriteLine("\nMain Menue:" +
-                    "\n1. stats        2. adventure" +
-                    "\n3. shop         4. inventory" +
-                    "\n0. save and exit");
+            Console.WriteLine("\nMain Menue:" +
+                "\n1. stats        2. adventure" +
+                "\n3. shop         4. inventory" +
+                "\n0. save and exit");
 
-                mainAction = Console.ReadKey().KeyChar;
-
-            }
+            mainAction = Console.ReadKey().KeyChar;
 
             switch (mainAction)
             {
@@ -340,7 +334,7 @@ namespace ConsoleRPG
                 case '2': Adventure(); break;
                 case '3': Shop(); break;
                 case '4': hero.ShowInventory(); break;
-                default: Console.WriteLine("Wrong input please try again:"); mainAction = ' '; break;
+                default: Console.WriteLine("Wrong input please try again:"); MainMenue(); break;
             }
 
         }
@@ -395,11 +389,11 @@ namespace ConsoleRPG
             switch (adventureAction)
             {
                 case '0': break;
-                case '1': roumen.StandatCityAction(roumen); break;
-                case '2': elderine.StandatCityAction(elderine); break;
-                // case '3': uruga.StandatCityAction(uruga); break;
-                // case '4': adelia.StandatCityAction(adelia); break;
-                default : Adventure(); break;
+                case '1': roumen.StandatCityAction(); break;
+                case '2': elderine.StandatCityAction(); break;
+                // case '3': uruga.StandatCityAction(); break;
+                // case '4': adelia.StandatCityAction(); break;
+                default: Adventure(); break;
             }
 
             if (City.backCheck)
