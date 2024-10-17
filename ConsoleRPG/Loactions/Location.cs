@@ -156,8 +156,8 @@ namespace ConsoleRPG.Loactions
 
                     if (isSemiCityLocation && action >= 3 && action < 3 + ConnectedLocations.Count)
                     {
-                        Location nextLocation = ConnectedLocations[action-4];
-                        nextLocation.StandartLocationAction(true, true, nextLocation);
+                        Location nextLocation = ConnectedLocations[action-3];
+                        nextLocation.StandartLocationAction(true, false, nextLocation);
                     }
                     else if (isLocation && action >= 2 && action < 2 + ConnectedLocations.Count)
                     {
