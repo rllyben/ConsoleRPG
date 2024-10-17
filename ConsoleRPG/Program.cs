@@ -32,7 +32,7 @@ namespace ConsoleRPG
             {
                 MainMenue();
             } while (GameRun);
-            
+
         }
         public static void MainMenue()
         {
@@ -60,10 +60,10 @@ namespace ConsoleRPG
         }
         internal static void CharacterCreation()
         {
-        Console.Clear();
-        Console.WriteLine("please name your character to start:");
-        hero = new Hero(Console.ReadLine());
-        Console.WriteLine($"Your character name is: {hero}");
+            Console.Clear();
+            Console.WriteLine("please name your character to start:");
+            hero = new Hero(Console.ReadLine());
+            Console.WriteLine($"Your character name is: {hero}");
         }
         internal static void Stats()
         {
@@ -72,7 +72,12 @@ namespace ConsoleRPG
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine($"\n{hero}   Level: {hero.Level}");
             Console.ResetColor();
-            Console.WriteLine($"\n       HP: {hero.MaximalHealth} / {hero.CurrentHealth}\n       dmg: {hero.MinDamage} ~ {hero.MaxDamage}\n       action speed: {hero.ActionSpeed}\n\n Free Statpoints: {hero.StatPoints}");
+            Console.WriteLine($"\n       HP: {hero.CurrentHealth} / {hero.MaximalHealth}\n" +
+                              $"       Dmg: {hero.MinDamage} ~ {hero.MaxDamage}\n" +
+                              $"       m.Dmg {hero.MinMagicalDamage} ~ {hero.MaxMagicalDamage}\n" +
+                              $"       def: {hero.Defanse}\n" +
+                              $"       action speed: {hero.ActionSpeed}\n\n" +
+                              $"Free Statpoints: {hero.StatPoints}");
             Console.WriteLine();
             Console.WriteLine("Do you want to set Stat Points? [Y/N]");
             char statPoints = Console.ReadKey().KeyChar;
@@ -82,12 +87,12 @@ namespace ConsoleRPG
                 case 'y': hero.SetStatpoints(); break;
                 case 'N':
                 case 'n': break;
-                default: 
+                default:
                     Console.WriteLine("Worng input please try again!");
                     Thread.Sleep(1000);
-                    Stats(); break; 
+                    Stats(); break;
             }
-            
+
         }
         internal static void Adventure()
         {
@@ -225,10 +230,126 @@ namespace ConsoleRPG
                 Console.ReadKey();
             }
 
+            Traders james = new Traders("James");
+            Traders karl = new Traders("Karl");
+            Traders hans = new Traders("Hans");
+            Traders alexia = new Traders("Alexia");
+            Traders rohan = new Traders("Rohan");
+            Traders marcudos = new Traders("Marcudos");
+
+            Weapons shortSword = new Weapons("Short Sword", 12, 1, 4, 7, 1.1F);
+            Weapons longSword = new Weapons("Long Sword", 75, 8, 12, 20, 1.1F);
+            Weapons broadSword = new Weapons("Broad Sword", 240, 15, 19, 33, 1.1F);
+            Armor leatherBoots = new Armor("Leatehr Boots", 13, 0, 1, 2, 0, 1, 0);
+            Armor leatherHelmet = new Armor("Leatehr Helmet", 20, 0, 1, 4, 1, 2, 1);
+            Armor leatherPants = new Armor("Leatehr Pants", 35, 0, 1, 6, 2, 4, 0);
+            Armor leatherShirt = new Armor("Leatehr Shirt", 61, 50, 1, 9, 4, 7, 0);
+            Armor chainBoots = new Armor("Chain Boots", 80, 0, 8, 9, 4, 8, 0);
+            Armor chainHelmet = new Armor("Chain Helmet", 120, 0, 8, 11, 5, 10, 4);
+            Armor chainPants = new Armor("Chain Pants", 200, 0, 8, 14, 7, 12, 0);
+            Shield wooddenShield = new Shield("Wodden Shield", 10, 0, 1, 5, 0, 0, 0, 1);
+            Shield buckler = new Shield("Buckler", 55, 0, 8, 14, 3, 0, 0, 2);
+            Weapons roumenSword = new Weapons("Roumen Sword", 6000, 20, 26, 44, 1.1F);
+            Weapons bridgeSword = new Weapons("Bridge Sword", 18000, 30, 45, 78, 1.1F);
+            Weapons cutlasSword = new Weapons("Cutlas", 38000, 40, 65, 112, 1.1F);
+            Weapons edgedSword = new Weapons("Edged Sword", 69000, 50, 85, 146, 1.1F);
+            Weapons steelSword = new Weapons("Steel Sword", 6000, 20, 61, 87, 1.3F);
+            Weapons crusaderSword = new Weapons("Crusader", 18000, 30, 108, 154, 1.3F);
+            Weapons twohandedSword = new Weapons("Zweihander", 38000, 40, 155, 221, 1.3F);
+            Weapons busterSword = new Weapons("Buster Sword", 69000, 50, 202, 287, 1.3F);
+            Weapons steelAxe = new Weapons("Steel Axe", 6000, 20, 96, 134, 1.5F);
+            Weapons hideAxe = new Weapons("Hide Axe", 18000, 30, 170, 235, 1.5F);
+            Weapons twoHandedAxe = new Weapons("Two Handed Axe", 38000, 40, 243, 337, 1.5F);
+            Weapons poleAxe = new Weapons("Pole Axe", 69000, 50, 316, 438, 1.5F);
+            Weapons splitterSword = new Weapons("Splitter", 290000, 60, 105, 181, 1.1F);
+            Weapons avantSword = new Weapons("Avent Garde Sword", 440000, 70, 131, 226, 1.1F);
+            Weapons sperpentSword = new Weapons("Serpent Sword", 640000, 80, 164, 282, 1.1F);
+            Weapons claymoreSword = new Weapons("Claymore", 290000, 60, 250, 356, 1.3F);
+            Weapons flambergeSword = new Weapons("Flamberge", 440000, 70, 312, 444, 1.3F);
+            Weapons giantSword = new Weapons("Giand Sword", 640000, 80, 389, 555, 1.3F);
+            Weapons halbendAxe = new Weapons("Halberd", 290000, 60, 392, 543, 1.5F);
+            Weapons vikingAxe = new Weapons("Viking Axe", 440000, 70, 490, 678, 1.5F);
+            Weapons giantAxe = new Weapons("Giand Axe", 640000, 80, 613, 850, 1.5F);
+            Weapons vulcanSword = new Weapons("Vulcan Sword", 890000, 90, 275, 423, 1.1F);
+            Weapons hellasSword = new Weapons("Hellas Sword", 2230000, 100, 412, 634, 1.1F);
+            Weapons gedSword = new Weapons("Ged Sword", 3080000, 108, 618, 951, 1.1F);
+            Weapons titanicSword = new Weapons("Titanic Sword", 890000, 90, 541, 832, 1.3F);
+            Weapons valorSword = new Weapons("Valor Sword", 2230000, 100, 811, 1248, 1.3F);
+            Weapons gorgonSword = new Weapons("Gorgon Sword", 3080000, 108, 1216, 1872, 1.3F);
+            Weapons titanicAxe = new Weapons("Titanic Axe", 890000, 90, 829, 1275, 1.5F);
+            Weapons valorAxe = new Weapons("Valor Axe", 2230000, 100, 1243, 1912, 1.5F);
+            Weapons gorgonAxe = new Weapons("Gorgon Axe", 3080000, 108, 1864, 2868, 1.5F);
+
+            james.AddItem(shortSword);
+            james.AddItem(longSword);
+            james.AddItem(broadSword);
+            karl.AddItem(roumenSword);
+            karl.AddItem(bridgeSword);
+            karl.AddItem(cutlasSword);
+            karl.AddItem(edgedSword);
+            karl.AddItem(steelSword);
+            karl.AddItem(crusaderSword);
+            karl.AddItem(twohandedSword);
+            karl.AddItem(busterSword);
+            karl.AddItem(steelAxe);
+            karl.AddItem(hideAxe);
+            karl.AddItem(twoHandedAxe);
+            karl.AddItem(poleAxe);
+            rohan.AddItem(roumenSword);
+            rohan.AddItem(bridgeSword);
+            rohan.AddItem(cutlasSword);
+            rohan.AddItem(edgedSword);
+            rohan.AddItem(steelSword);
+            rohan.AddItem(crusaderSword);
+            rohan.AddItem(twohandedSword);
+            rohan.AddItem(busterSword);
+            rohan.AddItem(steelAxe);
+            rohan.AddItem(hideAxe);
+            rohan.AddItem(twoHandedAxe);
+            rohan.AddItem(poleAxe);
+            hans.AddItem(splitterSword);
+            hans.AddItem(avantSword);
+            hans.AddItem(sperpentSword);
+            hans.AddItem(claymoreSword);
+            hans.AddItem(flambergeSword);
+            hans.AddItem(giantSword);
+            hans.AddItem(halbendAxe);
+            hans.AddItem(vikingAxe);
+            hans.AddItem(giantAxe);
+            marcudos.AddItem(vulcanSword);
+            marcudos.AddItem(hellasSword);
+            marcudos.AddItem(gedSword);
+            marcudos.AddItem(titanicSword);
+            marcudos.AddItem(valorSword);
+            marcudos.AddItem(gorgonSword);
+            marcudos.AddItem(titanicAxe);
+            marcudos.AddItem(valorAxe);
+            marcudos.AddItem(gorgonAxe);
+            alexia.AddItem(splitterSword);
+            alexia.AddItem(avantSword);
+            alexia.AddItem(sperpentSword);
+            alexia.AddItem(claymoreSword);
+            alexia.AddItem(flambergeSword);
+            alexia.AddItem(giantSword);
+            alexia.AddItem(halbendAxe);
+            alexia.AddItem(vikingAxe);
+            alexia.AddItem(giantAxe);
+
+            if (false)
+            {
+                Console.WriteLine("james:" + james.TraderItems.Count);
+                Console.WriteLine("karl:" + karl.TraderItems.Count);
+                Console.WriteLine("rohan:" + rohan.TraderItems.Count);
+                Console.WriteLine("hans:" + hans.TraderItems.Count);
+                Console.WriteLine("marcudos:" + marcudos.TraderItems.Count);
+                Console.WriteLine("alexia:" + alexia.TraderItems.Count);
+                Console.ReadLine();
+            }
+
             roumen.AddConnection(tideForest);
             roumen.AddConnection(beach);
             roumen.AddConnection(sea);
-            roumen.AddTrader(City.james);
+            roumen.AddTrader(james);
             tideForest.AddConnection(roumen);
             tideForest.AddConnection(beach);
             tideForest.AddConnection(caveEcho);
@@ -272,10 +393,10 @@ namespace ConsoleRPG
             elderine.AddConnection(sea);
             elderine.AddConnection(moonTomb);
             elderine.AddConnection(brokePrison);
-            elderine.AddTrader(City.karl);
+            elderine.AddTrader(karl);
             sandHill.AddConnection(burnHill);
             sandHill.AddConnection(moonTomb);
-            sandHill.AddTrader(Location.rohan);
+            sandHill.AddTrader(rohan);
             sandHill.AddMonster(desertRunner);
             sandHill.AddMonster(marloneMegaton);
             sandHill.AddMonster(desertSpider);
@@ -351,7 +472,7 @@ namespace ConsoleRPG
             uruga.AddConnection(caveGold);
             uruga.AddConnection(elvenWoods);
             uruga.AddConnection(slumberForest);
-            uruga.AddTrader(City.hans);
+            uruga.AddTrader(hans);
             elvenWoods.AddConnection(uruga);
             elvenWoods.AddConnection(slumberForest);
             slumberForest.AddConnection(uruga);
@@ -363,18 +484,16 @@ namespace ConsoleRPG
             swamp.AddConnection(ruins);
             ruins.AddConnection(swamp);
             ruins.AddConnection(darkLand);
-            ruins.AddTrader(Location.marcudos);
+            ruins.AddTrader(marcudos);
             darkLand.AddConnection(ruins);
             darkLand.AddConnection(adelia);
             adelia.AddConnection(darkLand);
             adelia.AddConnection(plain);
-            adelia.AddTrader(City.alexia);
+            adelia.AddTrader(alexia);
             plain.AddConnection(adelia);
             plain.AddConnection(thornCave);
             thornCave.AddConnection(plain);
             */
-
-            Traders.TraderItemInitilation();
 
             adventureAction = ' ';
             Console.Clear();
@@ -403,7 +522,7 @@ namespace ConsoleRPG
 
             if (City.backCheck)
             {
-                City.backCheck = false; 
+                City.backCheck = false;
                 Adventure();
             }
 

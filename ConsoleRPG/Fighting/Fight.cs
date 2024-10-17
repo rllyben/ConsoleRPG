@@ -56,7 +56,7 @@ namespace ConsoleRPG.Fighting
                 Program.hero.LoseExperience();
                 Thread.Sleep(2000);
             }
-                return; 
+            return;
 
         }
 

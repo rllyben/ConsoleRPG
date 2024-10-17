@@ -12,10 +12,6 @@ namespace ConsoleRPG.Loactions
         char cityAction;
         public static bool backCheck = false;
         public City(string locationname, int levelZone) : base(locationname, levelZone) { }
-        public static Traders james = new Traders("James");
-        public static Traders karl = new Traders("Karl");
-        public static Traders hans = new Traders("Hans");
-        public static Traders alexia = new Traders("Alexia");
 
         internal void StandatCityAction()
         {
@@ -30,9 +26,9 @@ namespace ConsoleRPG.Loactions
                     StandartLocationAction(true);
                 }
                 StandartLocationAction(false);
-                Console.WriteLine($"{ConnectedLocations.Count + 4}. open main menue");                   
+                Console.WriteLine($"{ConnectedLocations.Count + 4}. open main menue");
                 Console.WriteLine();
-                Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.MaximalHealth}/{Program.hero.CurrentHealth} Money: {Program.hero.Cash}");
+                Console.WriteLine($"{Program.hero}: Level: {Program.hero.Level} XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2} HP: {Program.hero.CurrentHealth} / {Program.hero.MaximalHealth} Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 
@@ -66,7 +62,7 @@ namespace ConsoleRPG.Loactions
                     }
                     else if (action == 3)
                     {
-                        Trader[TraderCount-1].StandartSmithAction(Trader[TraderCount-1]);
+                        Trader[TraderCount - 1].StandartSmithAction(Trader[TraderCount - 1]);
                     }
                     else if (action == 4 + ConnectedLocations.Count)
                     {

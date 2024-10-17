@@ -15,24 +15,24 @@ namespace ConsoleRPG
 {
     internal class Hero
     {
-        public List<Item> Inventory { get; set; } 
+        public List<Item> Inventory { get; set; }
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
-        public int CurrentHealth {get; set;}
-        public int STR  {get; set;} = 6;
-        public int STRIncreased {get; set;} = 0;
-        public int DEX {get; set;} = 3;
-        public int DEXIncreased {get; set;} = 0;
-        public int END {get; set;} = 5;
-        public int ENDIncreased {get; set;} = 0;
-        public int INT {get; set;} = 1;
-        public int INTIncreased {get; set;} = 0;
-        public int SPR {get; set;} = 1;
-        public int SPRIncreased {get; set;} = 0;
+        public int CurrentHealth { get; set; }
+        public int STR { get; set; } = 6;
+        public int STRIncreased { get; set; } = 0;
+        public int DEX { get; set; } = 3;
+        public int DEXIncreased { get; set; } = 0;
+        public int END { get; set; } = 5;
+        public int ENDIncreased { get; set; } = 0;
+        public int INT { get; set; } = 1;
+        public int INTIncreased { get; set; } = 0;
+        public int SPR { get; set; } = 1;
+        public int SPRIncreased { get; set; } = 0;
         public int Level { get; set; } = 1;
         public int Experience { get; set; } = 0;
         public float ActionSpeed { get; set; } = 0.5F;
-        public int StatPoints {get; set;} = 1;
+        public int StatPoints { get; set; } = 1;
         public int MinDamage { get; set; } = 0;
         public int MaxDamage { get; set; } = 0;
         public int Aim { get; set; } = 0;
@@ -42,11 +42,11 @@ namespace ConsoleRPG
         public int Defanse { get; set; } = 0;
         public int Evasion { get; set; } = 0;
         public float CritChance { get; set; } = 0;
-        public float BlockChance {get; set;} = 0;
+        public float BlockChance { get; set; } = 0;
         public int MaximalHealth { get; set; } = 0;
         public int MaxiamlManaPoints { get; set; } = 0;
         public int ManaPoints { get; set; } = 0;
-        private static int NewItem {get; set;} = 0;
+        private static int NewItem { get; set; } = 0;
         private int ItemID { get; set; } = 0;
         public Hero(string name)
         {
@@ -87,7 +87,7 @@ namespace ConsoleRPG
             }
 
             string jsonData = File.ReadAllText(filePath);
-            if(false)Console.WriteLine(jsonData);
+            if (false) Console.WriteLine(jsonData);
             return JsonSerializer.Deserialize<Hero>(jsonData);
         }
         internal void GetItem(Item item)
@@ -104,7 +104,7 @@ namespace ConsoleRPG
         internal void CheckItems()
         {
             var InvSize = Inventory.Count;
-            if ( InvSize > 0 && Inventory[InvSize - 1].Level <= Program.hero.Level)
+            if (InvSize > 0 && Inventory[InvSize - 1].Level <= Program.hero.Level)
             {
                 MinDamage += Inventory[InvSize - 1].MinDamage;
                 MaxDamage += Inventory[InvSize - 1].MaxDamage;
@@ -141,16 +141,16 @@ namespace ConsoleRPG
             Console.WriteLine($"Money: {Cash}");
             Console.WriteLine();
             Console.WriteLine("close with any Key");
-            Console.ReadKey(); 
+            Console.ReadKey();
         }
         internal void FightHero(string mobName, int mobMinDmg = 0, int mobMaxDmg = 0)
         {
             int healthSave = CurrentHealth;
             Random rnd = new Random();
             int DamageTaken = rnd.Next(mobMinDmg, mobMaxDmg) / Defanse;
-            if(DamageTaken <= 0)
+            if (DamageTaken <= 0)
                 DamageTaken = 1;
-            CurrentHealth = CurrentHealth - DamageTaken;  
+            CurrentHealth = CurrentHealth - DamageTaken;
             Console.WriteLine();
             Console.WriteLine($"You get attacked by the {mobName} and lost {healthSave - CurrentHealth}HP!");
             Console.WriteLine($"You have {CurrentHealth}HP left");
@@ -221,7 +221,7 @@ namespace ConsoleRPG
         }
         internal void STRIncrease(int increase)
         {
-            for(int count = 0; count < increase; count++)
+            for (int count = 0; count < increase; count++)
             {
                 STR++;
                 MinDamage = SPR;
@@ -232,7 +232,7 @@ namespace ConsoleRPG
         }
         internal void DEXIncrease(int increase)
         {
-            for(int count = 0; count < increase; count++)
+            for (int count = 0; count < increase; count++)
             {
                 DEX++;
                 Aim = DEX;
@@ -243,7 +243,7 @@ namespace ConsoleRPG
         }
         internal void ENDIncrease(int increase)
         {
-            for(int count = 0; count < increase; count++)
+            for (int count = 0; count < increase; count++)
             {
                 END++;
                 Defanse = END;
@@ -254,7 +254,7 @@ namespace ConsoleRPG
         }
         internal void INTIncrease(int increase)
         {
-            for(int count = 0; count < increase; count++)
+            for (int count = 0; count < increase; count++)
             {
                 INT++;
                 MaxMagicalDamage = INT;
@@ -265,7 +265,7 @@ namespace ConsoleRPG
         }
         internal void SPRIncrease(int increase)
         {
-            for(int count = 0; count < increase; count++)
+            for (int count = 0; count < increase; count++)
             {
                 SPR++;
                 MagicalDefanse = SPR;
