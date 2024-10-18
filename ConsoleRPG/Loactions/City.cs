@@ -10,7 +10,6 @@ namespace ConsoleRPG.Loactions
     internal class City : Location
     {
         char cityAction;
-        public static bool backCheck = false;
         public City(string locationname, int levelZone) : base(locationname, levelZone) { }
 
         internal void StandatCityAction()

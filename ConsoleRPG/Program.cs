@@ -193,7 +193,7 @@ namespace ConsoleRPG
             Monster karasianMage = new Monster("Karasian Mage", "Normal Monster", 2870, 1.6F, 60, 0, 0, 312, 1071, 2078, 2810);
             Monster archon = new Monster("Archon", "Normal Monster", 3682, 1.3F, 61, 2985, 3810, 548, 1280);
             Monster pixi = new Monster("Pixi", "Elite Monster", 8174, 1.5F, 65, 5380, 8173, 812, 4012);
-            if (true)
+            if (false)
             {
                 roumen.IDcheck();
                 tideForest.IDcheck();
@@ -515,6 +515,25 @@ namespace ConsoleRPG
                 case '0': break;
                 case '1': roumen.StandatCityAction(); break;
                 case '2': elderine.StandatCityAction(); break;
+                case '#':
+                    Random rnd = new Random();
+                    while (true)
+                    {
+                        Monster mob = new Monster("Pixi", "Elite Monster", 8174, 1.5F, 65, 5380, 8173, 812, 0);
+                        float Damage = rnd.Next(hero.MinDamage, hero.MaxDamage);
+                        float DamageDeal = (((2 * hero.Level) * 20 * (Damage / mob.Defanse)) / 50) * 2;
+                        float MobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
+                        Console.WriteLine((int)DamageDeal);
+                        DamageDeal = ((2 * hero.Level) * 20 * (Damage / mob.Defanse)) / 50;
+                        Console.WriteLine((int)DamageDeal);
+
+                        Console.WriteLine(Damage + "Damage count");
+
+                        float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defanse)) / 50;
+                        Console.WriteLine(damageTaken);
+
+                        Thread.Sleep(1000);
+                    }
                 // case '3': uruga.StandatCityAction(); break;
                 // case '4': adelia.StandatCityAction(); break;
                 default: Adventure(); break;

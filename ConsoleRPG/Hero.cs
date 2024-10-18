@@ -143,19 +143,6 @@ namespace ConsoleRPG
             Console.WriteLine("close with any Key");
             Console.ReadKey();
         }
-        internal void FightHero(string mobName, int mobMinDmg = 0, int mobMaxDmg = 0)
-        {
-            int healthSave = CurrentHealth;
-            Random rnd = new Random();
-            int DamageTaken = rnd.Next(mobMinDmg, mobMaxDmg) - Defanse;
-            if (DamageTaken <= 0)
-                DamageTaken = 1;
-            CurrentHealth = CurrentHealth - DamageTaken;
-            Console.WriteLine();
-            Console.WriteLine($"You get attacked by the {mobName} and lost {healthSave - CurrentHealth}HP!");
-            Console.WriteLine($"You have {CurrentHealth}HP left");
-            return;
-        }
         internal void GetExperience(int xp)
         {
             if (Level < 60)

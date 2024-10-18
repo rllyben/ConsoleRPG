@@ -116,7 +116,7 @@ namespace ConsoleRPG.Loactions
 
                 }
 
-                if (isLocation || isSemiCityLocation) ;
+                if (isLocation || isSemiCityLocation) { }
                 else
                 {
                     return;
@@ -142,14 +142,13 @@ namespace ConsoleRPG.Loactions
                     int monsterNumber = rnd.Next(0, Monsters.Count);
                     if (Monsters[monsterNumber].MaxDamage <= 0)
                     {
-                        Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinMagicalDamage, Monsters[monsterNumber].MaxMagicalDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
+                        Fight.Fighting(Monsters[monsterNumber]);
                     }
                     else
-                        Fight.Fighting(Monsters[monsterNumber].Name, Monsters[monsterNumber].CurrentHealth, Monsters[monsterNumber].ActionSpeed, Monsters[monsterNumber].MinDamage, Monsters[monsterNumber].MaxDamage, Monsters[monsterNumber].Defanse, Monsters[monsterNumber].GiveXP);
+                        Fight.Fighting(Monsters[monsterNumber]);
                     StandartLocationAction();
                     break;
                 default:
-                    bool healer = false;
                     short action = (short)locationAction;
                     action -= 49;
 
