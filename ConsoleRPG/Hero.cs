@@ -10,29 +10,31 @@ using ConsoleRPG.Fighting;
 using System.Runtime.CompilerServices;
 using System.Collections;
 using ConsoleRPG.Items;
+using System.Net.NetworkInformation;
 
 namespace ConsoleRPG
 {
     internal class Hero
     {
         public List<Item> Inventory { get; set; }
+        public string Class { get; set; } = "null";
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
         public int CurrentHealth { get; set; }
-        public int STR { get; set; } = 6;
+        public int STR { get; set; } = 0;
         public int STRIncreased { get; set; } = 0;
-        public int DEX { get; set; } = 3;
+        public int DEX { get; set; } = 0;
         public int DEXIncreased { get; set; } = 0;
-        public int END { get; set; } = 5;
+        public int END { get; set; } = 0;
         public int ENDIncreased { get; set; } = 0;
-        public int INT { get; set; } = 1;
+        public int INT { get; set; } = 0;
         public int INTIncreased { get; set; } = 0;
-        public int SPR { get; set; } = 1;
+        public int SPR { get; set; } = 0;
         public int SPRIncreased { get; set; } = 0;
-        public int Level { get; set; } = 1;
+        public int Level { get; set; } = 0;
         public int Experience { get; set; } = 0;
         public float ActionSpeed { get; set; } = 0.5F;
-        public int StatPoints { get; set; } = 1;
+        public int StatPoints { get; set; } = 0;
         public int MinDamage { get; set; } = 0;
         public int MaxDamage { get; set; } = 0;
         public int Aim { get; set; } = 0;
@@ -48,15 +50,58 @@ namespace ConsoleRPG
         public int ManaPoints { get; set; } = 0;
         private static int NewItem { get; set; } = 0;
         private int ItemID { get; set; } = 0;
-        public Hero(string name)
+        public Hero(string name, char characterClass = '0')
         {
             Inventory = new List<Item>();
             Name = name;
+
+            switch (characterClass)
+            {
+                case '1': Class = "Fighter"; break;
+                case '2': Class = "Archer"; break;
+                case '3': Class = "Cleric"; break;
+                case '4': Class = "Mage"; break;
+            }
+
+            switch (Class)
+            {
+                case "Fighter":
+                    STRIncrease(8);
+                    DEXIncrease(4);
+                    ENDIncrease(12);
+                    INTIncrease(1);
+                    SPRIncrease(4);
+                    break;
+                case "Archer":
+                    STRIncrease(6);
+                    DEXIncrease(10);
+                    ENDIncrease(10);
+                    INTIncrease(2);
+                    SPRIncrease(6);
+                    break;
+                case "Cleric":
+                    STRIncrease(5);
+                    DEXIncrease(6);
+                    ENDIncrease(12);
+                    INTIncrease(4);
+                    SPRIncrease(8);
+                    break;
+                case "Mage":
+                    STRIncrease(2);
+                    DEXIncrease(4);
+                    ENDIncrease(10);
+                    INTIncrease(14);
+                    SPRIncrease(10);
+                    break;
+            }
+
             MinDamage = STR;
-            MaxDamage = MinDamage;
+            float MaxCalcPhy = STR * 1.2F;
+            MaxDamage = (int)MaxCalcPhy;
             Aim = DEX;
             MinMagicalDamage = INT;
-            MaxMagicalDamage = MinMagicalDamage;
+            float MaxCalcMag = INT * 1.2F;
+            MaxMagicalDamage = (int)MaxCalcMag;
             MagicalDefanse = SPR;
             Defanse = END * 2;
             Evasion = DEX;
@@ -97,6 +142,7 @@ namespace ConsoleRPG
             {
                 MinDamage += Inventory[NewItem].MinDamage;
                 MaxDamage += Inventory[NewItem].MaxDamage;
+                ActionSpeed = Inventory[NewItem].ActionSpeed;
             }
             ItemID = NewItem;
             NewItem++;
@@ -104,10 +150,11 @@ namespace ConsoleRPG
         internal void CheckItems()
         {
             var InvSize = Inventory.Count;
-            if (InvSize > 0 && Inventory[InvSize - 1].Level <= Program.hero.Level)
+            if (InvSize > 0 && Inventory[InvSize - 1].Level == Program.hero.Level)
             {
                 MinDamage += Inventory[InvSize - 1].MinDamage;
                 MaxDamage += Inventory[InvSize - 1].MaxDamage;
+                ActionSpeed = Inventory[InvSize - 1].ActionSpeed;
             }
 
         }
@@ -153,11 +200,37 @@ namespace ConsoleRPG
                     Experience = Experience - (Level * Level * 2);
                     Level++;
                     StatPoints++;
-                    STRIncrease(4);
-                    DEXIncrease(2);
-                    ENDIncrease(4);
-                    INTIncrease(0);
-                    SPRIncrease(2);
+                    switch (Class)
+                    {
+                        case "Fighter":
+                            STRIncrease(5);
+                            DEXIncrease(2);
+                            ENDIncrease(5);
+                            INTIncrease(0);
+                            SPRIncrease(2);
+                            break;
+                        case "Archer":
+                            STRIncrease(4);
+                            DEXIncrease(5);
+                            ENDIncrease(2);
+                            INTIncrease(1);
+                            SPRIncrease(3);
+                            break;
+                        case "Cleric":
+                            STRIncrease(2);
+                            DEXIncrease(3);
+                            ENDIncrease(4);
+                            INTIncrease(2);
+                            SPRIncrease(4);
+                            break;
+                        case "Mage":
+                            STRIncrease(1);
+                            DEXIncrease(2);
+                            ENDIncrease(1);
+                            INTIncrease(6);
+                            SPRIncrease(5);
+                            break;
+                    }
                     Console.WriteLine($"You reached Level:{Level}!");
                     Program.hero.CheckItems();
                 }
@@ -264,7 +337,11 @@ namespace ConsoleRPG
 
         internal void LoseExperience()
         {
-            Experience = Experience - (Level * Level * 2) / 100;
+            if (Experience > 0)
+            {
+                Experience = Experience - (Level * Level * 2) / 100;
+            }
+
         }
         internal void Healer()
         {
