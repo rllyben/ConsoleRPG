@@ -58,7 +58,7 @@ namespace ConsoleRPG
             MinMagicalDamage = INT;
             MaxMagicalDamage = MinMagicalDamage;
             MagicalDefanse = SPR;
-            Defanse = END;
+            Defanse = END * 2;
             Evasion = DEX;
             CritChance = SPR * 0.2F;
             MaximalHealth = END * 10;
@@ -147,7 +147,7 @@ namespace ConsoleRPG
         {
             int healthSave = CurrentHealth;
             Random rnd = new Random();
-            int DamageTaken = rnd.Next(mobMinDmg, mobMaxDmg) / Defanse;
+            int DamageTaken = rnd.Next(mobMinDmg, mobMaxDmg) - Defanse;
             if (DamageTaken <= 0)
                 DamageTaken = 1;
             CurrentHealth = CurrentHealth - DamageTaken;
@@ -170,7 +170,7 @@ namespace ConsoleRPG
                     DEXIncrease(2);
                     ENDIncrease(4);
                     INTIncrease(0);
-                    SPRIncrease(1);
+                    SPRIncrease(2);
                     Console.WriteLine($"You reached Level:{Level}!");
                     Program.hero.CheckItems();
                 }
@@ -225,7 +225,7 @@ namespace ConsoleRPG
             {
                 STR++;
                 MinDamage = SPR;
-                MaxDamage = SPR;
+                MaxDamage = SPR * 2;
                 CheckItems();
             }
             return;
@@ -246,8 +246,8 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 END++;
-                Defanse = END;
-                MaximalHealth = 27 + END * 5;
+                Defanse = END * 2;
+                MaximalHealth = END * 10;
                 CheckItems();
             }
             return;
