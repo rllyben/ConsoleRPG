@@ -140,12 +140,14 @@ namespace ConsoleRPG.Loactions
                 case '2':
                     Random rnd = new Random();
                     int monsterNumber = rnd.Next(0, Monsters.Count);
+                    
                     if (Monsters[monsterNumber].MaxDamage <= 0)
                     {
                         Fight.Fighting(Monsters[monsterNumber]);
                     }
                     else
                         Fight.Fighting(Monsters[monsterNumber]);
+                    
                     StandartLocationAction();
                     break;
                 default:
@@ -175,7 +177,6 @@ namespace ConsoleRPG.Loactions
                     }
                     StandartLocationAction();
                     break;
-
 
             }
 

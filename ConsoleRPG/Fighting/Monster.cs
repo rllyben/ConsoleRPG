@@ -12,6 +12,7 @@ namespace ConsoleRPG.Fighting
     {
         public Monster(string name, string monsterType, float actionSpeed, int level, int str, int dex, int end, int spr, int giveXP, int inte = 0) : base(name)
         {
+
             Name = name;
             MinDamage = str;
             float MaxCalcPhy = str * 1.2F;
@@ -31,7 +32,7 @@ namespace ConsoleRPG.Fighting
             ActionSpeed = actionSpeed;
             GiveXP = giveXP;
             MonsterType = monsterType;
-        }
+       }
 
         public int GiveXP { get; set; }
         public string MonsterType { get; set; }

@@ -11,21 +11,21 @@ namespace ConsoleRPG
         static char adventureAction;
         static bool GameRun = true;
         public static Hero hero;
+        public static char characterClass = '0';
 
         static void Main(string[] args)
         {
-
             try
             {
                 hero = Hero.LoadHero("player");
+                Console.WriteLine($"Hero {hero} loaded successfully.");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Thread.Sleep(1000);
                 CharacterCreation();
             }
-            Console.WriteLine($"Hero {hero} loaded successfully.");
-            Thread.Sleep(1000);
 
             do
             {
@@ -63,11 +63,11 @@ namespace ConsoleRPG
             Console.WriteLine("please select the Class you want to play:\n" +
                               "1. Fighter           2. Archer\n" +
                               "3. Cleric            4. Mage\n");
-            char characterClass = Console.ReadKey().KeyChar;
+            characterClass = Console.ReadKey().KeyChar;
             if (characterClass == '1' || characterClass == '2' || characterClass == '3' || characterClass == '4')
             {
                 Console.WriteLine("please name your character to start:");
-                hero = new Hero(Console.ReadLine(), characterClass);
+                hero = new Hero(Console.ReadLine());
                 Console.WriteLine($"Your character name is: {hero}");
             }
             else
@@ -78,6 +78,7 @@ namespace ConsoleRPG
             }
 
         }
+        
         internal static void Stats()
         {
             Console.Clear();
@@ -107,9 +108,9 @@ namespace ConsoleRPG
             }
 
         }
+        
         internal static void Adventure()
         {
-
             City roumen = new City("Roumen", 1);
             Location tideForest = new Location("Forest of Tides", 3);
             Location beach = new Location("Sand Beach", 7);
@@ -250,48 +251,48 @@ namespace ConsoleRPG
             Traders rohan = new Traders("Rohan");
             Traders marcudos = new Traders("Marcudos");
 
-            Weapons shortSword = new Weapons("Short Sword", 12, 1, 4, 7, 1.1F);
-            Weapons longSword = new Weapons("Long Sword", 75, 8, 12, 20, 1.1F);
-            Weapons broadSword = new Weapons("Broad Sword", 240, 15, 19, 33, 1.1F);
-            Armor leatherBoots = new Armor("Leatehr Boots", 13, 0, 1, 2, 0, 1, 0);
-            Armor leatherHelmet = new Armor("Leatehr Helmet", 20, 0, 1, 4, 1, 2, 1);
-            Armor leatherPants = new Armor("Leatehr Pants", 35, 0, 1, 6, 2, 4, 0);
-            Armor leatherShirt = new Armor("Leatehr Shirt", 61, 50, 1, 9, 4, 7, 0);
-            Armor chainBoots = new Armor("Chain Boots", 80, 0, 8, 9, 4, 8, 0);
-            Armor chainHelmet = new Armor("Chain Helmet", 120, 0, 8, 11, 5, 10, 4);
-            Armor chainPants = new Armor("Chain Pants", 200, 0, 8, 14, 7, 12, 0);
-            Shield wooddenShield = new Shield("Wodden Shield", 10, 0, 1, 5, 0, 0, 0, 1);
-            Shield buckler = new Shield("Buckler", 55, 0, 8, 14, 3, 0, 0, 2);
-            Weapons roumenSword = new Weapons("Roumen Sword", 6000, 20, 26, 44, 1.1F);
-            Weapons bridgeSword = new Weapons("Bridge Sword", 18000, 30, 45, 78, 1.1F);
-            Weapons cutlasSword = new Weapons("Cutlas", 38000, 40, 65, 112, 1.1F);
-            Weapons edgedSword = new Weapons("Edged Sword", 69000, 50, 85, 146, 1.1F);
-            Weapons steelSword = new Weapons("Steel Sword", 6000, 20, 61, 87, 1.3F);
-            Weapons crusaderSword = new Weapons("Crusader", 18000, 30, 108, 154, 1.3F);
-            Weapons twohandedSword = new Weapons("Zweihander", 38000, 40, 155, 221, 1.3F);
-            Weapons busterSword = new Weapons("Buster Sword", 69000, 50, 202, 287, 1.3F);
-            Weapons steelAxe = new Weapons("Steel Axe", 6000, 20, 96, 134, 1.5F);
-            Weapons hideAxe = new Weapons("Hide Axe", 18000, 30, 170, 235, 1.5F);
-            Weapons twoHandedAxe = new Weapons("Two Handed Axe", 38000, 40, 243, 337, 1.5F);
-            Weapons poleAxe = new Weapons("Pole Axe", 69000, 50, 316, 438, 1.5F);
-            Weapons splitterSword = new Weapons("Splitter", 290000, 60, 105, 181, 1.1F);
-            Weapons avantSword = new Weapons("Avent Garde Sword", 440000, 70, 131, 226, 1.1F);
-            Weapons sperpentSword = new Weapons("Serpent Sword", 640000, 80, 164, 282, 1.1F);
-            Weapons claymoreSword = new Weapons("Claymore", 290000, 60, 250, 356, 1.3F);
-            Weapons flambergeSword = new Weapons("Flamberge", 440000, 70, 312, 444, 1.3F);
-            Weapons giantSword = new Weapons("Giand Sword", 640000, 80, 389, 555, 1.3F);
-            Weapons halbendAxe = new Weapons("Halberd", 290000, 60, 392, 543, 1.5F);
-            Weapons vikingAxe = new Weapons("Viking Axe", 440000, 70, 490, 678, 1.5F);
-            Weapons giantAxe = new Weapons("Giand Axe", 640000, 80, 613, 850, 1.5F);
-            Weapons vulcanSword = new Weapons("Vulcan Sword", 890000, 90, 275, 423, 1.1F);
-            Weapons hellasSword = new Weapons("Hellas Sword", 2230000, 100, 412, 634, 1.1F);
-            Weapons gedSword = new Weapons("Ged Sword", 3080000, 108, 618, 951, 1.1F);
-            Weapons titanicSword = new Weapons("Titanic Sword", 890000, 90, 541, 832, 1.3F);
-            Weapons valorSword = new Weapons("Valor Sword", 2230000, 100, 811, 1248, 1.3F);
-            Weapons gorgonSword = new Weapons("Gorgon Sword", 3080000, 108, 1216, 1872, 1.3F);
-            Weapons titanicAxe = new Weapons("Titanic Axe", 890000, 90, 829, 1275, 1.5F);
-            Weapons valorAxe = new Weapons("Valor Axe", 2230000, 100, 1243, 1912, 1.5F);
-            Weapons gorgonAxe = new Weapons("Gorgon Axe", 3080000, 108, 1864, 2868, 1.5F);
+            Weapons shortSword = new Weapons("Short Sword", "Fighter", 6, "normal", 12, 1, 1.1F, 4, 7, 1.1F);
+            Weapons longSword = new Weapons("Long Sword", "Fighter", 6, "normal", 75, 8, 1.1F, 12, 20, 1.1F);
+            Weapons broadSword = new Weapons("Broad Sword", "Fighter", 6, "normal", 240, 15, 1.1F, 19, 33, 1.1F);
+            Armor leatherBoots = new Armor("Leatehr Boots", "Fighter", 4, "normal", 13, 0, 1, 2, 0, 1, 0);
+            Armor leatherHelmet = new Armor("Leatehr Helmet", "Fighter", 1, "normal", 20, 0, 1, 4, 1, 2, 1);
+            Armor leatherPants = new Armor("Leatehr Pants", "Fighter", 3, "normal", 35, 0, 1, 6, 2, 4, 0);
+            Armor leatherShirt = new Armor("Leatehr Shirt", "Fighter", 2, "normal", 61, 50, 1, 9, 4, 7, 0);
+            Armor chainBoots = new Armor("Chain Boots", "Fighter", 4, "normal", 80, 0, 8, 9, 4, 8, 0);
+            Armor chainHelmet = new Armor("Chain Helmet", "Fighter", 1, "normal", 120, 0, 8, 11, 5, 10, 4);
+            Armor chainPants = new Armor("Chain Pants", "Fighter", 3, "normal", 200, 0, 8, 14, 7, 12, 0);
+            Shield wooddenShield = new Shield("Wodden Shield", "Fighter", 6, "normal", 10, 0, 1, 5, 0, 0, 0, 1);
+            Shield buckler = new Shield("Buckler", "Fighter", 6, "normal", 55, 0, 8, 14, 3, 0, 0, 2);
+            Weapons roumenSword = new Weapons("Roumen Sword", "Fighter", 5, "normal", 6000, 20, 1.1F, 26, 44, 1.1F);
+            Weapons bridgeSword = new Weapons("Bridge Sword", "Fighter", 5, "normal", 18000, 30, 1.1F, 45, 78, 1.1F);
+            Weapons cutlasSword = new Weapons("Cutlas", "Fighter", 5, "normal", 38000, 40, 1.1F, 65, 112, 1.1F);
+            Weapons edgedSword = new Weapons("Edged Sword", "Fighter", 5, "normal", 69000, 50, 1.1F, 85, 146, 1.1F);
+            Weapons steelSword = new Weapons("Steel Sword", "Fighter", 6, "normal", 6000, 20, 1.4F, 61, 87, 1.3F);
+            Weapons crusaderSword = new Weapons("Crusader", "Fighter", 6, "normal", 18000, 30, 1.4F, 108, 154, 1.3F);
+            Weapons twohandedSword = new Weapons("Zweihander", "Fighter", 6, "normal", 38000, 40, 1.4F, 155, 221, 1.3F);
+            Weapons busterSword = new Weapons("Buster Sword", "Fighter", 6, "normal", 69000, 50, 1.4F, 202, 287, 1.3F);
+            Weapons steelAxe = new Weapons("Steel Axe", "Fighter", 6, "normal", 6000, 20, 1.7F, 96, 134, 1.5F);
+            Weapons hideAxe = new Weapons("Hide Axe", "Fighter", 6, "normal", 18000, 30, 1.7F, 170, 235, 1.5F);
+            Weapons twoHandedAxe = new Weapons("Two Handed Axe", "Fighter", 6, "normal", 38000, 40, 1.7F, 243, 337, 1.5F);
+            Weapons poleAxe = new Weapons("Pole Axe", "Fighter", 6, "normal", 69000, 50, 1.7F, 316, 438, 1.5F);
+            Weapons splitterSword = new Weapons("Splitter", "Fighter", 6, "normal", 290000, 60, 105, 181, 1.1F);
+            Weapons avantSword = new Weapons("Avent Garde Sword", "Fighter", 6, "normal", 440000, 70, 131, 226, 1.1F);
+            Weapons sperpentSword = new Weapons("Serpent Sword", "Fighter", 6, "normal", 640000, 80, 164, 282, 1.1F);
+            Weapons claymoreSword = new Weapons("Claymore", "Fighter", 6, "normal", 290000, 60, 250, 356, 1.3F);
+            Weapons flambergeSword = new Weapons("Flamberge", "Fighter", 6, "normal", 440000, 70, 312, 444, 1.3F);
+            Weapons giantSword = new Weapons("Giand Sword", "Fighter", 6, "normal", 640000, 80, 389, 555, 1.3F);
+            Weapons halbendAxe = new Weapons("Halberd", "Fighter", 6, "normal", 290000, 60, 392, 543, 1.5F);
+            Weapons vikingAxe = new Weapons("Viking Axe", "Fighter", 6, "normal", 440000, 70, 490, 678, 1.5F);
+            Weapons giantAxe = new Weapons("Giand Axe", "Fighter", 6, "normal", 640000, 80, 613, 850, 1.5F);
+            Weapons vulcanSword = new Weapons("Vulcan Sword", "Fighter", 5, "normal", 890000, 90, 275, 423, 1.1F);
+            Weapons hellasSword = new Weapons("Hellas Sword", "Fighter", 5, "normal", 2230000, 100, 412, 634, 1.1F);
+            Weapons gedSword = new Weapons("Ged Sword", "Fighter", 5, "normal", 3080000, 108, 618, 951, 1.1F);
+            Weapons titanicSword = new Weapons("Titanic Sword", "Fighter", 6, "normal", 890000, 90, 541, 832, 1.3F);
+            Weapons valorSword = new Weapons("Valor Sword", "Fighter", 6, "normal", 2230000, 100, 811, 1248, 1.3F);
+            Weapons gorgonSword = new Weapons("Gorgon Sword", "Fighter", 6, "normal", 3080000, 108, 1216, 1872, 1.3F);
+            Weapons titanicAxe = new Weapons("Titanic Axe", "Fighter", 6, "normal", 890000, 90, 829, 1275, 1.5F);
+            Weapons valorAxe = new Weapons("Valor Axe", "Fighter", 6, "normal", 2230000, 100, 1243, 1912, 1.5F);
+            Weapons gorgonAxe = new Weapons("Gorgon Axe", "Fighter", 6, "normal", 3080000, 108, 1864, 2868, 1.5F);
 
             james.AddItem(shortSword);
             james.AddItem(longSword);
@@ -507,7 +508,6 @@ namespace ConsoleRPG
             plain.AddConnection(thornCave);
             thornCave.AddConnection(plain);
             */
-
             adventureAction = ' ';
             Console.Clear();
 
@@ -532,6 +532,7 @@ namespace ConsoleRPG
                     Random rnd = new Random();
                     while (true)
                     {
+                        
                         Monster mob = new Monster("Pixi", "Elite Monster", 1.5F, 65, 8380, 2573, 13512, 8012, 10642);
                         float Damage = rnd.Next(hero.MinDamage, hero.MaxDamage);
                         float DamageDeal = (((2 * hero.Level) * 20 * (Damage / mob.Defanse)) / 50) * 2;
@@ -544,7 +545,7 @@ namespace ConsoleRPG
 
                         float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defanse)) / 50;
                         Console.WriteLine(damageTaken);
-
+                        
                         Thread.Sleep(1000);
                     }
                 // case '3': uruga.StandatCityAction(); break;

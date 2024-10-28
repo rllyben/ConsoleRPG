@@ -11,13 +11,16 @@ using System.Runtime.CompilerServices;
 using System.Collections;
 using ConsoleRPG.Items;
 using System.Net.NetworkInformation;
+using System.Diagnostics;
 
 namespace ConsoleRPG
 {
     internal class Hero
     {
+        
         public List<Item> Inventory { get; set; }
-        public string Class { get; set; } = "null";
+        public Item[] EquiptItems { get; set; }
+        public string CharacterClass { get; set; } = "null";
         public int Cash { get; set; } = 0;
         public string Name { get; set; }
         public int CurrentHealth { get; set; }
@@ -48,69 +51,93 @@ namespace ConsoleRPG
         public int MaximalHealth { get; set; } = 0;
         public int MaxiamlManaPoints { get; set; } = 0;
         public int ManaPoints { get; set; } = 0;
-        private static int NewItem { get; set; } = 0;
-        private int ItemID { get; set; } = 0;
-        public Hero(string name, char characterClass = '0')
+        public bool RangedFighter { get; set; } = false;
+        public int NewItem { get; set; } = 0;
+        public int ItemID { get; set; } = 0;
+        public int ItemSTR { get; set; } = 0;
+        public int ItemDEX { get; set; } = 0;
+        public int ItemEND { get; set; } = 0;
+        public int ItemINT { get; set; } = 0;
+        public int ItemSPR { get; set; } = 0;
+        public int ItemMinDmg { get; set; } = 0;
+        public int ItemMaxDmg { get; set; } = 0;
+        public int ItemDefance { get; set; } = 0;
+        public int ItemMinMDmg { get; set; } = 0;
+        public int ItemMaxMDmg { get; set; } = 0;
+        public int ItemMDefance { get; set; } = 0;
+        public int ItemMaxHealth { get; set; } = 0;
+        public float ItemActionSpeed { get; set; } = 0;
+        public float ItemCritChance { get; set; } = 0;
+        public float ItemBlockChance { get; set; } = 0;
+        public int ItemMaxManaPoints { get; set; } = 0;
+        public int ItemEvation {  get; set; } = 0;
+        public int ItemAim { get; set; } = 0;
+        
+        public Hero(string name)
         {
             Inventory = new List<Item>();
+                       EquiptItems = new Item[10];
             Name = name;
+            
+                       switch (Program.characterClass)
+                       {
+                           case '1': CharacterClass = "Fighter"; break;
+                           case '2': CharacterClass = "Archer"; break;
+                           case '3': CharacterClass = "Cleric"; break;
+                           case '4': CharacterClass = "Mage"; break;
+                       }
+                       switch (CharacterClass)
+                       {
+                           case "Fighter":
+                               STRIncrease(8);
+                               DEXIncrease(4);
+                               ENDIncrease(12);
+                               INTIncrease(1);
+                               SPRIncrease(4);
+                               break;
+                           case "Archer":
+                               STRIncrease(6);
+                               DEXIncrease(10);
+                               ENDIncrease(10);
+                               INTIncrease(2);
+                               SPRIncrease(6);
+                               RangedFighter = true;
+                               break;
+                           case "Cleric":
+                               STRIncrease(5);
+                               DEXIncrease(6);
+                               ENDIncrease(12);
+                               INTIncrease(4);
+                               SPRIncrease(8);
+                               break;
+                           case "Mage":
+                               STRIncrease(2);
+                               DEXIncrease(4);
+                               ENDIncrease(10);
+                               INTIncrease(14);
+                               SPRIncrease(10);
+                               RangedFighter = true;
+                               break;
+                       }
 
-            switch (characterClass)
-            {
-                case '1': Class = "Fighter"; break;
-                case '2': Class = "Archer"; break;
-                case '3': Class = "Cleric"; break;
-                case '4': Class = "Mage"; break;
-            }
-
-            switch (Class)
-            {
-                case "Fighter":
-                    STRIncrease(8);
-                    DEXIncrease(4);
-                    ENDIncrease(12);
-                    INTIncrease(1);
-                    SPRIncrease(4);
-                    break;
-                case "Archer":
-                    STRIncrease(6);
-                    DEXIncrease(10);
-                    ENDIncrease(10);
-                    INTIncrease(2);
-                    SPRIncrease(6);
-                    break;
-                case "Cleric":
-                    STRIncrease(5);
-                    DEXIncrease(6);
-                    ENDIncrease(12);
-                    INTIncrease(4);
-                    SPRIncrease(8);
-                    break;
-                case "Mage":
-                    STRIncrease(2);
-                    DEXIncrease(4);
-                    ENDIncrease(10);
-                    INTIncrease(14);
-                    SPRIncrease(10);
-                    break;
-            }
-
-            MinDamage = STR;
-            float MaxCalcPhy = STR * 1.2F;
-            MaxDamage = (int)MaxCalcPhy;
-            Aim = DEX;
-            MinMagicalDamage = INT;
-            float MaxCalcMag = INT * 1.2F;
-            MaxMagicalDamage = (int)MaxCalcMag;
-            MagicalDefanse = SPR;
-            Defanse = END * 2;
-            Evasion = DEX;
-            CritChance = SPR * 0.2F;
-            MaximalHealth = END * 10;
-            MaxiamlManaPoints = SPR * 10;
-            ManaPoints = MaxiamlManaPoints;
-            CurrentHealth = MaximalHealth;
+                       MinDamage = (STR + ItemSTR) + ItemMinDmg;
+                       float MaxCalcPhy = (STR + ItemSTR) * 1.2F + ItemMaxDmg;
+                       MaxDamage = (int)MaxCalcPhy;
+                       Aim = (DEX + ItemDEX) + ItemAim;
+                       MinMagicalDamage = (INT + ItemINT) + ItemMinMDmg;
+                       float MaxCalcMag = (INT + ItemINT) * 1.2F + ItemMaxMDmg;
+                       MaxMagicalDamage = (int)MaxCalcMag;
+                       MagicalDefanse = (SPR + ItemSPR) + ItemMDefance;
+                       Defanse = (END + ItemEND) * 2 + ItemDefance;
+                       Evasion = (DEX +  ItemDEX) + ItemEvation;
+                       CritChance = SPRIncreased * 0.2F + ItemCritChance;
+                       MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
+                       MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
+                       ManaPoints = MaxiamlManaPoints;
+                       CurrentHealth = MaximalHealth;
+                   
         }
+
         public override string ToString()
         {
             return Name;
@@ -130,33 +157,115 @@ namespace ConsoleRPG
             {
                 throw new Exception("Hero not found!");
             }
-
             string jsonData = File.ReadAllText(filePath);
             if (false) Console.WriteLine(jsonData);
             return JsonSerializer.Deserialize<Hero>(jsonData);
         }
+        
         internal void GetItem(Item item)
         {
             Inventory.Add(item);
-            if (item.Level <= Program.hero.Level)
-            {
-                MinDamage += Inventory[NewItem].MinDamage;
-                MaxDamage += Inventory[NewItem].MaxDamage;
-                ActionSpeed = Inventory[NewItem].ActionSpeed;
-            }
             ItemID = NewItem;
             NewItem++;
         }
-        internal void CheckItems()
+        internal void EqipItem(int item)
         {
-            var InvSize = Inventory.Count;
-            if (InvSize > 0 && Inventory[InvSize - 1].Level == Program.hero.Level)
+            int slot = Inventory[item].GetSlot() - 1;
+            try
             {
-                MinDamage += Inventory[InvSize - 1].MinDamage;
-                MaxDamage += Inventory[InvSize - 1].MaxDamage;
-                ActionSpeed = Inventory[InvSize - 1].ActionSpeed;
+                if (EquiptItems[slot] != null && Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() <= Level)
+                {
+                    UnEqipItem(slot);
+                    throw new Exception();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+            }
+            catch 
+            {
+
+                if (Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() <= Level)
+                {
+                    STR += Inventory[item].STR;
+                    DEX += Inventory[item].DEX;
+                    END += Inventory[item].END;
+                    INT += Inventory[item].INT;
+                    SPR += Inventory[item].SPR;
+                    MinDamage += Inventory[item].MinDamage;
+                    MaxDamage += Inventory[item].MaxDamage;
+                    ActionSpeed = Inventory[item].ActionSpeed;
+                    Defanse += Inventory[item].Defance;
+                    MagicalDefanse += Inventory[item].MagicalDefance;
+                    MaximalHealth += Inventory[item].MaxHealth;
+                    Evasion += Inventory[item].Evation;
+                    Aim += Inventory[item].Aim;
+                    EquiptItems[slot] = Inventory[item];
+                }
+                else if (Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() > Level)
+                {
+                    Console.WriteLine("You can't equip this item, your level is too low!");
+                }
+                else if (Inventory[item].GetClass() != CharacterClass)
+                {
+                    Console.WriteLine("That item is not for your class, you can't equip it!");
+                }
+
             }
 
+        }
+        internal void UnEqipItem(int item)
+        {
+            try
+            {
+                item = Inventory[item].GetSlot() - 1;
+                ItemSTR -= EquiptItems[item].STR;
+                ItemDEX -= EquiptItems[item].DEX;
+                ItemEND -= EquiptItems[item].END;
+                ItemINT -= EquiptItems[item].INT;
+                ItemSPR -= EquiptItems[item].SPR;
+                ItemMinDmg -= EquiptItems[item].MinDamage;
+                ItemMaxDmg -= EquiptItems[item].MaxDamage;
+                ItemEvation -= EquiptItems[item].Evation;
+                ItemAim -= EquiptItems[item].Aim;
+                ItemDefance -= EquiptItems[item].Defance;
+                ItemMaxHealth -= EquiptItems[item].MaxHealth;
+                if (EquiptItems[item].GetType() == typeof(Shield))
+                {
+                    Shield shield = (Shield)EquiptItems[item];
+                    ItemBlockChance -= shield.BlockRate; 
+                }
+                ItemMinMDmg -= EquiptItems[item].MinMDamage;
+                ItemMaxMDmg -= EquiptItems[item].MaxMDamage;
+                ItemCritChance -= EquiptItems[item].CritChance;
+                ItemMDefance -= EquiptItems[item].MagicalDefance;
+                ItemMaxManaPoints -= EquiptItems[item].MaxManaPoints;
+                
+                EquiptItems[item] = null;
+            }
+            catch 
+            {
+                Console.WriteLine("This item is not equipt");
+                Thread.Sleep(1000);
+            }
+        }
+        internal void RefreshStats()
+        {
+            MinDamage = (STR + ItemSTR) + ItemMinDmg;
+            float MaxCalcPhy = (STR + ItemSTR) * 1.2F + ItemMaxDmg;
+            MaxDamage = (int)MaxCalcPhy;
+            Aim = (DEX + ItemDEX) + ItemAim;
+            MinMagicalDamage = (INT + ItemINT) + ItemMinMDmg;
+            float MaxCalcMag = (INT + ItemINT) * 1.2F + ItemMaxMDmg;
+            MaxMagicalDamage = (int)MaxCalcMag;
+            MagicalDefanse = (SPR + ItemSPR) + ItemMDefance;
+            Defanse = (END + ItemEND) * 2 + ItemDefance;
+            Evasion = (DEX + ItemDEX) + ItemEvation;
+            CritChance = SPRIncreased * 0.2F + ItemCritChance;
+            MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
+            MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
         }
         internal int ReadCash()
         {
@@ -178,29 +287,136 @@ namespace ConsoleRPG
 
         internal void ShowInventory()
         {
+            char selection = ' ';
             Console.WriteLine();
+            Console.WriteLine("Inventorry");
+            Console.WriteLine();
+            for (int count = 0; count < Inventory.Count; count++)
+            {
+                if (Inventory[count] == EquiptItems[Inventory[count].GetSlot() - 1])
+                {
+                    switch (Inventory[count].Rarety)
+                    {
+                        case "normal": Console.ForegroundColor = ConsoleColor.DarkGray; break;
+                        case "common": Console.ForegroundColor = ConsoleColor.DarkGreen; break;
+                        case "uncommon": Console.ForegroundColor = ConsoleColor.DarkBlue; break;
+                        case "rare": Console.ForegroundColor = ConsoleColor.DarkMagenta; break;
+                        case "legendary": Console.ForegroundColor = ConsoleColor.DarkYellow; break;
+                    }
+                    Console.WriteLine($"[{count + 1}]. {Inventory[count].ItemName}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    switch (Inventory[count].Rarety)
+                    {
+                        case "poor": Console.ForegroundColor = ConsoleColor.Gray; break;
+                        case "normal": Console.ForegroundColor = ConsoleColor.White; break;
+                        case "common": Console.ForegroundColor = ConsoleColor.Green; break;
+                        case "uncommon": Console.ForegroundColor = ConsoleColor.Blue; break;
+                        case "rare": Console.ForegroundColor = ConsoleColor.Magenta; break;
+                        case "legendary": Console.ForegroundColor = ConsoleColor.Yellow; break;
+                    }
+                    Console.WriteLine($"{count + 1}. {Inventory[count].ItemName}");
+                    Console.ResetColor();
+                }
+            }
+            Console.WriteLine($"Money: {Cash}");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("1. Equip Items           2. Unequip Items");
+            Console.WriteLine();
+            Console.WriteLine("close with any other Key");
+            selection = Console.ReadKey().KeyChar;
+            if (selection == '1' || selection == '2')
+            {
+                SelectItem(selection);
+            }
+
+        }
+        internal void SelectItem(char selection)
+        {
+            int item = 0;
+            Console.Clear();
             Console.WriteLine("Inventorry");
             Console.WriteLine();
             for (int count = 0; count < Inventory.Count; count++)
             {
                 Console.WriteLine($"{count + 1}. {Inventory[count].ItemName}");
             }
-            Console.WriteLine($"Money: {Cash}");
             Console.WriteLine();
-            Console.WriteLine("close with any Key");
-            Console.ReadKey();
+            bool error = false;
+            if (selection == '1')
+            {
+                Console.WriteLine("Select the Item you want to equip.\nNumber:");
+                do
+                {
+                    try
+                    {
+                        item = int.Parse(Console.ReadLine());
+                        if (item > Inventory.Count || item < 0)
+                        {
+                            throw new Exception("Input out of bounds");
+                        }
+                        else
+                        {
+                            EqipItem(item - 1);
+                            error = false;
+                            Thread.Sleep(1000);
+                        }
+
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Wrong input!");
+                        error = true;
+                    }
+
+                } while (error);
+
+            }
+            else if (selection == '2')
+            {
+                Console.WriteLine("Select the Item you want to unequip.\nNumber:");
+                do
+                {
+                    try
+                    {
+                        item = int.Parse(Console.ReadLine());
+                        if (item > Inventory.Count || item <= 0)
+                        {
+                            throw new Exception("Input out of bounds");
+                        }
+                        else
+                        {
+                            UnEqipItem(item - 1);
+                            error = false;
+                        }
+
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Wrong input!");
+                        error = true;
+                        Thread.Sleep(1000);
+                    }
+
+                } while (error);
+
+            }
+
         }
         internal void GetExperience(int xp)
         {
             if (Level < 60)
             {
                 Experience += xp;
-                if (Experience > (Level * Level * 2))
+                if (Experience >= (Level * Level * 2))
                 {
                     Experience = Experience - (Level * Level * 2);
                     Level++;
                     StatPoints++;
-                    switch (Class)
+                    switch (CharacterClass)
                     {
                         case "Fighter":
                             STRIncrease(5);
@@ -232,7 +448,6 @@ namespace ConsoleRPG
                             break;
                     }
                     Console.WriteLine($"You reached Level:{Level}!");
-                    Program.hero.CheckItems();
                 }
 
             }
@@ -284,9 +499,9 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 STR++;
-                MinDamage = SPR;
-                MaxDamage = SPR * 2;
-                CheckItems();
+                MinDamage = (STR + ItemSTR) + ItemMinDmg;
+                float MaxCalcPhy = (STR + ItemSTR) * 1.2F + ItemMaxDmg;
+                MaxDamage = (int)MaxCalcPhy;
             }
             return;
         }
@@ -295,9 +510,8 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 DEX++;
-                Aim = DEX;
-                Evasion = DEX;
-                CheckItems();
+                Aim = (DEX + ItemDEX) + ItemAim;
+                Evasion = (DEX + ItemDEX) + ItemEvation;
             }
             return;
         }
@@ -306,9 +520,8 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 END++;
-                Defanse = END * 2;
-                MaximalHealth = END * 10;
-                CheckItems();
+                Defanse = (END + ItemEND) * 2 + ItemDefance;
+                MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
             }
             return;
         }
@@ -317,9 +530,9 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 INT++;
-                MaxMagicalDamage = INT;
-                MinMagicalDamage = INT;
-                CheckItems();
+                MinMagicalDamage = (INT + ItemINT) + ItemMinMDmg;
+                float MaxCalcMag = (INT + ItemINT) * 1.2F + ItemMaxMDmg;
+                MaxMagicalDamage = (int)MaxCalcMag;
             }
             return;
         }
@@ -328,9 +541,9 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 SPR++;
-                MagicalDefanse = SPR;
-                MaxiamlManaPoints = 5 + SPR * 5;
-                CheckItems();
+                CritChance = SPRIncreased * 0.2F + ItemCritChance;
+                MagicalDefanse = (SPR + ItemSPR) * 2 + ItemMDefance;
+                MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
             }
             return;
         }
@@ -347,7 +560,7 @@ namespace ConsoleRPG
         {
             CurrentHealth = MaximalHealth;
         }
-
+        
     }
 
 }

@@ -9,7 +9,7 @@ namespace ConsoleRPG.Items
 {
     internal class Weapons : Item
     {
-        public Weapons(string itemName, int cost, int level, int minDamage, int maxDamage, float actionSpeed) : base(itemName)
+        public Weapons(string itemName, string classe, int slot, string rarety, int cost, int level, float critChance, int minDamage, int maxDamage, float actionSpeed, int minMDamage = 0, int maxMDamage = 0) : base(itemName)
         {
             ItemName = itemName;
             Cost = cost;
@@ -17,6 +17,11 @@ namespace ConsoleRPG.Items
             MinDamage = minDamage;
             MaxDamage = maxDamage;
             ActionSpeed = actionSpeed;
+            Classe = classe;
+            Slot = slot;
+            CritChance = critChance;
+            MinMDamage = minMDamage;
+            MaxMDamage = maxMDamage;
         }
 
     }

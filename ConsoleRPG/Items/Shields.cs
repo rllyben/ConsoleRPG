@@ -9,7 +9,7 @@ namespace ConsoleRPG.Items
 {
     internal class Shield : Armor
     {
-        public Shield(string itemName, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim, float blockRate) : base(itemName, cost, maxHealth, level, defance, magicalDefance, evation, aim)
+        public Shield(string itemName, string classe, int slot, string rarety, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim, float blockRate) : base(itemName, classe, slot, rarety, cost, maxHealth, level, defance, magicalDefance, evation, aim)
         {
             ItemName = itemName;
             Cost = cost;
@@ -20,6 +20,9 @@ namespace ConsoleRPG.Items
             Evation = evation;
             Aim = aim;
             BlockRate = blockRate;
+            Classe = classe;
+            Slot = slot;
+            Rarety = rarety;
         }
 
         public float BlockRate {get; set;}

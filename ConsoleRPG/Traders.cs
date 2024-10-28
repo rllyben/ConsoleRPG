@@ -105,6 +105,7 @@ namespace ConsoleRPG
 
                     if (action >= 0 && action < 0 + currentTrader.TraderItems.Count)
                     {
+                        
                         if (Program.hero.ReadCash() < currentTrader.TraderItems[action].Cost)
                         {
                             Console.WriteLine("You don't have enough money!");
@@ -116,7 +117,7 @@ namespace ConsoleRPG
                             Program.hero.GetItem(currentTrader.TraderItems[action]);
                             Program.hero.PayCash(currentTrader.TraderItems[action].Cost);
                         }
-
+                        
                     }
                     else if (action != 0)
                     {

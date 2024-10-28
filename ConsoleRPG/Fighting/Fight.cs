@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG.Fighting
 {
+    
     internal class Fight
     {
         public static void Fighting(Monster mob)
@@ -89,5 +90,5 @@ namespace ConsoleRPG.Fighting
             return;
         }
     }
-
+    
 }

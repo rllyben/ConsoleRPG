@@ -15,18 +15,43 @@ namespace ConsoleRPG.Items
         {
             ItemName = itemName;
         }
-        public string ItemName {get; set;}
+        public string ItemName { get; set; }
         public int Cost { get; set; }
         public int Level { get; set; }
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
-        public float ActionSpeed { get; set; }
-        public int Defance { get; set; }
-        public int MagicalDefance { get; set; }
-        public int MaxHealth { get; set; }
-        public int HealPotantial {get; set;}
-        public int Evation {get; set;}
-        public int Aim {get; set;}
+        public string Classe {  get; set; }
+        public int MinDamage { get; set; } = 0;
+        public int MaxDamage { get; set; } = 0;
+        public int MinMDamage { get; set; } = 0;
+        public int MaxMDamage { get; set; } = 0;
+        public float ActionSpeed { get; set; } = 0;
+        public int Defance { get; set; } = 0;
+        public int MagicalDefance { get; set; } = 0;
+        public int MaxHealth { get; set; } = 0;
+        public int MaxManaPoints { get; set; } = 0;
+        public int HealPotantial { get; set; } = 0;
+        public float CritChance { get; set; } = 0;
+        public int Evation {get; set;} = 0;
+        public int Aim { get; set; } = 0;
+        public int Slot { get; set; } = 0;
+        public int STR { get; set; } = 0;
+        public int DEX { get; set; } = 0;
+        public int END { get; set; } = 0;
+        public int INT { get; set; } = 0;
+        public int SPR { get; set; } = 0;
+        public string Rarety { get; set; } = "poor";
+
+        public string GetClass()
+        {
+            return Classe;
+        }
+        public int GetLevel()
+        {
+            return Level;
+        }
+        public int GetSlot()
+        {
+            return Slot; 
+        }
 
     }
 
