@@ -122,7 +122,9 @@ namespace ConsoleRPG.Loactions
                     return;
                 }
                 Console.WriteLine();
-                Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  HP: {Program.hero.CurrentHealth} / {Program.hero.MaximalHealth} Money: {Program.hero.Cash}");
+                Console.WriteLine($"{Program.hero.Name}: Level: {Program.hero.Level}  XP: {Program.hero.Experience}/{Program.hero.Level * Program.hero.Level * 2}  " +
+                                  $"HP: {Program.hero.CurrentHealth} / {Program.hero.MaximalHealth} MP: {Program.hero.ManaPoints} / {Program.hero.MaxiamlManaPoints}\n" + 
+                                  $"Money: {Program.hero.Cash}");
                 Console.WriteLine();
                 Console.WriteLine("0. Back");
 

@@ -15,7 +15,6 @@ namespace ConsoleRPG.Fighting
             int minHeroDmg = Program.hero.MinDamage;
             int maxHeroDmg = Program.hero.MaxDamage + 1;
             float heroCritChance = Program.hero.CritChance;
-            float heroBlockChance = Program.hero.BlockChance;
             int heroLevel = Program.hero.Level;
             int mobHP = mob.CurrentHealth;
 
@@ -39,6 +38,8 @@ namespace ConsoleRPG.Fighting
                             damageDeal = 1;
 
                         mobHP -= (int)damageDeal;
+                        if (mobHP < 0)
+                            mobHP = 0;
 
                         Console.WriteLine();
                         Console.WriteLine($"You attack the {mob.Name} and deal {(int)damageDeal} damage!");
@@ -64,7 +65,7 @@ namespace ConsoleRPG.Fighting
                 Console.WriteLine($"You killed the {mob.Name}! You have {Program.hero.CurrentHealth}HP left.");
                 Program.hero.GetExperience(mob.GiveXP);
                 Program.hero.GetCash(mob.GiveXP);
-                Thread.Sleep(1000);
+                Thread.Sleep(8000);
             }
             else if (Program.hero.CurrentHealth <= 0)
             {
@@ -77,16 +78,30 @@ namespace ConsoleRPG.Fighting
         }
         internal static void FightHero(Monster mob)
         {
+            float heroBlockChance = Program.hero.BlockChance;
             int healthSave = Program.hero.CurrentHealth;
             Random rnd = new Random();
             float MobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
+            if (rnd.Next(1, 101) < heroBlockChance * 100)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"You get attacked by the {mob.Name} but you {Console.ForegroundColor = ConsoleColor.Cyan} Blocked {Console.ResetColor}!");
+                Thread.Sleep(500);
+            }
+            else
+            {
             float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defanse)) / 50;
             if (damageTaken <= 0)
                 damageTaken = 1;
             Program.hero.CurrentHealth -= (int)damageTaken;
             Console.WriteLine();
             Console.WriteLine($"You get attacked by the {mob.Name} and lost {healthSave - Program.hero.CurrentHealth}HP!");
+                Thread.Sleep(500);
+            }
+            if (Program.hero.CurrentHealth < 0)
+                Program.hero.CurrentHealth = 0;
             Console.WriteLine($"You have {Program.hero.CurrentHealth}HP left");
+                Thread.Sleep(500);
             return;
         }
     }
