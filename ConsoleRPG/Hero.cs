@@ -189,31 +189,31 @@ namespace ConsoleRPG
 
                 if (Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() <= Level)
                 {
-                    ItemSTR += EquiptItems[item].STR;
-                    ItemDEX += EquiptItems[item].DEX;
-                    ItemEND += EquiptItems[item].END;
-                    ItemINT += EquiptItems[item].INT;
-                    ItemSPR += EquiptItems[item].SPR;
-                    ItemMinDmg += EquiptItems[item].MinDamage;
-                    ItemMaxDmg += EquiptItems[item].MaxDamage;
-                    ItemEvation += EquiptItems[item].Evation;
-                    ItemAim += EquiptItems[item].Aim;
-                    ItemDefance += EquiptItems[item].Defance;
-                    ItemMaxHealth += EquiptItems[item].MaxHealth;
-                    if (EquiptItems[item].GetType() == typeof(Shield))
+                    EquiptItems[slot] = Inventory[item];
+                    ItemSTR += EquiptItems[slot].STR;
+                    ItemDEX += EquiptItems[slot].DEX;
+                    ItemEND += EquiptItems[slot].END;
+                    ItemINT += EquiptItems[slot].INT;
+                    ItemSPR += EquiptItems[slot].SPR;
+                    ItemMinDmg += EquiptItems[slot].MinDamage;
+                    ItemMaxDmg += EquiptItems[slot].MaxDamage;
+                    ItemEvation += EquiptItems[slot].Evation;
+                    ItemAim += EquiptItems[slot].Aim;
+                    ItemDefance += EquiptItems[slot].Defance;
+                    ItemMaxHealth += EquiptItems[slot].MaxHealth;
+                    if (EquiptItems[slot].GetType() == typeof(Shield))
                     {
-                        Shield shield = (Shield)EquiptItems[item];
+                        Shield shield = (Shield)EquiptItems[slot];
                         ItemBlockChance += shield.BlockRate;
                     }
-                    ItemMinMDmg += EquiptItems[item].MinMDamage;
-                    ItemMaxMDmg += EquiptItems[item].MaxMDamage;
-                    ItemCritChance += EquiptItems[item].CritChance;
-                    ItemMDefance += EquiptItems[item].MagicalDefance;
-                    ItemMaxManaPoints += EquiptItems[item].MaxManaPoints;
-                    if (EquiptItems[item].GetType() == typeof(Weapons))
-                        ActionSpeed = EquiptItems[item].ActionSpeed;
+                    ItemMinMDmg += EquiptItems[slot].MinMDamage;
+                    ItemMaxMDmg += EquiptItems[slot].MaxMDamage;
+                    ItemCritChance += EquiptItems[slot].CritChance;
+                    ItemMDefance += EquiptItems[slot].MagicalDefance;
+                    ItemMaxManaPoints += EquiptItems[slot].MaxManaPoints;
+                    if (EquiptItems[slot].GetType() == typeof(Weapons))
+                        ActionSpeed = EquiptItems[slot].ActionSpeed;
                     RefreshStats();
-                    EquiptItems[slot] = Inventory[item];
                 }
                 else if (Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() > Level)
                 {
