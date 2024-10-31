@@ -91,8 +91,8 @@ namespace ConsoleRPG
                               $"       Magical Damage: {hero.MinMagicalDamage} ~ {hero.MaxMagicalDamage}\n" +
                               $"       Evation: {hero.Evasion}\n" +
                               $"       Aim: {hero.Aim}\n" +
-                              $"       Defance: {hero.Defanse}\n" +
-                              $"       Magical Defance: {hero.MagicalDefanse}\n" +
+                              $"       Defance: {hero.Defense}\n" +
+                              $"       Magical Defance: {hero.MagicalDefense}\n" +
                               $"       Action Speed: {hero.ActionSpeed}\n\n" +
                               $"Free Statpoints: {hero.StatPoints}");
             Console.WriteLine();
@@ -247,12 +247,13 @@ namespace ConsoleRPG
                 Console.ReadKey();
             }
 
-            Traders james = new Traders("James");
-            Traders karl = new Traders("Karl");
-            Traders hans = new Traders("Hans");
-            Traders alexia = new Traders("Alexia");
-            Traders rohan = new Traders("Rohan");
-            Traders marcudos = new Traders("Marcudos");
+            Traders taroVeares = new Traders("Taro", "Smith");
+            Traders chelia = new Traders("Chelia", "Healer");
+            Traders karl = new Traders("Karl", "Smith");
+            Traders hans = new Traders("Hans", "Smith");
+            Traders alexia = new Traders("Alexia", "Smith");
+            Traders rohan = new Traders("Rohan", "Smith");
+            Traders marcudos = new Traders("Marcudos", "Smith");
 
             Weapons shortSword = new Weapons("Short Sword", "Fighter", 5, "normal", 12, 1, 1.1F, 4, 7, 1.1F);
             Weapons longSword = new Weapons("Long Sword", "Fighter", 5, "normal", 75, 8, 1.1F, 12, 20, 1.1F);
@@ -305,24 +306,24 @@ namespace ConsoleRPG
 
             if (hero.CharacterClass == "Fighter")
             {
-            james.AddWeapon(shortSword);
-            james.AddWeapon(longSword);
-            james.AddWeapon(broadSword);
-            james.AddArmor(leatherBoots);
-            james.AddArmor(leatherPants);
-            james.AddArmor(leatherShirt);
-            james.AddArmor(leatherHelmet);
-            james.AddArmor(wooddenShield);
-            james.AddArmor(chainBoots);
-            james.AddArmor(chainPants);
-            james.AddArmor(chainShirt);
-            james.AddArmor(chainHelmet);
-            james.AddArmor(buckler);
-            james.AddArmor(bronceBoots);
-            james.AddArmor(broncePants);
-            james.AddArmor(bronceChestplate);
-            james.AddArmor(bronceHelmet);
-            james.AddArmor(bronceShield);
+            taroVeares.AddWeapon(shortSword);
+            taroVeares.AddWeapon(longSword);
+            taroVeares.AddWeapon(broadSword);
+            taroVeares.AddArmor(leatherBoots);
+            taroVeares.AddArmor(leatherPants);
+            taroVeares.AddArmor(leatherShirt);
+            taroVeares.AddArmor(leatherHelmet);
+            taroVeares.AddArmor(wooddenShield);
+            taroVeares.AddArmor(chainBoots);
+            taroVeares.AddArmor(chainPants);
+            taroVeares.AddArmor(chainShirt);
+            taroVeares.AddArmor(chainHelmet);
+            taroVeares.AddArmor(buckler);
+            taroVeares.AddArmor(bronceBoots);
+            taroVeares.AddArmor(broncePants);
+            taroVeares.AddArmor(bronceChestplate);
+            taroVeares.AddArmor(bronceHelmet);
+            taroVeares.AddArmor(bronceShield);
             karl.AddWeapon(roumenSword);
             karl.AddWeapon(bridgeSword);
             karl.AddWeapon(cutlasSword);
@@ -397,7 +398,7 @@ namespace ConsoleRPG
             }
             if (false)
             {
-                Console.WriteLine("james:" + james.TraderItems.Count);
+                Console.WriteLine("james:" + taroVeares.TraderItems.Count);
                 Console.WriteLine("karl:" + karl.TraderItems.Count);
                 Console.WriteLine("rohan:" + rohan.TraderItems.Count);
                 Console.WriteLine("hans:" + hans.TraderItems.Count);
@@ -409,7 +410,8 @@ namespace ConsoleRPG
             roumen.AddConnection(tideForest);
             roumen.AddConnection(beach);
             roumen.AddConnection(sea);
-            roumen.AddTrader(james);
+            roumen.AddTrader(taroVeares);
+            roumen.AddTrader(chelia);
             tideForest.AddConnection(roumen);
             tideForest.AddConnection(beach);
             tideForest.AddConnection(caveEcho);
@@ -581,15 +583,15 @@ namespace ConsoleRPG
                         
                         Monster mob = new Monster("Pixi", "Elite Monster", 1.5F, 65, 8380, 2573, 13512, 8012, 10642);
                         float Damage = rnd.Next(hero.MinDamage, hero.MaxDamage);
-                        float DamageDeal = (((2 * hero.Level) * 20 * (Damage / mob.Defanse)) / 50) * 2;
+                        float DamageDeal = (((2 * hero.Level) * 20 * (Damage / mob.Defense)) / 50) * 2;
                         float MobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
                         Console.WriteLine((int)DamageDeal);
-                        DamageDeal = ((2 * hero.Level) * 20 * (Damage / mob.Defanse)) / 50;
+                        DamageDeal = ((2 * hero.Level) * 20 * (Damage / mob.Defense)) / 50;
                         Console.WriteLine((int)DamageDeal);
 
                         Console.WriteLine(Damage + "Damage count");
 
-                        float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defanse)) / 50;
+                        float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defense)) / 50;
                         Console.WriteLine(damageTaken);
                         
                         Thread.Sleep(1000);

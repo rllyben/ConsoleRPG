@@ -17,8 +17,8 @@ namespace ConsoleRPG
 {
     internal class Hero
     {
-
         public List<Item> Inventory { get; set; }
+        public List<Skills> CharacterSkills { get; set; }
         public Item[] EquiptItems { get; set; }
         public string CharacterClass { get; set; } = "null";
         public int Cash { get; set; } = 0;
@@ -34,7 +34,7 @@ namespace ConsoleRPG
         public int INTIncreased { get; set; } = 0;
         public int SPR { get; set; } = 0;
         public int SPRIncreased { get; set; } = 0;
-        public int Level { get; set; } = 0;
+        public int Level { get; set; } = 1;
         public int Experience { get; set; } = 0;
         public float ActionSpeed { get; set; } = 0.5F;
         public int StatPoints { get; set; } = 0;
@@ -43,8 +43,8 @@ namespace ConsoleRPG
         public int Aim { get; set; } = 0;
         public int MinMagicalDamage { get; set; } = 0;
         public int MaxMagicalDamage { get; set; } = 0;
-        public int MagicalDefanse { get; set; } = 0;
-        public int Defanse { get; set; } = 0;
+        public int MagicalDefense { get; set; } = 0;
+        public int Defense { get; set; } = 0;
         public int Evasion { get; set; } = 0;
         public float CritChance { get; set; } = 0;
         public float BlockChance { get; set; } = 0;
@@ -72,10 +72,21 @@ namespace ConsoleRPG
         public int ItemMaxManaPoints { get; set; } = 0;
         public int ItemEvation { get; set; } = 0;
         public int ItemAim { get; set; } = 0;
+        public int HPStones { get; set; } = 0;
+        public int MPStones { get; set; } = 0;
+
+        Skills blow = new Skills("Sword Blow", 1, 10, 3, 32, 35, 0, 0, 0, "", 0, 0);
+        Skills breakthrough = new Skills("Breakthrough", 1, 15, 10, 27, 32, 0, 0, 0, "lowerG Def %", 5, 2);
+        Skills shieldWall = new Skills("Shield wall", 1, 10, 5, 0, 0, 0, 0, 0, "higherS BlockRate %", 5, 5);
+        Skills stunningBlow = new Skills("Stunning blow", 1, 15, 10, 34, 37, 0, 0, 0, "stunG Round", 1, 0);
+        Skills powerfulBlow = new Skills("Powerful blow", 1, 13, 10, 44, 51, 0, 0, 0, "lowerG DEX %", 10, 3);
+        Skills allIn = new Skills("All in", 1, 21, 10, 0, 0, 0, 0, 0, "higherS Dmg %, lowerS Def %", 3, 5);
+        Skills splitter = new Skills("Splitter", 1, 26, 15, 165, 201, 0, 0, 0, "", 0, 0);
 
         public Hero(string name)
         {
             Inventory = new List<Item>();
+            CharacterSkills = new List<Skills>();
             EquiptItems = new Item[10];
             Name = name;
 
@@ -119,7 +130,6 @@ namespace ConsoleRPG
                     RangedFighter = true;
                     break;
             }
-
             MinDamage = (STR + ItemSTR) + ItemMinDmg;
             float MaxCalcPhy = (STR + ItemSTR) * 1.2F + ItemMaxDmg;
             MaxDamage = (int)MaxCalcPhy;
@@ -127,14 +137,16 @@ namespace ConsoleRPG
             MinMagicalDamage = (INT + ItemINT) + ItemMinMDmg;
             float MaxCalcMag = (INT + ItemINT) * 1.2F + ItemMaxMDmg;
             MaxMagicalDamage = (int)MaxCalcMag;
-            MagicalDefanse = (SPR + ItemSPR) + ItemMDefance;
-            Defanse = (END + ItemEND) * 2 + ItemDefance;
+            MagicalDefense = (SPR + ItemSPR) + ItemMDefance;
+            Defense = (END + ItemEND) + ItemDefance;
             Evasion = (DEX + ItemDEX) + ItemEvation;
             CritChance = SPRIncreased * 0.2F + ItemCritChance;
             MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
             MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
             ManaPoints = MaxiamlManaPoints;
             CurrentHealth = MaximalHealth;
+            HPStones = HPStones;
+            MPStones = MPStones;
 
         }
 
@@ -158,15 +170,51 @@ namespace ConsoleRPG
                 throw new Exception("Hero not found!");
             }
             string jsonData = File.ReadAllText(filePath);
-            if (false) Console.WriteLine(jsonData);
             return JsonSerializer.Deserialize<Hero>(jsonData);
         }
-
+        private void AddSkill(Skills skill)
+        {
+            CharacterSkills.Add(skill);
+        }
         internal void GetItem(Item item)
         {
             Inventory.Add(item);
             ItemID = NewItem;
             NewItem++;
+        }
+        internal void GetHPStones(int count)
+        {
+                HPStones += count;
+        }
+        internal void GetMPStones(int count)
+        {
+                HPStones += count;
+        }
+        internal void UseHPStone()
+        {
+            HPStones--;
+            CurrentHealth += (MaximalHealth / 20);
+        }
+        internal void UseMPStone()
+        {
+            MPStones--;
+            ManaPoints += (MaxiamlManaPoints / 20);
+        }
+        internal int ReadCash()
+        {
+            return Cash;
+        }
+        internal void GetCash(int amount)
+        {
+            Cash += amount;
+        }
+        internal void PayCash(int amount)
+        {
+            if (Cash < amount)
+            {
+                return;
+            }
+            Cash -= amount;
         }
         internal void EqipItem(int item)
         {
@@ -186,7 +234,6 @@ namespace ConsoleRPG
             }
             catch
             {
-
                 if (Inventory[item].GetClass() == CharacterClass && Inventory[item].GetLevel() <= Level)
                 {
                     EquiptItems[slot] = Inventory[item];
@@ -274,31 +321,13 @@ namespace ConsoleRPG
             MinMagicalDamage = (INT + ItemINT) + ItemMinMDmg;
             float MaxCalcMag = (INT + ItemINT) * 1.2F + ItemMaxMDmg;
             MaxMagicalDamage = (int)MaxCalcMag;
-            MagicalDefanse = (SPR + ItemSPR) + ItemMDefance;
-            Defanse = (END + ItemEND) * 2 + ItemDefance;
+            MagicalDefense = (SPR + ItemSPR) + ItemMDefance;
+            Defense = (END + ItemEND) * 2 + ItemDefance;
             Evasion = (DEX + ItemDEX) + ItemEvation;
             CritChance = SPRIncreased * 0.2F + ItemCritChance;
             MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
             MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
         }
-        internal int ReadCash()
-        {
-            return Cash;
-        }
-        internal void GetCash(int amount)
-        {
-            Cash += amount;
-        }
-
-        internal void PayCash(int amount)
-        {
-            if (Cash < amount)
-            {
-                return;
-            }
-            Cash -= amount;
-        }
-
         internal void ShowInventory()
         {
             char selection = ' ';
@@ -334,6 +363,7 @@ namespace ConsoleRPG
                     Console.WriteLine($"{count + 1}. {Inventory[count].ItemName}");
                     Console.ResetColor();
                 }
+
             }
             Console.WriteLine($"Money: {Cash}");
             Console.WriteLine();
@@ -436,6 +466,7 @@ namespace ConsoleRPG
                     Experience = Experience - (Level * Level * 2);
                     Level++;
                     StatPoints++;
+                    Skills.UpdateSkills(CharacterSkills);
                     switch (CharacterClass)
                     {
                         case "Fighter":
@@ -467,6 +498,137 @@ namespace ConsoleRPG
                             SPRIncrease(5);
                             break;
                     }
+                    if (Level == 3 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(blow);
+                    }
+                    if (Level == 5 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(breakthrough);
+                    }
+                    if (Level == 8 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(shieldWall);
+                        blow.SkillLevel++;
+                    }
+                    if (Level == 12 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(stunningBlow);
+                    }
+                    if (Level == 16 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(powerfulBlow);
+                        blow.SkillLevel++;
+                        breakthrough.SkillLevel++;
+                    }
+                    if (Level == 20 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(allIn);
+                        shieldWall.SkillLevel++;
+                    }
+                    if (Level == 25 && CharacterClass == "Fighter")
+                    {
+                        AddSkill(splitter);
+                        breakthrough.SkillLevel++;
+                        stunningBlow.SkillLevel++;
+                        blow.SkillLevel++;
+                    }
+                    if (Level == 28 && CharacterClass == "Fighter")
+                    {
+                        powerfulBlow.SkillLevel++;
+                    }
+                    if (Level == 29 && CharacterClass == "Fighter")
+                    {
+                        shieldWall.SkillLevel++;
+                    }
+                    if (Level == 30 && CharacterClass == "Fighter")
+                    {
+                        allIn.SkillLevel++;
+                    }
+                    if (Level == 32 && CharacterClass == "Fighter")
+                    {
+                        blow.SkillLevel++;
+                        splitter.SkillLevel++;
+                    }
+                    if (Level == 34 && CharacterClass == "Fighter")
+                    {
+                        breakthrough.SkillLevel++;
+                    }
+                    if (Level == 35 && CharacterClass == "Fighter")
+                    {
+                        stunningBlow.SkillLevel++;
+                        powerfulBlow.SkillLevel++;
+                    }
+                    if (Level == 37 && CharacterClass == "Fighter")
+                    {
+                        shieldWall.SkillLevel++;
+                        splitter.SkillLevel++;
+                    }
+                    if (Level == 39 && CharacterClass == "Fighter")
+                    {
+                        blow.SkillLevel++;
+                        breakthrough.SkillLevel++;
+                    }
+                    if (Level == 40 && CharacterClass == "Fighter")
+                    {
+                        allIn.SkillLevel++;
+                    }
+                    if (Level == 41 && CharacterClass == "Fighter")
+                    {
+                        powerfulBlow.SkillLevel++;
+                    }
+                    if (Level == 43 && CharacterClass == "Fighter")
+                    {
+                        stunningBlow.SkillLevel++;
+                        splitter.SkillLevel++;
+                    }
+                    if (Level == 45 && CharacterClass == "Fighter")
+                    {
+                        shieldWall.SkillLevel++;
+                        breakthrough.SkillLevel++;
+                        blow.SkillLevel++;
+                    }
+                    if (Level == 46 && CharacterClass == "Fighter")
+                    {
+                        powerfulBlow.SkillLevel++;
+                    }
+                    if (Level == 49 && CharacterClass == "Fighter")
+                    {
+                        stunningBlow.SkillLevel++;
+                    }
+                    if (Level == 50 && CharacterClass == "Fighter")
+                    {
+                        allIn.SkillLevel++;
+                    }
+                    if (Level == 53 && CharacterClass == "Fighter")
+                    {
+                        shieldWall.SkillLevel++;
+                    }
+                    if (Level == 54 && CharacterClass == "Fighter")
+                    {
+                        splitter.SkillLevel++;
+                        blow.SkillLevel++;
+                    }
+                    if (Level == 56 && CharacterClass == "Fighter")
+                    {
+                        powerfulBlow.SkillLevel++;
+                        breakthrough.SkillLevel++;
+                    }
+                    if (Level == 57 && CharacterClass == "Fighter")
+                    {
+                        stunningBlow.SkillLevel++;
+                    }
+                    if (Level == 59 && CharacterClass == "Fighter")
+                    {
+                        shieldWall.SkillLevel++;
+                        blow.SkillLevel++;
+                    }
+                    if (Level == 60 && CharacterClass == "Fighter")
+                    {
+                        allIn.SkillLevel++;
+                        splitter.SkillLevel++;
+                    }
+
                     Console.WriteLine($"You reached Level:{Level}!");
                 }
 
@@ -540,7 +702,7 @@ namespace ConsoleRPG
             for (int count = 0; count < increase; count++)
             {
                 END++;
-                Defanse = (END + ItemEND) * 2 + ItemDefance;
+                Defense = (END + ItemEND) * 2 + ItemDefance;
                 MaximalHealth = (END + ItemEND) * 10 + ItemMaxHealth;
             }
             return;
@@ -562,7 +724,7 @@ namespace ConsoleRPG
             {
                 SPR++;
                 CritChance = SPRIncreased * 0.2F + ItemCritChance;
-                MagicalDefanse = (SPR + ItemSPR) * 2 + ItemMDefance;
+                MagicalDefense = (SPR + ItemSPR) * 2 + ItemMDefance;
                 MaxiamlManaPoints = (SPR + ItemSPR) * 10 + ItemMaxManaPoints;
             }
             return;
@@ -579,6 +741,7 @@ namespace ConsoleRPG
         internal void Healer()
         {
             CurrentHealth = MaximalHealth;
+            ManaPoints = MaxiamlManaPoints;
         }
 
     }

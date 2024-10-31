@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace ConsoleRPG.Fighting
 
     internal class Fight
     {
+        static bool error = false;
         public static void Fighting(Monster mob)
         {
             int minHeroDmg = Program.hero.MinDamage;
@@ -30,13 +32,105 @@ namespace ConsoleRPG.Fighting
                     {
                         float damageDeal = 0;
                         float damage = rnd.Next(minHeroDmg, maxHeroDmg);
-                        if (rnd.Next(1, 100) < heroCritChance * 100)
-                            damageDeal = (((2 * heroLevel) * 20 * (damage / mob.Defanse)) / 50) * 2;
-                        else
-                            damageDeal = ((2 * heroLevel) * 20 * (damage / mob.Defanse)) / 50;
+                        Console.WriteLine("What Skill do you want to use?");
+                        for (int count = 0; count < Program.hero.CharacterSkills.Count; count++)
+                        {
+                            if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
+                                Program.hero.CharacterSkills[count].CooldownDuration--;
+                            if (Program.hero.CharacterSkills[count].CooldownDuration == 0)
+                            {
+                                Program.hero.CharacterSkills[count].SkillEffectEnd();
+                                Program.hero.CharacterSkills[count].CooldownDuration--;
+                            }
+                            if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
+                                Program.hero.CharacterSkills[count].CooldownDuration--;
 
-                        if (damageDeal <= 0)
-                            damageDeal = 1;
+                            Console.WriteLine($"{count + 1}. Skill: {Program.hero.CharacterSkills[count].SkillName}   " +
+                                              $"CD: {Program.hero.CharacterSkills[count].CooldownDuration} / {Program.hero.CharacterSkills[count].Cooldown}");
+                        }
+                        Console.WriteLine("Auto Attack 0.");
+                        do
+                        {
+                            if (error)
+                            {
+                                Console.WriteLine("What Skill do you want to use?");
+                                for (int count = 0; count < Program.hero.CharacterSkills.Count; count++)
+                                {
+                                    if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
+                                        Program.hero.CharacterSkills[count].CooldownDuration--;
+
+                                    Console.WriteLine($"{count + 1}. Skill: {Program.hero.CharacterSkills[count].SkillName}   " +
+                                                      $"CD: {Program.hero.CharacterSkills[count].CooldownDuration} / {Program.hero.CharacterSkills[count].Cooldown}");
+                                }
+                                Console.WriteLine("Auto Attack 0.");
+                                Console.WriteLine("Q. Use HP Stone          E. Use MP Stone");
+                            }
+                            error = false;
+                            char skill = Console.ReadKey().KeyChar;
+                            Console.Clear();
+                            int skillNumber = skill - 49;
+                            skill = char.ToLower(skill);
+                            if (skillNumber > 0 && skillNumber < Program.hero.CharacterSkills.Count && Program.hero.CharacterSkills[skillNumber].CooldownDuration > 0)
+                            {
+                                error = true;
+                            }
+                            if (skill == '0' && rnd.Next(1, 101) < heroCritChance * 100 && !error)
+                            {
+                                damageDeal = (((2 * heroLevel) * (damage / mob.Defense))) * 2;
+                                error = false;
+                            }
+                            else if (skill == '0' && !error)
+                            {
+                                damageDeal = ((2 * heroLevel) * (damage / mob.Defense));
+                                error = false;
+                            }
+                            else if (skillNumber < Program.hero.CharacterSkills.Count && skillNumber > 0 && rnd.Next(1, 101) < heroCritChance * 100 && !error)
+                            {
+                                if (Program.hero.CharacterSkills[skillNumber].SkillMaxDamage == 0)
+                                {
+                                    Program.hero.CurrentHealth += Program.hero.CharacterSkills[skillNumber].SkillHeal;
+                                    if (Program.hero.CurrentHealth > Program.hero.MaximalHealth)
+                                        Program.hero.CurrentHealth = Program.hero.MaximalHealth;
+                                    Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
+                                    break;
+                                }
+                                float skillDamage = rnd.Next(Program.hero.CharacterSkills[skillNumber].SkillMinDamage, Program.hero.CharacterSkills[skillNumber].SkillMaxDamage + 1);
+                                damageDeal = (((2 * heroLevel) * (skillDamage) * (damage / mob.Defense))) * 2;
+                                Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
+                                error = false;
+                            }
+                            else if (skillNumber < Program.hero.CharacterSkills.Count && skillNumber > 0 && !error)
+                            {
+                                if (Program.hero.CharacterSkills[skillNumber].SkillMaxDamage == 0)
+                                {
+                                    Program.hero.CurrentHealth += Program.hero.CharacterSkills[skillNumber].SkillHeal;
+                                    if (Program.hero.CurrentHealth > Program.hero.MaximalHealth)
+                                        Program.hero.CurrentHealth = Program.hero.MaximalHealth;
+                                    Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
+                                    break;
+                                }
+                                float skillDamage = rnd.Next(Program.hero.CharacterSkills[skillNumber].SkillMinDamage, Program.hero.CharacterSkills[skillNumber].SkillMaxDamage + 1);
+                                damageDeal = (((2 * heroLevel) * (skillDamage) * (damage / mob.Defense)));
+                                Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
+                                error = false;
+                            }
+                            else if (skill == 'q' && Program.hero.HPStones > 0)
+                            {
+                                Program.hero.UseHPStone();
+                                error = false;
+                            }
+                            else if (skill == 'e' && Program.hero.MPStones > 0)
+                            {
+                                Program.hero.UseMPStone();
+                                error = false;
+                            }
+                            else
+                                error = true;
+
+                            if (damageDeal <= 1)
+                                damageDeal = 1;
+                        } while (error);
+
 
                         mobHP -= (int)damageDeal;
                         if (mobHP < 0)
@@ -59,7 +153,6 @@ namespace ConsoleRPG.Fighting
 
                 }
 
-
             }
             if (mobHP <= 0)
             {
@@ -75,7 +168,6 @@ namespace ConsoleRPG.Fighting
                 Thread.Sleep(2000);
             }
             return;
-
         }
         internal static void FightHero(Monster mob)
         {
@@ -90,8 +182,8 @@ namespace ConsoleRPG.Fighting
             }
             else
             {
-                float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defanse)) / 50;
-                if (damageTaken <= 0)
+                float damageTaken = ((2 * mob.Level) * (MobDamage / Program.hero.Defense));
+                if (damageTaken <= 1)
                     damageTaken = 1;
                 Program.hero.CurrentHealth -= (int)damageTaken;
                 Console.WriteLine();

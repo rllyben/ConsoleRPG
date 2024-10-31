@@ -21,8 +21,8 @@ namespace ConsoleRPG.Fighting
             MinMagicalDamage = inte;
             float MaxCalcMag = inte * 1.2F;
             MaxMagicalDamage = (int)MaxCalcMag;
-            MagicalDefanse = spr;
-            Defanse = end * 2;
+            MagicalDefense = spr;
+            Defense = end;
             Evasion = dex;
             CritChance = spr * 0.2F;
             MaximalHealth = end * 10;
@@ -32,12 +32,11 @@ namespace ConsoleRPG.Fighting
             ActionSpeed = actionSpeed;
             GiveXP = giveXP;
             MonsterType = monsterType;
-       }
+        }
 
         public int GiveXP { get; set; }
         public string MonsterType { get; set; }
 
     }
-
 
 }
