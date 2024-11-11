@@ -15,10 +15,10 @@ namespace ConsoleRPG
         public List<Item> TraderItems { get; set; }
         public List<Weapons> TraderWeapons { get; set; }
         public List<Armor> TraderArmor { get; set; }
-        public static bool backCheck = false;
         protected string TraderName { get; set; }
-        protected string Job {  get; set; }
+        protected string Job { get; set; }
         private bool error = false;
+        private char traderAction = ' ';
 
         public Traders(string name, string job)
         {
@@ -44,43 +44,42 @@ namespace ConsoleRPG
         {
             return TraderName;
         }
-        public string GetJobName() 
-        { 
-            return Job; 
-        
+        public string GetJobName()
+        {
+            return Job;
+
         }
         public void TraderActionChoose(string job)
         {
             switch (job)
-                {
+            {
                 case "Smith": StandartSmithAction(); break;
                 case "Healer": StandartHealerAction(); break;
-                case "": 
-                    Console.Clear(); 
-                    Console.WriteLine("An error acured please report..."); 
-                    Thread.Sleep(1000); 
+                case "":
+                    Console.Clear();
+                    Console.WriteLine("An error acured please report...");
+                    Thread.Sleep(1000);
                     break;
             }
+
         }
         public void StandartHealerAction()
         {
-            backCheck = false;
-            char healerAction = ' ';
-            Console.Clear();
-
-            Console.WriteLine($"\nYou go to {TraderName} the Healer\n" +
-                              $"What do you want to do?\n" +
-                              $"1. Get Healed           2. Buy energy stomes\n\n" +
-                              $"Back with 0.");
-
             do
             {
-                healerAction = Console.ReadKey().KeyChar;
+                Console.Clear();
+                Console.WriteLine($"\nYou go to {TraderName} the Healer\n" +
+                                  $"What do you want to do?\n" +
+                                  $"1. Get Healed           2. Buy energy stomes\n\n" +
+                                  $"Back with 0.");
 
-                switch (healerAction)
+                traderAction = Console.ReadKey().KeyChar;
+
+                switch (traderAction)
                 {
-                    case '0': error = false; backCheck = true; break;
-                    case '1': error = false; 
+                    case '0': error = false; break;
+                    case '1':
+                        error = false;
                         Program.hero.Healer();
                         Console.WriteLine($"{TraderName} heals you to full HP and MP");
                         Thread.Sleep(1000);
@@ -97,31 +96,30 @@ namespace ConsoleRPG
         public void HealerSelling()
         {
             int cost = 5;
-            Console.Clear();
-            Console.WriteLine("What do you want to buy?\n" +
-                              "1. HP Stones         2. MP Stones\n" +
-                              "\nBack with 0.");
-           
-            char healerAction = ' ';
-
             do
             {
-                healerAction = Console.ReadKey().KeyChar;
-                switch (healerAction)
-                    {
-                    case '0': error = false; backCheck= true; break;
+                Console.Clear();
+                Console.WriteLine("What do you want to buy?\n" +
+                                  "1. HP Stones         2. MP Stones\n" +
+                                  "\nBack with 0.");
+
+
+                traderAction = Console.ReadKey().KeyChar;
+                switch (traderAction)
+                {
+                    case '0': error = false; break;
                     case '1': error = false; break;
                     case '2': error = false; break;
-                    default: 
+                    default:
                         error = true;
                         Console.WriteLine("Wrong input");
                         Thread.Sleep(1000);
                         break;
                 }
 
-            }while (error);
+            } while (error);
 
-            if (healerAction == '1')
+            if (traderAction == '1')
             {
                 ConsoleKey action = ConsoleKey.NoName;
                 int buyCount = 0;
@@ -137,15 +135,21 @@ namespace ConsoleRPG
                         case ConsoleKey.W: buyCount++; break;
                         case ConsoleKey.DownArrow:
                         case ConsoleKey.S: buyCount--; break;
+                        case ConsoleKey.A:
+                        case ConsoleKey.LeftArrow: buyCount = Program.hero.Cash / cost; break;
+                        case ConsoleKey.D:
+                        case ConsoleKey.RightArrow: buyCount = 0; break;
                     }
                     if (buyCount < 0)
                         buyCount = 0;
+                    else if (cost * buyCount > Program.hero.Cash)
+                        buyCount = Program.hero.Cash / cost;
                 } while (action != ConsoleKey.Enter);
 
                 Program.hero.PayCash(cost * buyCount);
                 Program.hero.GetHPStones(buyCount);
             }
-            if (healerAction == '2')
+            if (traderAction == '2')
             {
                 ConsoleKey action = ConsoleKey.NoName;
                 int buyCount = 0;
@@ -173,93 +177,96 @@ namespace ConsoleRPG
         }
         private void StandartSmithAction()
         {
-            backCheck = false;
-            char smithAction = ' ';
-            Console.Clear();
-
-            Console.WriteLine($"\nYou go to {TraderName} the Blacksmith");
-            Console.WriteLine("What do you want to do?");
-            Console.WriteLine("1. Buy a Weapon          2. Buy an Armor\n" +
-                              "3. Sell loot             4. Smith a Weapon\n" +
-                              "5. Smith an Armor        6. upgrade your Weapon\n");
-            Console.WriteLine("\nback with 0");
-
-            smithAction = Console.ReadKey().KeyChar;
-
-            switch (smithAction)
+            do
             {
-                case '0': backCheck = true; break;
-                case '1': SmithBuyWeapons(); break;
-                case '2': SmithArmor(); break;
-                default: StandartSmithAction(); break;
-            }
+                Console.Clear();
+
+                Console.WriteLine($"\nYou go to {TraderName} the Blacksmith");
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("1. Buy a Weapon          2. Buy an Armor\n" +
+                                  "3. Sell loot             4. Smith a Weapon\n" +
+                                  "5. Smith an Armor        6. upgrade your Weapon\n");
+                Console.WriteLine("\nback with 0");
+
+                traderAction = Console.ReadKey().KeyChar;
+
+                switch (traderAction)
+                {
+                    case '0': error = false; break;
+                    case '1': error = false; SmithBuyWeapons(); break;
+                    case '2': error = false; SmithArmor(); break;
+                    default: error = true; break;
+                }
+
+            } while (error);
 
         }
 
         private void SmithBuyWeapons()
         {
-            backCheck = false;
-            char smithAction = ' ';
-            Console.Clear();
-
-            Console.WriteLine($"\n{TraderName} has the following Weapons for you");
-            for (byte count = 0; count < TraderWeapons.Count; count++)
+            do
             {
-                char posiChar = Convert.ToChar(count + 49);
-                if (count + 49 >= 58)
-                    posiChar = Convert.ToChar(count + 88);
-                Console.WriteLine($"{posiChar}. {TraderWeapons[count].ItemName} " +
-                                  $"Level: {TraderWeapons[count].Level} " +
-                                  $"Dmg: {TraderWeapons[count].MinDamage} ~ {TraderWeapons[count].MaxDamage} " +
-                                  $"Attack Rate: {TraderWeapons[count].ActionSpeed} " +
-                                  $"Cost: {TraderWeapons[count].Cost}");
-            }
-            Console.WriteLine($"You have {Program.hero.ReadCash()} Money\n" +
-                               "which one do you want to buy?\n\nback with 0");
-            smithAction = Console.ReadKey().KeyChar;
+                Console.Clear();
+                Console.WriteLine($"\n{TraderName} has the following Weapons for you");
+                for (byte count = 0; count < TraderWeapons.Count; count++)
+                {
+                    char posiChar = Convert.ToChar(count + 49);
+                    if (count + 49 >= 58)
+                        posiChar = Convert.ToChar(count + 88);
+                    Console.WriteLine($"{posiChar}. {TraderWeapons[count].ItemName} " +
+                                      $"Level: {TraderWeapons[count].Level} " +
+                                      $"Dmg: {TraderWeapons[count].MinDamage} ~ {TraderWeapons[count].MaxDamage} " +
+                                      $"Attack Rate: {TraderWeapons[count].ActionSpeed} " +
+                                      $"Cost: {TraderWeapons[count].Cost}");
+                }
+                Console.WriteLine($"You have {Program.hero.ReadCash()} Money\n" +
+                                   "which one do you want to buy?\n\nback with 0");
+                traderAction = Console.ReadKey().KeyChar;
 
-            switch (smithAction)
-            {
-                case '0': backCheck = true; break;
-                default:
-                    short action = (short)smithAction;
-                    action -= 49;
-                    if (action > 8 && action < 48)
-                        action -= 100;
-                    else if (action >= 48)
-                        action -= 39;
+                switch (traderAction)
+                {
+                    case '0': break;
+                    default:
+                        short action = (short)traderAction;
+                        action -= 49;
+                        if (action > 8 && action < 48)
+                            action -= 100;
+                        else if (action >= 48)
+                            action -= 39;
 
-                    if (action >= 0 && action < 0 + TraderWeapons.Count)
-                    {
-                        if (Program.hero.ReadCash() < TraderWeapons[action].Cost)
+                        if (action >= 0 && action < 0 + TraderWeapons.Count)
                         {
-                            Console.WriteLine("You don't have enough money!");
-                            Thread.Sleep(1000);
-                            SmithBuyWeapons();
+                            if (Program.hero.ReadCash() < TraderWeapons[action].Cost)
+                            {
+                                Console.WriteLine("You don't have enough money!");
+                                Thread.Sleep(1000);
+                                error = true;
+                                break;
+                            }
+                            else
+                            {
+                                Program.hero.GetItem(TraderWeapons[action]);
+                                Program.hero.PayCash(TraderWeapons[action].Cost);
+                                error = false;
+                                break;
+                            }
+
                         }
                         else
                         {
-                            Program.hero.GetItem(TraderWeapons[action]);
-                            Program.hero.PayCash(TraderWeapons[action].Cost);
+                            Console.WriteLine("\nWrong input please try again!");
+                            Thread.Sleep(1000);
+                            error = true;
+                            break;
                         }
 
-                    }
-                    else if (action != 0)
-                    {
-                        Console.WriteLine("\nWrong input please try again!");
-                        Thread.Sleep(1000);
-                        SmithBuyWeapons();
-                    }
+                }
 
-
-                    StandartSmithAction(); break;
-            }
+            } while (error);
 
         }
         public void SmithArmor()
         {
-            backCheck = false;
-            char smithAction = ' ';
             Console.Clear();
 
             Console.WriteLine($"\n{TraderName} has the following Weapons for you");
@@ -281,13 +288,13 @@ namespace ConsoleRPG
             }
             Console.WriteLine($"You have {Program.hero.ReadCash()} Money\n" +
                                "which one do you want to buy?\n\nback with 0");
-            smithAction = Console.ReadKey().KeyChar;
+            traderAction = Console.ReadKey().KeyChar;
 
-            switch (smithAction)
+            switch (traderAction)
             {
-                case '0': backCheck = true; break;
+                case '0': break;
                 default:
-                    short action = (short)smithAction;
+                    short action = (short)traderAction;
                     action -= 49;
                     if (action > 8 && action < 48)
                         action -= 100;
@@ -315,8 +322,6 @@ namespace ConsoleRPG
                         Thread.Sleep(1000);
                         SmithBuyWeapons();
                     }
-
-
                     StandartSmithAction(); break;
             }
 

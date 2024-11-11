@@ -9,7 +9,7 @@ namespace ConsoleRPG.Items
 {
     internal class Armor : Item
     {
-        public Armor(string itemName, string classe, int slot, string rarety, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim) : base(itemName)
+        public Armor(string itemName, string classe, string slot, string rarety, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim) : base(itemName)
         {
             ItemName = itemName;
             Cost = cost;

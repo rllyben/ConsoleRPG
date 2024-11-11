@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRPG.Heros;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleRPG.Fighting
@@ -36,6 +37,7 @@ namespace ConsoleRPG.Fighting
 
         public int GiveXP { get; set; }
         public string MonsterType { get; set; }
+        public bool IsStunned { get; set; } = false;
 
     }
 

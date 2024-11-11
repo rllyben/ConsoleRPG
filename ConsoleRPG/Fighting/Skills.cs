@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG.Fighting
 {
-    internal class Skills
+    internal class Skills : BaseSkills
     {
 
-        public Skills(string skillName, int skillLevel, int skillManaCost, int cooldown, int skillMinDamage, int skillMaxDamage, int skillMinMDamage, int skillMaxMDamage, int skillHeal, string skillEffect, int skillEffectDuration, int skillEffectStrength) 
-        { 
+        public Skills(string skillName, int skillLevel, int skillManaCost, int cooldown, int skillMinDamage, int skillMaxDamage, int skillMinMDamage, int skillMaxMDamage, int skillHeal, string skillEffect, int skillEffectDuration, int skillEffectStrength) : base (skillName)
+        {
             SkillName = skillName;
             SkillLevel = skillLevel;
             SkillMinDamage = skillMinDamage;
@@ -23,141 +23,7 @@ namespace ConsoleRPG.Fighting
             SkillEffectDuration = skillEffectDuration;
             SkillEffectStrength = skillEffectStrength;
             SkillEffect = skillEffect;
-            SkillEffectRound = -1;
-            CooldownDuration = 0;
         }
-        public string SkillName { get; set; }
-        public int SkillMinDamage { get; set; }
-        public int SkillMaxDamage { get; set; }
-        public int SkillLevel { get; set; }
-        public int SkillMinMDamage { get; set; }
-        public int SkillMaxMDamage { get; set; }
-        public int SkillManaCost { get; set; }
-        public int SkillHeal {  get; set; }
-        public int Cooldown { get; set; }
-        public int SkillEffectDuration { get; set; }
-        public float SkillEffectStrength { get; set; }
-        public string SkillEffect {  get; set; }
-        public int SkillEffectRound { get; set; }
-        public int CooldownDuration { get; set; }
-        public static void UpdateSkills(List<Skills> skills)
-        {
-            foreach (Skills skill in skills)
-            {
-                skill.SkillMinDamage *= skill.SkillLevel;
-                skill.SkillMaxDamage *= skill.SkillLevel;
-                skill.SkillManaCost *= skill.SkillLevel;
-                skill.SkillHeal *= skill.SkillLevel;
-                skill.SkillEffectStrength *= skill.SkillLevel;
-                skill.SkillMinMDamage *= skill.SkillLevel;
-                skill.SkillMaxMDamage *= skill.SkillLevel;
-                if (skill.SkillName == "Stunning blow")
-                    skill.SkillEffectDuration *= skill.SkillLevel;
-            }
-
-        }
-
-        public void SkillEffectUse()
-        {
-            int heroMinDamageSave = 0;
-            int heroMaxDamageSave = 0;
-            int heroDefanceSave = 0;
-            switch (SkillEffect)
-            {
-                case "lowerG Def %": break;
-                case "higherS BlockRate %": Program.hero.BlockChance += SkillEffectStrength; break;
-                case "stunG Round": break;
-                case "lowerG DEX %": break;
-                case "higherS Dmg %, lowerS Def %":
-                    heroMinDamageSave = Program.hero.MinDamage;
-                    heroMaxDamageSave = Program.hero.MaxDamage;
-                    heroDefanceSave = Program.hero.Defense;
-                    Program.hero.MinDamage += (int)(heroMinDamageSave * (SkillEffectStrength / 100));
-                    Program.hero.MaxDamage += (int)(heroMaxDamageSave * (SkillEffectStrength / 100));
-                    Program.hero.Defense -= (int)(heroDefanceSave * ((SkillEffectStrength / 2.5F) / 100));
-                    SkillEffectRound = SkillEffectDuration;
-                    break;
-            }
-
-        }
-        public void SkillEffectEnd()
-        {
-            int heroMinDamageSave = 0;
-            int heroMaxDamageSave = 0;
-            int heroDefanceSave = 0;
-            switch (SkillEffect)
-            {
-                case "lowerG Def %": break;
-                case "higherS BlockRate %": Program.hero.BlockChance -= SkillEffectStrength; break;
-                case "stunG Round": break;
-                case "lowerG DEX %": break;
-                case "higherS Dmg %, lowerS Def %":
-                    Program.hero.MinDamage -= (int)(heroMinDamageSave * (SkillEffectStrength / 100));
-                    Program.hero.MaxDamage -= (int)(heroMaxDamageSave * (SkillEffectStrength / 100));
-                    Program.hero.Defense += (int)(heroDefanceSave * ((SkillEffectStrength / 2.5F) / 100)); 
-                    break;
-            }
-
-        }
-            // Fighter (Physical Damage / Tank)
-            /*
-             * Skill 7 Name: Hieb
-             * Skillevect: Zusatzschaden; cooldown 3 Runden
-             * 
-             * Skill 1 Name: Schildwall
-             * Skillevect: Erhöht eigene Blockrate um [skilllevel]; für 5 Runden; cooldown 5 Runden
-             * 
-             * Skill 2 Name: All in
-             * Skillevect: Erhöt eigenen Dmg um [skilllevel], senkt eigene Def um [skilllevel]; für 3 Runden; cooldown 10 Runden
-             * 
-             * Skill 3 Name: Betäubungs Hieb
-             * Skillevect: Zusatz Schaden, Stunt Gegner für [skilllevel] Runden; cooldown 10 Runden
-             * 
-             * Skill 4 Name: Wuchtiger Hieb
-             * Skillevect: Zusatz Schaden, senkt gegnerische DEX um [skilllevel] für 10 Runden; cooldown 10 Runden
-             * 
-             * Skill 5 Name: Durchbruch
-             * Skillevect: Zusatz Schaden, senkt gegnerische Def um [skilllevel]; für 5 Runden; cooldown 10 Runden
-             * 
-             * Skill 6 Name: Schädel Spalter 
-             * Skillevect: extremer Zusatz Schaden; cooldown 15 Runden
-             * 
-             * Skill 8 Name:
-             * Skillevect: 
-             * 
-             * Skill 9 Name:
-             * Skillevect: 
-             */
-
-            // Archer (Physical Damage / Poisons)
-            /*
-             * Skill 1 Name: Geschärfte Sinne
-             * Skillevect: Erhöht eigene DEX um [skilllevel]; für 100 Runden; cooldown 10 Runden;
-             * 
-             * Skill 2 Name: schlangen Biss
-             * Skillevect: Zusatz Schaden, Vergiftet Gegner für 10 Runden; giftschaden [skilllevel]; cooldown 15 Runden
-             * 
-             * Skill 3 Name: Impfung
-             * Skillevect: Zusatz Schaden, Infiziert Gegner für 10 Runden; krankheitsschaden [skilllevel]; cooldown 15 Runden
-             * 
-             * Skill 4 Name: Splitter Pfeil
-             * Skillevect: Zusatz Schaden, Verwundet Gegner für 10 Runden; blutungsschaden [skilllevel]; cooldown 15 Runden
-             * 
-             * Skill 5 Name: Knüppel Schlag
-             * Skillevect: Zusatz Schaden, Stunnt gegner für 5 Runden; cooldown 10 Runden
-             * 
-             * Skill 6 Name: Dolch stoß
-             * Skillevect: Zusatzschaden; cooldown 3 Runden
-             * 
-             * Skill 7 Name: Pfeil Regen
-             * Skillevect: extremer Zusatzschaden; cooldown 15 Runden
-             * 
-             * Skill 8 Name:
-             * Skillevect: 
-             * 
-             * Skill 9 Name:
-             * Skillevect:
-             */
 
             // Cleric (Heals / Buffs / Tank)
             /*

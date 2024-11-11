@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleRPG.Heros;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -11,7 +12,7 @@ namespace ConsoleRPG.Fighting
 
     internal class Fight
     {
-        static bool error = false;
+        private static bool error = false;
         public static void Fighting(Monster mob)
         {
             int minHeroDmg = Program.hero.MinDamage;
@@ -19,181 +20,199 @@ namespace ConsoleRPG.Fighting
             float heroCritChance = Program.hero.CritChance;
             int heroLevel = Program.hero.Level;
             int mobHP = mob.CurrentHealth;
-            float MonsterSpeed = mob.ActionSpeed;
+            float monsterSpeed = mob.ActionSpeed;
+            float heroSpeed = Program.hero.ActionSpeed;
 
             while (Program.hero.CurrentHealth > 0 && mobHP > 0)
             {
-                float MobSpeed = MonsterSpeed;
-                float heroSpeed = Program.hero.ActionSpeed;
-                Random rnd = new Random();
-                if (heroSpeed < MobSpeed && mobHP > 0 && Program.hero.CurrentHealth > 0)
+                
+                if (heroSpeed <= monsterSpeed)
                 {
-                    while (heroSpeed < MobSpeed && mobHP > 0)
-                    {
-                        float damageDeal = 0;
-                        float damage = rnd.Next(minHeroDmg, maxHeroDmg);
-                        Console.WriteLine("What Skill do you want to use?");
-                        for (int count = 0; count < Program.hero.CharacterSkills.Count; count++)
-                        {
-                            if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
-                                Program.hero.CharacterSkills[count].CooldownDuration--;
-                            if (Program.hero.CharacterSkills[count].CooldownDuration == 0)
-                            {
-                                Program.hero.CharacterSkills[count].SkillEffectEnd();
-                                Program.hero.CharacterSkills[count].CooldownDuration--;
-                            }
-                            if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
-                                Program.hero.CharacterSkills[count].CooldownDuration--;
-
-                            Console.WriteLine($"{count + 1}. Skill: {Program.hero.CharacterSkills[count].SkillName}   " +
-                                              $"CD: {Program.hero.CharacterSkills[count].CooldownDuration} / {Program.hero.CharacterSkills[count].Cooldown}");
-                        }
-                        Console.WriteLine("Auto Attack 0.");
-                        do
-                        {
-                            if (error)
-                            {
-                                Console.WriteLine("What Skill do you want to use?");
-                                for (int count = 0; count < Program.hero.CharacterSkills.Count; count++)
-                                {
-                                    if (Program.hero.CharacterSkills[count].CooldownDuration > 0)
-                                        Program.hero.CharacterSkills[count].CooldownDuration--;
-
-                                    Console.WriteLine($"{count + 1}. Skill: {Program.hero.CharacterSkills[count].SkillName}   " +
-                                                      $"CD: {Program.hero.CharacterSkills[count].CooldownDuration} / {Program.hero.CharacterSkills[count].Cooldown}");
-                                }
-                                Console.WriteLine("Auto Attack 0.");
-                                Console.WriteLine("Q. Use HP Stone          E. Use MP Stone");
-                            }
-                            error = false;
-                            char skill = Console.ReadKey().KeyChar;
-                            Console.Clear();
-                            int skillNumber = skill - 49;
-                            skill = char.ToLower(skill);
-                            if (skillNumber > 0 && skillNumber < Program.hero.CharacterSkills.Count && Program.hero.CharacterSkills[skillNumber].CooldownDuration > 0)
-                            {
-                                error = true;
-                            }
-                            if (skill == '0' && rnd.Next(1, 101) < heroCritChance * 100 && !error)
-                            {
-                                damageDeal = (((2 * heroLevel) * (damage / mob.Defense))) * 2;
-                                error = false;
-                            }
-                            else if (skill == '0' && !error)
-                            {
-                                damageDeal = ((2 * heroLevel) * (damage / mob.Defense));
-                                error = false;
-                            }
-                            else if (skillNumber < Program.hero.CharacterSkills.Count && skillNumber > 0 && rnd.Next(1, 101) < heroCritChance * 100 && !error)
-                            {
-                                if (Program.hero.CharacterSkills[skillNumber].SkillMaxDamage == 0)
-                                {
-                                    Program.hero.CurrentHealth += Program.hero.CharacterSkills[skillNumber].SkillHeal;
-                                    if (Program.hero.CurrentHealth > Program.hero.MaximalHealth)
-                                        Program.hero.CurrentHealth = Program.hero.MaximalHealth;
-                                    Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
-                                    break;
-                                }
-                                float skillDamage = rnd.Next(Program.hero.CharacterSkills[skillNumber].SkillMinDamage, Program.hero.CharacterSkills[skillNumber].SkillMaxDamage + 1);
-                                damageDeal = (((2 * heroLevel) * (skillDamage) * (damage / mob.Defense))) * 2;
-                                Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
-                                error = false;
-                            }
-                            else if (skillNumber < Program.hero.CharacterSkills.Count && skillNumber > 0 && !error)
-                            {
-                                if (Program.hero.CharacterSkills[skillNumber].SkillMaxDamage == 0)
-                                {
-                                    Program.hero.CurrentHealth += Program.hero.CharacterSkills[skillNumber].SkillHeal;
-                                    if (Program.hero.CurrentHealth > Program.hero.MaximalHealth)
-                                        Program.hero.CurrentHealth = Program.hero.MaximalHealth;
-                                    Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
-                                    break;
-                                }
-                                float skillDamage = rnd.Next(Program.hero.CharacterSkills[skillNumber].SkillMinDamage, Program.hero.CharacterSkills[skillNumber].SkillMaxDamage + 1);
-                                damageDeal = (((2 * heroLevel) * (skillDamage) * (damage / mob.Defense)));
-                                Program.hero.CharacterSkills[skillNumber].SkillEffectUse();
-                                error = false;
-                            }
-                            else if (skill == 'q' && Program.hero.HPStones > 0)
-                            {
-                                Program.hero.UseHPStone();
-                                error = false;
-                            }
-                            else if (skill == 'e' && Program.hero.MPStones > 0)
-                            {
-                                Program.hero.UseMPStone();
-                                error = false;
-                            }
-                            else
-                                error = true;
-
-                            if (damageDeal <= 1)
-                                damageDeal = 1;
-                        } while (error);
-
-
-                        mobHP -= (int)damageDeal;
-                        if (mobHP < 0)
-                            mobHP = 0;
-
-                        Console.WriteLine();
-                        Console.WriteLine($"You attack the {mob.Name} and deal {(int)damageDeal} damage!");
-                        Console.WriteLine($"The {mob.Name} has {mobHP}HP left");
-                        MobSpeed -= heroSpeed;
-                    }
-
+                    heroSpeed = Program.hero.ActionSpeed;
+                    HeroTurn(mob, ref mobHP);
+                    if (!mob.IsStunned)
+                        monsterSpeed -= heroSpeed;
                 }
-                if (MobSpeed <= heroSpeed && mobHP > 0 && Program.hero.CurrentHealth > 0)
+                else
                 {
-                    while (MobSpeed <= heroSpeed && mobHP > 0)
-                    {
-                        FightHero(mob);
-                        heroSpeed -= MobSpeed;
-                    }
-
+                    monsterSpeed = mob.ActionSpeed;
+                    MobTurn(mob);
+                    heroSpeed -= monsterSpeed;
                 }
 
             }
-            if (mobHP <= 0)
-            {
-                Console.WriteLine($"You killed the {mob.Name}! You have {Program.hero.CurrentHealth}HP left.");
-                Program.hero.GetExperience(mob.GiveXP);
-                Program.hero.GetCash(mob.GiveXP);
-                Thread.Sleep(2000);
-            }
-            else if (Program.hero.CurrentHealth <= 0)
-            {
-                Console.WriteLine($"You Died! You lose {Program.hero.Experience - (Program.hero.Level * Program.hero.Level * 2) / 100} XP!");
-                Program.hero.LoseExperience();
-                Thread.Sleep(2000);
-            }
-            return;
+            EndFight(mob, mobHP);
         }
-        internal static void FightHero(Monster mob)
+        private static void HeroTurn(Monster mob, ref int mobHP)
         {
-            float heroBlockChance = Program.hero.BlockChance;
-            int healthSave = Program.hero.CurrentHealth;
-            Random rnd = new Random();
-            float MobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
-            if (rnd.Next(1, 101) < heroBlockChance * 100)
+
+            float damageDealt = 0;
+            bool skillUsed = false;
+            Random rnd = new();
+
+            while (!skillUsed)
             {
-                Console.WriteLine();
-                Console.WriteLine($"You get attacked by the {mob.Name} but you {Console.ForegroundColor = ConsoleColor.Cyan} Blocked {Console.ResetColor}!");
+                Console.Clear();
+                Console.WriteLine("What Skill do you want to use?");
+                DisplaySkills();
+                char skillInput = Console.ReadKey().KeyChar;
+
+                int skillIndex = skillInput - 49;
+                skillInput = char.ToLower(skillInput);
+
+                if (IsValidSkill(skillInput, skillIndex, out var selectedSkill))
+                {
+                    if (selectedSkill == null)
+                    {
+                        damageDealt = CalculateDamage(rnd, Program.hero.Level, Program.hero.MinDamage, Program.hero.MaxDamage, mob.Defense, Program.hero.CritChance, true);
+                        skillUsed = true;
+                    }
+                    else
+                    {
+                        damageDealt = UseSkill(selectedSkill, mob, rnd);
+                        selectedSkill.SkillEffectUse(Program.hero, mob);
+                        skillUsed = true;
+                    }
+                    ApplyDamageToMob(ref mobHP, mob.Name, damageDealt);
+                }
+                else if (skillInput == 'q')
+                {
+                    Program.hero.UseHPStone();
+                    skillUsed = true;
+                }
+                else if (skillInput == 'e')
+                {
+                    Program.hero.UseMPStone();
+                    skillUsed = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid selection. Please choose a skill or action.");
+                }
+                if (skillUsed)
+                    EndTurn(Program.hero, mob);
+
+            }
+        }
+        private static bool IsValidSkill(char skillInput, int skillIndex, out BaseSkills selectedSkill)
+        {
+            selectedSkill = null;
+
+            if (skillInput == '0') // Autoattack
+            {
+                return true;
+            }
+            else if (skillIndex >= 0 && skillIndex < Program.hero.CharacterSkills.Count)
+            {
+                selectedSkill = Program.hero.CharacterSkills[skillIndex];
+                return selectedSkill.CooldownDuration <= 0;
+            }
+            return false;
+        }
+        private static float CalculateDamage(Random rnd, int level, int minDmg, int maxDmg, int defense, float critChance, bool isAutoAttack)
+        {
+            float baseDamage = rnd.Next(minDmg, maxDmg);
+            float critMultiplier = rnd.NextDouble() < critChance ? 2.0f : 1.0f;
+            float calculatedDamage = critMultiplier * 2 * level * (baseDamage / defense);
+            if (calculatedDamage < 1)
+                calculatedDamage = 1;
+            return calculatedDamage;
+        }
+        private static float UseSkill(BaseSkills skill, Monster mob, Random rnd)
+        {
+            float damageDealt = 0;
+            if (skill.SkillMaxDamage > 0)
+            {
+                float skillDamage = rnd.Next(skill.SkillMinDamage, skill.SkillMaxDamage + 1);
+                damageDealt = CalculateDamage(rnd, Program.hero.Level, Program.hero.MinDamage + (int)skillDamage, Program.hero.MaxDamage + (int)skillDamage, mob.Defense, Program.hero.CritChance, false);
+            }
+            else if (skill.SkillHeal > 0) // Healing skill
+            {
+                Program.hero.CurrentHealth = Math.Min(Program.hero.CurrentHealth + skill.SkillHeal, Program.hero.MaximalHealth);
+                Console.WriteLine($"{Program.hero.Name} heals for {skill.SkillHeal} health points!");
+            }
+
+            skill.CooldownDuration = skill.Cooldown;
+            return damageDealt;
+        }
+        private static void DisplaySkills()
+        {
+            for (int count = 0; count < Program.hero.CharacterSkills.Count; count++)
+            {
+                BaseSkills skill = Program.hero.CharacterSkills[count];
+                Console.WriteLine($"{count + 1}. {skill.SkillName} - Cooldown: {skill.CooldownDuration}/{skill.Cooldown}");
+            }
+            Console.WriteLine("Auto Attack: 0");
+            Console.WriteLine("Use HP Stone: Q");
+            Console.WriteLine("Use MP Stone: E");
+        }
+        private static void ApplyDamageToMob(ref int mobHP, string mobName, float damageDealt)
+        {
+            mobHP -= (int)damageDealt;
+            if (mobHP < 0) mobHP = 0;
+
+            Console.WriteLine($"You attack the {mobName} and deal {(int)damageDealt} damage!");
+            Console.WriteLine($"The {mobName} has {mobHP} HP left.");
+            Thread.Sleep(500);
+        }
+        private static void MobTurn(Monster mob)
+        {
+            float heroBlcokChance = Program.hero.BlockChance;
+            Random rnd = new();
+
+            if (rnd.NextDouble() < heroBlcokChance)
+            {
+                Console.WriteLine($"The {mob.Name} attacks, but you block the attack!");
             }
             else
             {
-                float damageTaken = ((2 * mob.Level) * (MobDamage / Program.hero.Defense));
-                if (damageTaken <= 1)
-                    damageTaken = 1;
+                float mobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
+                float damageTaken = Math.Max(1, (2 * mob.Level) * (mobDamage / Program.hero.Defense));
                 Program.hero.CurrentHealth -= (int)damageTaken;
-                Console.WriteLine();
-                Console.WriteLine($"You get attacked by the {mob.Name} and lost {healthSave - Program.hero.CurrentHealth}HP!");
+                Console.WriteLine($"The {mob.Name} attacks and deals {damageTaken} damage!");
             }
-            if (Program.hero.CurrentHealth < 0)
-                Program.hero.CurrentHealth = 0;
-            Console.WriteLine($"You have {Program.hero.CurrentHealth}HP left");
-            return;
+            Console.WriteLine($"You have {Program.hero.CurrentHealth} HP left.");
+            Thread.Sleep(500);
         }
+        private static void EndTurn(Hero hero, Monster mob)
+        {
+            foreach (var skill in hero.CharacterSkills)
+            {
+                if (skill.SkillEffectRound > 0)
+                {
+                    skill.SkillEffectRound--;
+                    if (skill.SkillEffectRound == 0)
+                    {
+                        skill.SkillEffectEnd(hero, mob);
+                    }
+                }
+                // Decrement cooldown for each skill
+                if (skill.CooldownDuration > 0)
+                {
+                    skill.CooldownDuration--;
+                }
+
+            }
+
+        }
+        private static void EndFight(Monster mob, int mobHP)
+        {
+            if (mobHP <= 0)
+            {
+                Console.WriteLine($"You defeated the {mob.Name}!");
+                Thread.Sleep(500);
+                Program.hero.GetExperience(mob.GiveXP);
+                Program.hero.GetCash(mob.GiveXP);
+            }
+            else if (Program.hero.CurrentHealth <= 0)
+            {
+                Console.WriteLine("You have been defeated!");
+                Thread.Sleep(500);
+                Program.hero.LoseExperience();
+            }
+
+        }
+
     }
 
 }

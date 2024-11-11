@@ -32,7 +32,7 @@ namespace ConsoleRPG.Items
         public float CritChance { get; set; } = 0;
         public int Evation {get; set;} = 0;
         public int Aim { get; set; } = 0;
-        public int Slot { get; set; } = 0;
+        public string Slot { get; set; } = " ";
         public int STR { get; set; } = 0;
         public int DEX { get; set; } = 0;
         public int END { get; set; } = 0;
@@ -48,7 +48,7 @@ namespace ConsoleRPG.Items
         {
             return Level;
         }
-        public int GetSlot()
+        public string GetSlot()
         {
             return Slot; 
         }
