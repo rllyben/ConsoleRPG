@@ -11,13 +11,13 @@ namespace ConsoleRPG.Items
     {
         public Shield(string itemName, string classe, string slot, string rarety, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim, float blockRate) : base(itemName, classe, slot, rarety, cost, maxHealth, level, defance, magicalDefance, evation, aim)
         {
-            ItemName = itemName;
+            Name = itemName;
             Cost = cost;
             Level = level;
-            Defance = defance;
-            MagicalDefance = magicalDefance;
+            Defense = defance;
+            MagicalDefense = magicalDefance;
             MaxHealth = maxHealth;
-            Evation = evation;
+            Evasion = evation;
             Aim = aim;
             BlockRate = blockRate;
             Classe = classe;

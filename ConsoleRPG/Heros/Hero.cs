@@ -12,11 +12,17 @@ using ConsoleRPG.Items;
 using System.Net.NetworkInformation;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
+using ConsoleRPG;
 
 namespace ConsoleRPG.Heros
 {
-    internal class Hero
+    internal class Hero : IStats
     {
+        enum Selection
+        {
+            Euipen = 1,
+            Unequipen = 2
+        }
         public List<InventoryEntry> Inventory { get; set; } = new List<InventoryEntry>();
         public Dictionary<string, Item> EquiptItems { get; set; }
         public List<BaseSkills> CharacterSkills { get; set; }
@@ -169,7 +175,7 @@ namespace ConsoleRPG.Heros
         }
         internal void GetItem(Item item, int amount = 1)
         {
-            var existingEntry = Inventory.Find(entry => entry.Item.ItemName == item.ItemName);
+            var existingEntry = Inventory.Find(entry => entry.Item.Name == item.Name);
             if (existingEntry != null)
             {
                 existingEntry.Quantity += amount;
@@ -225,9 +231,9 @@ namespace ConsoleRPG.Heros
         {
             try
             {
-                var inventoryEntry = Inventory.FirstOrDefault(e => e.Item.ItemName == item.ItemName);
+                var inventoryEntry = Inventory.FirstOrDefault(e => e.Item.Name == item.Name);
                 if (inventoryEntry == null || inventoryEntry.Quantity < 1)
-                    throw new Exception("Does not have that item"); 
+                    throw new Exception("Does not have that item");
                 if (EquiptItems.ContainsKey(item.Slot) && EquiptItems[item.Slot] != null)
                     UnEquipItem(item);
                 if (item.Level <= Level)
@@ -245,18 +251,18 @@ namespace ConsoleRPG.Heros
                     ItemSPR += item.SPR;
                     ItemMinDmg += item.MinDamage;
                     ItemMaxDmg += item.MaxDamage;
-                    ItemEvation += item.Evation;
+                    ItemEvation += item.Evasion;
                     ItemAim += item.Aim;
-                    ItemDefance += item.Defance;
+                    ItemDefance += item.Defense;
                     ItemMaxHealth += item.MaxHealth;
 
                     if (item is Shield shield)
                         ItemBlockChance += shield.BlockRate;
 
-                    ItemMinMDmg += item.MinMDamage;
-                    ItemMaxMDmg += item.MaxMDamage;
+                    ItemMinMDmg += item.MinMagicalDamage;
+                    ItemMaxMDmg += item.MaxMagicalDamage;
                     ItemCritChance += item.CritChance;
-                    ItemMDefance += item.MagicalDefance;
+                    ItemMDefance += item.MagicalDefense;
                     ItemMaxManaPoints += item.MaxManaPoints;
 
                     if (item is Weapons weapon)
@@ -280,7 +286,7 @@ namespace ConsoleRPG.Heros
         {
             try
             {
-                var inventoryEntry = Inventory.FirstOrDefault(e => e.Item.ItemName == item.ItemName);
+                var inventoryEntry = Inventory.FirstOrDefault(e => e.Item.Name == item.Name);
                 if (inventoryEntry == null)
                     throw new Exception("Item is not in inventory");
 
@@ -292,18 +298,18 @@ namespace ConsoleRPG.Heros
                 ItemSPR -= item.SPR;
                 ItemMinDmg -= item.MinDamage;
                 ItemMaxDmg -= item.MaxDamage;
-                ItemEvation -= item.Evation;
+                ItemEvation -= item.Evasion;
                 ItemAim -= item.Aim;
-                ItemDefance -= item.Defance;
+                ItemDefance -= item.Defense;
                 ItemMaxHealth -= item.MaxHealth;
 
                 if (item is Shield shield)
                     ItemBlockChance -= shield.BlockRate;
 
-                ItemMinMDmg -= item.MinMDamage;
-                ItemMaxMDmg -= item.MaxMDamage;
+                ItemMinMDmg -= item.MinMagicalDamage;
+                ItemMaxMDmg -= item.MaxMagicalDamage;
                 ItemCritChance -= item.CritChance;
-                ItemMDefance -= item.MagicalDefance;
+                ItemMDefance -= item.MagicalDefense;
                 ItemMaxManaPoints -= item.MaxManaPoints;
 
                 if (item is Weapons weapon)
@@ -359,7 +365,7 @@ namespace ConsoleRPG.Heros
                         case "rare": Console.ForegroundColor = ConsoleColor.DarkMagenta; break;
                         case "legendary": Console.ForegroundColor = ConsoleColor.DarkYellow; break;
                     }
-                    Console.WriteLine($"[{count}]. {currentItem.ItemName} ({itemCount})");
+                    Console.WriteLine($"[{count}]. {currentItem.Name} ({itemCount})");
                     Console.ResetColor();
                 }
                 else
@@ -373,7 +379,7 @@ namespace ConsoleRPG.Heros
                         case "rare": Console.ForegroundColor = ConsoleColor.Magenta; break;
                         case "legendary": Console.ForegroundColor = ConsoleColor.Yellow; break;
                     }
-                    Console.WriteLine($"{count}. {currentItem.ItemName} ({itemCount})");
+                    Console.WriteLine($"{count}. {currentItem.Name} ({itemCount})");
                     Console.ResetColor();
                 }
                 count++;
@@ -389,86 +395,111 @@ namespace ConsoleRPG.Heros
             }
 
         }
-        internal void SelectItem(char selection)
+        internal void SelectItem(Selection selection)
         {
             int item = 0;
-            Console.Clear();
-            Console.WriteLine("Inventorry\n");
+            var action = ConsoleKey.NoName;
 
-            List<Item> itemList = Inventory.Select(entry => entry.Item).ToList();
-            for (int count = 0; count < itemList.Count; count++)
+            switch (selection)
             {
-                Console.WriteLine($"{count + 1}. {itemList[count].ItemName}");
-            }
-            Console.WriteLine();
-
-            bool error;
-            if (selection == '1')
-            {
-                Console.WriteLine("Select the Item you want to equip. Or press 'Q' to go back\nNumber:");
-                do
-                {
-                    error = false;
-                    try
+                case Selection.Euipen:
+                    List<Item> itemList = Inventory.Select(entry => entry.Item).ToList();
+                    do
                     {
-                        string input = Console.ReadLine();
-                        if (input == "Q")
-                            break;
+                        Console.Clear();
+                        Console.WriteLine("Select the Item you want to equip or press [ESC] to go back");
+                        Console.WriteLine("Inventorry\n");
 
-                        item = int.Parse(input);
-                        if (item > itemList.Count || item < 0)
+                        for (int count = 0; count < itemList.Count; count++)
                         {
-                            throw new Exception("Input out of bounds");
+                            switch (itemList[count].Rarety)
+                            {
+                                case "normal": Console.ForegroundColor = ConsoleColor.Gray; break;
+                                case "common": Console.ForegroundColor = ConsoleColor.Green; break;
+                                case "uncommon": Console.ForegroundColor = ConsoleColor.Blue; break;
+                                case "rare": Console.ForegroundColor = ConsoleColor.Magenta; break;
+                                case "legendary": Console.ForegroundColor = ConsoleColor.Yellow; break;
+                            }
+                            if (count == item)
+                            {
+                                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                                Console.WriteLine($"{count + 1}. {itemList[count].Name}");
+                            }
+                            else
+                                Console.WriteLine($"{count + 1}. {itemList[count].Name}");
+                            Console.ResetColor();
                         }
-                        else
+                        Console.WriteLine();
+
+                        action = Console.ReadKey().Key;
+
+                        switch (action)
                         {
-                            EquipItem(itemList[item - 1]);
-                            Thread.Sleep(500);
-                        }
-
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Wrong input!");
-                        error = true;
-                        Thread.Sleep(500);
-                    }
-
-                } while (error);
-
-            }
-            else if (selection == '2')
-            {
-                Console.WriteLine("Select the Item you want to unequip. Or press 'Q' to go back\nNumber:");
-                do
-                {
-                    error = false;
-                    try
-                    {
-                        string input = Console.ReadLine();
-                        if (input == "Q")
-                            break;
-
-                        item = int.Parse(input);
-                        if (item > itemList.Count || item <= 0)
-                        {
-                            throw new Exception("Input out of bounds");
-                        }
-                        else
-                        {
-                            UnEquipItem(itemList[item - 1]);
+                            case ConsoleKey.W:
+                            case ConsoleKey.UpArrow:
+                                item++;
+                                if (item > itemList.Count)
+                                    item = itemList.Count;
+                                break;
+                            case ConsoleKey.S:
+                            case ConsoleKey.DownArrow:
+                                item--;
+                                if (item < 0)
+                                    item = 0;
+                                break;
                         }
 
-                    }
-                    catch
+                    } while (action != ConsoleKey.Enter && action != ConsoleKey.Escape);
+                    EquipItem(itemList[item]);
+                    break;
+                case Selection.Unequipen:
+                    do
                     {
-                        Console.WriteLine("Wrong input!");
-                        error = true;
-                        Thread.Sleep(1000);
+                        Console.Clear();
+                        Console.WriteLine("Select the Item you want to unequip or press [ESC] to go back");
+                        Console.WriteLine("Equipt items");
+                        int count = 0;
+                        foreach (var enty in EquiptItems)
+                        {
+                            if (item == count)
+                            {
+                                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                                Console.WriteLine($"{enty.Key}: {enty.Value}");
+                                Console.BackgroundColor = ConsoleColor.Black;
+                            }
+                            else
+                                Console.WriteLine($"{enty.Key}: {enty.Value}");
+                            count++;
+                        }
+                        Console.WriteLine();
+
+                        action = Console.ReadKey().Key;
+
+                        switch (action)
+                        {
+                            case ConsoleKey.S:
+                            case ConsoleKey.DownArrow:
+                                item++;
+                                if (item > EquiptItems.Count)
+                                    item = EquiptItems.Count;
+                                break;
+                            case ConsoleKey.W:
+                            case ConsoleKey.UpArrow:
+                                item--;
+                                if (item < 0)
+                                    item = 0;
+                                break;
+                        }
+
+                    } while (action != ConsoleKey.Enter && action != ConsoleKey.Escape);
+                    int select = 0;
+                    foreach (var enty in EquiptItems)
+                    {
+                        if(select == item)
+                            UnEquipItem(enty.Value);
+                        select++;
                     }
-
-                } while (error);
-
+                    break;
             }
 
         }
@@ -489,7 +520,7 @@ namespace ConsoleRPG.Heros
 
                     switch (CharacterClass)
                     {
-                        case "Fighter": 
+                        case "Fighter":
                             switch (Level)
                             {
                                 case 3: AddSkill(blow); break;

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG.Fighting
 {
-
     internal class Fight
     {
         private static bool error = false;

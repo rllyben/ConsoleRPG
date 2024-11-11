@@ -36,7 +36,7 @@ namespace ConsoleRPG.Utilities
             foreach (var kvp in hero.EquiptItems)
             {
                 // Find the item in the hero's inventory by item name
-                var inventoryEntry = hero.Inventory.FirstOrDefault(entry => entry.Item.ItemName == kvp.Value.ItemName);
+                var inventoryEntry = hero.Inventory.FirstOrDefault(entry => entry.Item.Name == kvp.Value.Name);
                 if (inventoryEntry != null)
                 {
                     hero.UnEquipItem(inventoryEntry.Item);

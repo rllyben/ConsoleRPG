@@ -31,95 +31,263 @@ namespace ConsoleRPG
                 Thread.Sleep(1000);
                 CharacterCreation();
             }
-            KeyListener.ListenForEscapeKey();
             do
             {
                 MainMenue();
             } while (GameRun);
-            KeyListener.IsListening = false;
+
         }
         public static void MainMenue()
         {
+            int selection = 0;
+            var selectionSwitch = ConsoleKey.NoName;
             do
             {
-                mainAction = ' ';
-                if (hero.CurrentHealth > hero.MaximalHealth)
-                    hero.Healer();
-
-                Console.WriteLine("\nMain Menue:" +
-                                  "\n1. stats        2. adventure" +
-                                  "\n3. shop         4. inventory" +
-                                  "\n0. save and exit");
-
-                mainAction = Console.ReadKey().KeyChar;
-
-                switch (mainAction)
+                Console.Clear();
+                Console.WriteLine("\nMain Menue");
+                switch (selection)
                 {
-                    case '0': error = false; Utils.SaveHero(hero); GameRun = false; break;
-                    case '1': error = false; Stats(); break;
-                    case '2': error = false; Adventure(); break;
-                    case '3': error = false; Shop(); break;
-                    case '4': error = false; hero.ShowInventory(); break;
-                    default: Console.WriteLine("Wrong input please try again:"); error = true; break;
+                    case 0:
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("\nStats");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write($"        Adventure" +
+                                       "\nShop         Inventory" +
+                                       "\nSave and exit\n");
+                        break;
+                    case 1:
+                        Console.Write("\nStats        ");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Adventure");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("\nShop         Inventory" +
+                                          "\nSave and exit");
+                        break;
+                    case 2:
+                        Console.Write("\nStats        Adventure");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("\nShop");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("         Inventory" +
+                                          "\nSave and exit");
+                        break;
+                    case 3:
+                        Console.Write("\nStats        Adventure" +
+                                      "\nShop         ");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Inventory");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("\nSave and exit");
+                        break;
+                    case 4:
+                        Console.Write("\nStats        Adventure" +
+                                          "\nShop         Inventory");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("\nSave and exit\n");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        break;
                 }
 
-            } while (error);
+                selectionSwitch = Console.ReadKey().Key;
+
+                switch (selectionSwitch)
+                {
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        if (selection == 2)
+                            selection = 0;
+                        else if (selection == 4)
+                            selection = 2;
+                        else if (selection == 3)
+                            selection = 1;
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        if (selection == 0)
+                            selection = 2;
+                        else if (selection == 2)
+                            selection = 4;
+                        else if (selection == 1)
+                            selection = 3;
+                        else if (selection == 3)
+                            selection = 4;
+                        break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        if (selection == 0)
+                            selection = 1;
+                        else if (selection == 2)
+                            selection = 3;
+                        else if (selection == 4)
+                            selection = 3;
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        if (selection == 1)
+                            selection = 0;
+                        else if (selection == 3)
+                            selection = 2;
+                        break;
+                    case ConsoleKey.Escape:
+                        selection = 4;
+                        break;
+                }
+
+            } while (selectionSwitch != ConsoleKey.Enter && selectionSwitch != ConsoleKey.Escape);
+
+            switch (selection)
+            {
+                case 0: PrintStats(); break;
+                case 1: Adventure(); break;
+                case 2: Shop(); break;
+                case 3: hero.ShowInventory(); break;
+                case 4: Utils.SaveHero(hero); GameRun = false; break;
+            }
 
         }
         internal static void CharacterCreation()
         {
+            int selectionDisplay = 0;
+            var selectionSwitch = ConsoleKey.NoName;
             do
             {
                 Console.Clear();
-                Console.WriteLine("please select the Class you want to play:\n" +
-                                  "1. Fighter           2. Archer\n" +
-                                  "3. Cleric            4. Mage\n");
-
-                characterClass = Console.ReadKey().KeyChar;
-
-                if (characterClass > '0' && characterClass < '5')
+                Console.WriteLine("please select the Class you want to play as:");
+                switch (selectionDisplay)
                 {
-                    Console.WriteLine("please name your character to start:");
-                    hero = new(Console.ReadLine());
-                    Console.WriteLine($"Your character name is: {hero}");
-                    error = false;
+                    case 0:
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Fighter");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("           Archer" +
+                                          "\nCleric            Mage\n"); 
+                        break;
+                    case 1:
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Fighter           ");
+                        Console.BackgroundColor = ConsoleColor.Cyan;
+                        Console.Write("Archer");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("\nCleric            Mage\n"); 
+                        break;
+                    case 2:
+                        Console.Write("Fighter           Archer");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("\nCleric");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("Mage\n"); 
+                        break;
+                    case 3:
+                        Console.WriteLine("Fighter           Archer" +
+                                          "\nCleric            ");
+                        Console.BackgroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Mage\n");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        break;
                 }
-                else
+                Console.WriteLine("\nswitch your selection with \"W,A,S,D\" or the arrow keys on your keyboard, confirm your selection with [Enter]!");
+                switch (selectionSwitch)
                 {
-                    Console.WriteLine("Wrong input, please try again!");
-                    Thread.Sleep(1000);
-                    error = true;
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        if (selectionDisplay == 2)
+                            selectionDisplay = 0;
+                        if (selectionDisplay == 3)
+                            selectionDisplay = 1;
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        if (selectionDisplay == 0)
+                            selectionDisplay = 2;
+                        if (selectionDisplay == 1)
+                            selectionDisplay = 3;
+                        break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        if (selectionDisplay == 0)
+                            selectionDisplay = 1;
+                        if (selectionDisplay == 2)
+                            selectionDisplay = 3;
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        if (selectionDisplay == 1)
+                            selectionDisplay = 0;
+                        if (selectionDisplay == 3)
+                            selectionDisplay = 2;
+                        break;
+                    case ConsoleKey.Escape:
+                        break;
                 }
 
-            }while (error);
-
+            } while (selectionSwitch != ConsoleKey.Enter && selectionSwitch != ConsoleKey.Escape);
+            if (selectionSwitch == ConsoleKey.Escape)
+            {
+                GameRun = false;
+                return;
+            }
+            characterClass = (char)(selectionDisplay + 49);
+            Console.WriteLine("please name your character to start:");
+            hero = new(Console.ReadLine());
+            Console.WriteLine($"Your character name is: {hero}");
         }
 
-        internal static void Stats()
+        internal static void PrintStats()
         {
-            Console.Clear();
-
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"\n{hero}   Level: {hero.Level}");
-            Console.ResetColor();
-            Console.WriteLine($"\n       HP: {hero.CurrentHealth} / {hero.MaximalHealth}        MP: {hero.ManaPoints} / {hero.MaxiamlManaPoints}" +
-                              $"\n       Damage: {hero.MinDamage} ~ {hero.MaxDamage}" +
-                              $"\n       Magical Damage: {hero.MinMagicalDamage} ~ {hero.MaxMagicalDamage}" +
-                              $"\n       Evation: {hero.Evasion}" +
-                              $"\n       Aim: {hero.Aim}" +
-                              $"\n       Defance: {hero.Defense}" +
-                              $"\n       Magical Defance: {hero.MagicalDefense}" +
-                              $"\n       Action Speed: {hero.ActionSpeed}\n" +
-                              $"\nFree Statpoints: {hero.StatPoints}");
-            Console.WriteLine();
-            Console.WriteLine("Do you want to set Stat Points? [y/N]");
-            char statPoints = Console.ReadKey().KeyChar;
-
-            switch (statPoints)
+            int selection = 0;
+            var selectionSwitch = ConsoleKey.NoName;
+            do
             {
-                case 'Y':
-                case 'y': hero.SetStatpoints(); break;
-                default: break;
+
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine($"\n{hero}   Level: {hero.Level}");
+                Console.ResetColor();
+                Console.WriteLine($"\n       HP: {hero.CurrentHealth} / {hero.MaximalHealth}        MP: {hero.ManaPoints} / {hero.MaxiamlManaPoints}" +
+                                  $"\n       Damage: {hero.MinDamage} ~ {hero.MaxDamage}" +
+                                  $"\n       Magical Damage: {hero.MinMagicalDamage} ~ {hero.MaxMagicalDamage}" +
+                                  $"\n       Evation: {hero.Evasion}" +
+                                  $"\n       Aim: {hero.Aim}" +
+                                  $"\n       Defance: {hero.Defense}" +
+                                  $"\n       Magical Defance: {hero.MagicalDefense}" +
+                                  $"\n       Action Speed: {hero.ActionSpeed}\n" +
+                                  $"\nFree Statpoints: {hero.StatPoints}");
+                Console.WriteLine();
+                switch (selection)
+                {
+                    case 0:
+                        Console.Write("Do you want to set Stat Points? [y/");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write('N');
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(")]");
+                        break;
+                    case 1:
+                        Console.Write($"Do you want to set Stat Points? [");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write('Y');
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("/n]");
+                        break;
+                }
+                Console.WriteLine("\nswitch your selection with \"Y,A,N,D\" or the arrow keys on your keyboard, confirm your selection with [Enter]!");
+                selectionSwitch = Console.ReadKey().Key;
+                switch (selectionSwitch)
+                {
+                    case ConsoleKey.N: selection = 0; selectionSwitch = ConsoleKey.Enter; break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow: selection = 0; break;
+                    case ConsoleKey.Y: selection = 1; selectionSwitch = ConsoleKey.Enter; break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow: selection = 1; break;
+                }
+
+            } while (selectionSwitch != ConsoleKey.Enter);
+
+            switch (selection)
+            {
+                case 0: break;
+                case 1: hero.SetStatpoints(); break;
             }
 
         }
@@ -576,52 +744,117 @@ namespace ConsoleRPG
             plain.AddConnection(thornCave);
             thornCave.AddConnection(plain);
             */
+
+            int selection = 0;
+            var selectionSwitch = ConsoleKey.NoName;
             do
             {
                 Console.Clear();
-
-
                 Console.WriteLine("Adventure");
-                Console.WriteLine("\nWhere do you want to go?" +
-                                  "\n1. Village of Roumen          2. City of Elderine" /*+
-                                  "\n3. City of Uruga              4. City of Adelia"*/);
-                Console.WriteLine("back with 0");
-
-                adventureAction = Console.ReadKey().KeyChar;
-
-                switch (adventureAction)
+                        Console.WriteLine("\nWhere do you want to go?");
+                switch (selection)
                 {
-                    case '0': error = false; break;
-                    case '1': error = false; roumen.StandatCityAction(); break;
-                    case '2': error = false; elderine.StandatCityAction(); break;
-                    // case '3': error = false; uruga.StandatCityAction(); error = false; break;
-                    // case '4': error = false; adelia.StandatCityAction(); error = false; break;
-                    case '#':
-                        error = false;
-                        Random rnd = new Random();
-                        while (true)
-                        {
-
-                            Monster mob = new Monster("Pixi", "Elite Monster", 1.5F, 65, 8380, 2573, 13512, 8012, 10642);
-                            float Damage = rnd.Next(hero.MinDamage, hero.MaxDamage);
-                            float DamageDeal = (((2 * hero.Level) * 20 * (Damage / mob.Defense)) / 50) * 2;
-                            float MobDamage = rnd.Next(mob.MinDamage, mob.MaxDamage + 1);
-                            Console.WriteLine((int)DamageDeal);
-                            DamageDeal = ((2 * hero.Level) * 20 * (Damage / mob.Defense)) / 50;
-                            Console.WriteLine((int)DamageDeal);
-
-                            Console.WriteLine(Damage + "Damage count");
-
-                            float damageTaken = ((2 * mob.Level) * 20 * (MobDamage / Program.hero.Defense)) / 50;
-                            Console.WriteLine(damageTaken);
-
-                            Thread.Sleep(1000);
-                        }
+                    case 0:
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("\nVillage of Roumen");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("          City of Elderine\n" +/*
+                                          "\nCity of Uruga              City of Adelia" +*/
+                                          "\nback with [Esc]");
                         break;
-                    default: error = true; break;
+                    case 1:
+                        Console.Write("\nVillage of Roumen          ");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("City of Elderine");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(/*"\nCity of Uruga              City of Adelia" +*/
+                                          "\n\nback with [Esc]");
+                        break;
+                    case 2:
+                        Console.Write("\nVillage of Roumen          City of Elderine\n");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write(/*"\nCity of Uruga"*/"");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine(/*"              City of Adelia"*/
+                                          "\nback with [Esc]");
+                        break;
+                    case 3:
+                        Console.Write("\nVillage of Roumen          City of Elderine\n"/* +
+                                      "\nCity of Uruga"*/);
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write(/*"              City of Adelia"*/"");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("\nback with [Esc]");
+                        break;
+                    case 4:
+                        Console.Write("\nVillage of Roumen          City of Elderine\n"/* +
+                                      "\nCity of Uruga              City of Adelia"*/);
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("\nback [Esc]");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        break;
+
+                }
+                selectionSwitch = Console.ReadKey().Key;
+
+                switch (selectionSwitch)
+                {
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        if (selection == 2)
+                            selection = 0;
+                        else if (selection == 3)
+                            selection = 1;
+                        else if (selection == 4)
+                            selection = 0;
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        if (selection == 1)
+                            selection = 0;
+                        else if (selection == 3)
+                            selection = 2;
+                        else if (selection == 4)
+                            selection = 0;
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        if (selection == 0)
+                            selection = 4;
+                        else if (selection == 1)
+                            selection = 4;
+                        else if (selection == 2)
+                            selection = 4;
+                        else if (selection == 3)
+                            selection = 4;
+                        break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        if (selection == 0)
+                            selection = 1;
+                        else if (selection == 1)
+                            selection = 4;
+                        else if (selection == 2)
+                            selection = 3;
+                        else if (selection == 4)
+                            selection = 1;
+                        break;
+                    case ConsoleKey.Escape:
+                        selection = 4;
+                        break;
                 }
 
-            } while (error);
+
+            } while (selectionSwitch != ConsoleKey.Enter && selectionSwitch != ConsoleKey.Escape);
+
+            switch (selection)
+            {
+                case 0: roumen.StandatCityAction(); break;
+                case 1: elderine.StandatCityAction(); break;
+                // case 2: uruga.StandatCityAction(); break;
+                // case 3: adelia.StandatCityAction(); break;
+                case 4: break;
+            }
 
         }
 

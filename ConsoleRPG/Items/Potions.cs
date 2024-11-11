@@ -11,7 +11,7 @@ namespace ConsoleRPG.Items
     {
         public Potions(string itemName, int healPotantial) : base(itemName)
         {
-            ItemName = itemName;
+            Name = itemName;
             HealPotantial = healPotantial;
         }
 

@@ -213,7 +213,7 @@ namespace ConsoleRPG
                     char posiChar = Convert.ToChar(count + 49);
                     if (count + 49 >= 58)
                         posiChar = Convert.ToChar(count + 88);
-                    Console.WriteLine($"{posiChar}. {TraderWeapons[count].ItemName} " +
+                    Console.WriteLine($"{posiChar}. {TraderWeapons[count].Name} " +
                                       $"Level: {TraderWeapons[count].Level} " +
                                       $"Dmg: {TraderWeapons[count].MinDamage} ~ {TraderWeapons[count].MaxDamage} " +
                                       $"Attack Rate: {TraderWeapons[count].ActionSpeed} " +
@@ -275,10 +275,10 @@ namespace ConsoleRPG
                 char posiChar = Convert.ToChar(count + 49);
                 if (count + 49 >= 58)
                     posiChar = Convert.ToChar(count + 88);
-                Console.WriteLine($"{posiChar}. {TraderArmor[count].ItemName} " +
+                Console.WriteLine($"{posiChar}. {TraderArmor[count].Name} " +
                                   $"Level: {TraderArmor[count].Level} " +
-                                  $"Defance: {TraderArmor[count].Defance} " +
-                                  $"Magical Defance: {TraderArmor[count].MagicalDefance} ");
+                                  $"Defance: {TraderArmor[count].Defense} " +
+                                  $"Magical Defance: {TraderArmor[count].MagicalDefense} ");
                 if (TraderArmor[count].GetType() == typeof(Shield))
                 {
                     Shield shield = TraderArmor[count] as Shield;

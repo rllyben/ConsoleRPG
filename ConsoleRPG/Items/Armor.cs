@@ -11,13 +11,13 @@ namespace ConsoleRPG.Items
     {
         public Armor(string itemName, string classe, string slot, string rarety, int cost, int maxHealth, int level, int defance, int magicalDefance, int evation, int aim) : base(itemName)
         {
-            ItemName = itemName;
+            Name = itemName;
             Cost = cost;
             Level = level;
-            Defance = defance;
-            MagicalDefance = magicalDefance;
+            Defense = defance;
+            MagicalDefense = magicalDefance;
             MaxHealth = maxHealth;
-            Evation = evation;
+            Evasion = evation;
             Aim = aim;
             Classe = classe;
             Slot = slot;
