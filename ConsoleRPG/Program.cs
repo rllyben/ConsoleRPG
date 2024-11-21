@@ -861,7 +861,7 @@ namespace ConsoleRPG
         internal static void Shop()
         {
             Console.WriteLine("The shop is currently unavailable!");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
 
     }

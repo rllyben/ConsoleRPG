@@ -152,7 +152,7 @@ namespace ConsoleRPG.Fighting
 
             Console.WriteLine($"You attack the {mobName} and deal {(int)damageDealt} damage!");
             Console.WriteLine($"The {mobName} has {mobHP} HP left.");
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
         }
         private static void MobTurn(Monster mob)
         {
@@ -171,7 +171,7 @@ namespace ConsoleRPG.Fighting
                 Console.WriteLine($"The {mob.Name} attacks and deals {damageTaken} damage!");
             }
             Console.WriteLine($"You have {Program.hero.CurrentHealth} HP left.");
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
         }
         private static void EndTurn(Hero hero, Monster mob)
         {

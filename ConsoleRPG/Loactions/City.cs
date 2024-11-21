@@ -11,75 +11,125 @@ namespace ConsoleRPG.Loactions
     {
         char cityAction = ' ';
         Hero hero = Program.hero;
-
         public City(string locationname, int levelZone) : base(locationname, levelZone) { }
 
-        // Handels the player Actions done in a City
+        // Handels the player Actions done in a City lag ist da und jeder ist crazy again
         internal void StandatCityAction()
         {
+            int selection = 0;
+            var selectionSwitch = ConsoleKey.NoName;
             do
             {
                 Console.Clear();
                 Console.WriteLine($"You enter {LocationName}.");
                 Console.WriteLine("What do you want to do?");
-
-                Console.Write("1. Look for Quests           2. Look for Traders\n");
-                PrintConnectedLocations();
-
-                Console.WriteLine($"{ConnectedLocations.Count + 3}. open main menue");
-                Console.WriteLine("\n0. Back");
-
-                hero.PrintHeroInformation();
-
-                cityAction = Console.ReadKey().KeyChar;
-
-                switch (cityAction)
+                switch (selection)
                 {
-                    // Handels the Back Option
-                    case '0': error = false; break;
-                    // Handels the Quests Action
-                    case '1':
-                        Console.WriteLine("\nQuests are currently unavailable.");
-                        Thread.Sleep(2000);
-                        error = true; break;
+                    case 0:
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Look for Quests");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("         Look for Traders\n");
+                        PrintConnectedLocations();
+                        Console.WriteLine($"open main menue [ESC]");
+                        break;
+                    case 1:
+                        Console.Write("Look for Quests         ");
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("Look for Traders");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine();
+                        PrintConnectedLocations();
+                        Console.WriteLine("open main menue [ESC]");
+                        break;
                     default:
-                        // Makes the city Action char to Number
-                        short action = (short)cityAction;
-                        action -= 48;
-                        // Hanels the Connected Locations
-                        if (action >= 3 && action < 3 + ConnectedLocations.Count)
+                        Console.WriteLine("Look for Quests         Look for Traders");
+                        for (short count = 2; count < ConnectedLocations.Count + 2; count++)
                         {
-                            error = false;
-                            ConnectedLocations[action - 3].StandartLocationAction();
-                            break;
+                            if (count == selection)
+                            {
+                                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                Console.WriteLine($"Go to {ConnectedLocations[count - 2].GetLocationName()}");
+                                Console.BackgroundColor = ConsoleColor.Black;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Go to {ConnectedLocations[count - 2].GetLocationName()}");
+                            }
+
                         }
-                        // Handels the Trader Action
-                        else if (action == 2)
+                        if (selection == ConnectedLocations.Count + 2)
                         {
-                            error = true;
-                            StandartTraderAction();
-                            break;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("open main menue [ESC]");
+                            Console.BackgroundColor = ConsoleColor.Black;
                         }
-                        // Handels the Main Menue
-                        else if (action == 3 + ConnectedLocations.Count)
-                        {
-                            error = false;
-                            Program.MainMenue();
-                            break;
-                        }
-                        // Handels wrong Inputs
                         else
-                        {
-                            error = true;
-                            Console.WriteLine("\nWrong input please try again!");
-                            Thread.Sleep(1000);
-                            StandartLocationAction();
-                            break;
-                        }
-
+                            Console.WriteLine("open main menue [ESC]");
+                        break;
                 }
+                hero.PrintHeroInformation();
+                selectionSwitch = Console.ReadKey().Key;
 
-            } while (error);
+                switch (selectionSwitch)
+                {
+                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
+                        if (selection > 2)
+                        {
+                            selection--;
+                        }
+                        else if (selection == 2)
+                            selection = 0;
+                        break;
+                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
+                        if (selection == 0)
+                            selection = 2;
+                        else if (selection > ConnectedLocations.Count + 2)
+                            selection = ConnectedLocations.Count + 2;
+                        else
+                            selection++;
+                        break;
+                    case ConsoleKey.D:
+                    case ConsoleKey.RightArrow:
+                        if (selection == 0 || selection == 2)
+                            selection = 1;
+                        break;
+                    case ConsoleKey.A:
+                    case ConsoleKey.LeftArrow:
+                        if (selection == 1)
+                            selection--;
+                        break;
+                    case ConsoleKey.D1:
+                        selection = 0;
+                        break;
+                    case ConsoleKey.Escape:
+                        selection = ConnectedLocations.Count + 2;
+                        break;
+                }
+                if (selection > ConnectedLocations.Count + 2)
+                    selection = ConnectedLocations.Count + 2;
+            } while (selectionSwitch != ConsoleKey.Enter && selectionSwitch != ConsoleKey.Escape);
+
+            switch (selection)
+            {
+                // Handels the Quests Action
+                case 0:
+                    Console.WriteLine("\nQuests are currently unavailable.");
+                    Thread.Sleep(2000);
+                    error = true; break;
+                case 1:
+                    StandartTraderAction();
+                    break;
+                default:
+                    if (selection == ConnectedLocations.Count + 2)
+                        Program.MainMenue();
+                    else if (selection > 1)
+                        ConnectedLocations[selection - 2].StandartLocationAction();
+                    break;
+
+            }
 
         }
         public void StandartTraderAction()
@@ -109,7 +159,7 @@ namespace ConsoleRPG.Loactions
                             error = true;
                             Thread.Sleep(1000);
                         }
-                        else if (actionNumber < TraderCount )
+                        else if (actionNumber < TraderCount)
                         {
                             Trader[actionNumber].TraderActionChoose(Trader[actionNumber].GetJobName());
                         }

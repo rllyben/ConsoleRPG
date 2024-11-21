@@ -55,26 +55,15 @@ namespace ConsoleRPG.Loactions
             Trader.Add(trader);
             TraderCount++;
         }
-
-        internal void PrintConnectedLocations(bool isSemiCity = false)
+        public string GetLocationName()
         {
-            // Prints the available Locations to go to if the Location is a Semi City
-            if (isSemiCity)
+            return LocationName;
+        }
+        internal void PrintConnectedLocations()
+        {
+            for (short count = 0; count < ConnectedLocations.Count; count++)
             {
-                for (short count = 0; count < ConnectedLocations.Count; count++)
-                {
-                    Console.WriteLine($"{count + 4}. Go to {ConnectedLocations[count].LocationName}");
-                }
-
-            }
-            // Prints the available Locations to go to if the Location is a normal Location or a City
-            else
-            {
-                for (short count = 0; count < ConnectedLocations.Count; count++)
-                {
-                    Console.WriteLine($"{count + 3}. Go to {ConnectedLocations[count].LocationName}");
-                }
-
+                Console.WriteLine($"Go to {ConnectedLocations[count].LocationName}");
             }
             return;
         }
@@ -94,6 +83,9 @@ namespace ConsoleRPG.Loactions
                 temp.StandatCityAction();
             }
 
+            int selection = 0;
+            var selectionSwitch = ConsoleKey.NoName;
+
             do
             {
                 Console.Clear();
@@ -102,81 +94,208 @@ namespace ConsoleRPG.Loactions
                 // Prints Looking for Quests, Fight Monsters and Go to the Local Trader if the Location is a Semi City
                 if (isSemiCity)
                 {
-                    Console.WriteLine("1. Look for Quests           2. Fight a Monster" +
-                                     $"\n3. Go to {Trader[TraderCount - 1].GetTraderName()}");
+                    switch (selection)
+                    {
+                        case 0:
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("Look for Quests");
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.WriteLine("           Fight a Monster" +
+                                             $"\nGo to {Trader[TraderCount - 1].GetTraderName()}");
+                            PrintConnectedLocations();
+                            break;
+                        case 1:
+                            Console.Write("Look for Quests           ");
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("Fight a Monster");
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.WriteLine($"\nGo to {Trader[TraderCount - 1].GetTraderName()}");
+                            PrintConnectedLocations();
+                            break;
+                        case 2:
+                            Console.Write("Look for Quests           ");
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("Fight a Monster");
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.WriteLine($"\nGo to {Trader[TraderCount - 1].GetTraderName()}");
+                            PrintConnectedLocations();
+                            break;
+                        default:
+                            Console.WriteLine("Look for Quests           Fight a Monster\n" +
+                                              $"Go to {Trader[TraderCount - 1].GetTraderName()}");
+                            for (int count = 3; count < ConnectedLocations.Count + 3; count++)
+                            {
+                                if (count == selection)
+                                {
+                                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                    Console.WriteLine($"Go to {ConnectedLocations[count - 3].LocationName}");
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                }
+                                else
+                                    Console.WriteLine($"Go to {ConnectedLocations[count - 3].LocationName}");
+                            }
+                            break;
+
+                    }
+                    hero.PrintHeroInformation();
+
+                    selectionSwitch = Console.ReadKey().Key;
+                    switch (selectionSwitch)
+                    {
+                        case ConsoleKey.W:
+                        case ConsoleKey.UpArrow:
+                            if (selection > 2)
+                            {
+                                selection--;
+                            }
+                            else if (selection == 2)
+                                selection = 0;
+                            break;
+                        case ConsoleKey.S:
+                        case ConsoleKey.DownArrow:
+                            if (selection == 0)
+                                selection = 2;
+                            else if (selection > ConnectedLocations.Count + 3)
+                                selection = ConnectedLocations.Count + 3;
+                            else
+                                selection++;
+                            break;
+                        case ConsoleKey.D:
+                        case ConsoleKey.RightArrow:
+                            if (selection == 0 || selection == 2)
+                                selection = 1;
+                            break;
+                        case ConsoleKey.A:
+                        case ConsoleKey.LeftArrow:
+                            if (selection == 1)
+                                selection--;
+                            break;
+                        case ConsoleKey.D1:
+                            selection = 0;
+                            break;
+                    }
+
                 }
-                // Prints Looking for Quests and Fight Monsters if the Location is a normal Location
                 else
-                    Console.WriteLine("1. Look for Quests           2. Fight a Monster");
-
-                PrintConnectedLocations(isSemiCity);
-
-                Console.WriteLine("\n0. Back\n\n");
-                hero.PrintHeroInformation();
-
-                // saves the playerinput as locationAction
-                locationAction = Console.ReadKey().KeyChar;
-
-                // switch to manage the location action
-                switch (locationAction)
                 {
-                    // manages the "Back" Action
-                    case '0': error = false; return;
-
-                    // manages the looking for Quests Action
-                    case '1':
-                        Console.WriteLine("\nQuests are currently unavailable.");
-                        Thread.Sleep(2000);
-                        error = true; break;
-
-                    // manages the Monster fight Action
-                    case '2':
-                        Random rnd = new Random();
-                        // selects a random Mob from the Location
-                        int monsterNumber = rnd.Next(0, Monsters.Count);
-                        // initialices the fight
-                        Fight.Fighting(Monsters[monsterNumber]);
-                        StandartLocationAction();
-                        error = true; break;
-
-                    default:
-                        // converts the location Action char into a number
-                        short action = (short)locationAction;
-                        action -= 49;
-
-                        // Handels going into a connected Location from a Semi City
-                        if (isSemiCity && action >= 3 && action < 3 + ConnectedLocations.Count)
-                        {
-                            error = false;
-                            ConnectedLocations[action - 3].StandartLocationAction(true);
+                    switch (selection)
+                    {
+                        case 0:
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("Look for Quests");
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.WriteLine("           Fight a Monster");
+                            PrintConnectedLocations();
                             break;
-                        }
-                        // Handels going into a connected Location from a normal Location
-                        else if (action >= 2 && action < 2 + ConnectedLocations.Count)
-                        {
-                            error = false;
-                            ConnectedLocations[action - 2].StandartLocationAction(true);
+                        case 1:
+                            Console.Write("Look for Quests           ");
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("Fight a Monster");
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            PrintConnectedLocations();
                             break;
-                        }
-                        // Handels going to a Trader from a Semi City
-                        else if (action == 3)
-                        {
-                            error = false;
-                            Trader[TraderCount - 1].TraderActionChoose(Trader[TraderCount - 1].GetJobName());
+                        default:
+                            Console.WriteLine("Look for Quests           Fight a Monster");
+                            for (int count = 2; count < ConnectedLocations.Count + 2; count++)
+                            {
+                                if (count == selection)
+                                {
+                                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                    Console.WriteLine($"Go to {ConnectedLocations[count - 2].LocationName}");
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                }
+                                else
+                                    Console.WriteLine($"Go to {ConnectedLocations[count - 2].LocationName}");
+                            }
                             break;
-                        }
-                        // Handels wrong inputs
-                        else
-                        {
-                            error = true;
-                            Console.WriteLine("\nWrong input please try again!");
-                            Thread.Sleep(1000);
+
+                    }
+                    hero.PrintHeroInformation();
+
+                    selectionSwitch = Console.ReadKey().Key;
+                    switch (selectionSwitch)
+                    {
+                        case ConsoleKey.W:
+                        case ConsoleKey.UpArrow:
+                            if (selection > 2)
+                            {
+                                selection--;
+                            }
+                            else if (selection == 2)
+                                selection = 0;
                             break;
-                        }
+                        case ConsoleKey.S:
+                        case ConsoleKey.DownArrow:
+                            if (selection == 0)
+                                selection = 2;
+                            else if (selection > ConnectedLocations.Count + 2)
+                                selection = ConnectedLocations.Count + 2;
+                            else
+                                selection++;
+                            break;
+                        case ConsoleKey.D:
+                        case ConsoleKey.RightArrow:
+                            if (selection == 0 || selection == 2)
+                                selection = 1;
+                            break;
+                        case ConsoleKey.A:
+                        case ConsoleKey.LeftArrow:
+                            if (selection == 1)
+                                selection--;
+                            break;
+                        case ConsoleKey.D1:
+                            selection = 0;
+                            break;
+                    }
 
                 }
 
-            } while (error);
+            } while (selectionSwitch != ConsoleKey.Enter);
+
+            // switch to manage the location action
+            switch (selection)
+            {
+                // manages the looking for Quests Action
+                case 0:
+                    Console.WriteLine("\nQuests are currently unavailable.");
+                    Thread.Sleep(2000);
+                    break;
+
+                // manages the Monster fight Action
+                case 1:
+                    Random rnd = new Random();
+                    // selects a random Mob from the Location
+                    int monsterNumber = rnd.Next(0, Monsters.Count);
+                    // initialices the fight
+                    Fight.Fighting(Monsters[monsterNumber]);
+                    StandartLocationAction();
+                    break;
+
+                default:
+                    // Handels going into a connected Location from a Semi City
+                    if (isSemiCity && selection >= 3 && selection < 3 + ConnectedLocations.Count)
+                    {
+                        error = false;
+                        ConnectedLocations[selection - 3].StandartLocationAction(true);
+                        break;
+                    }
+                    // Handels going into a connected Location from a normal Location
+                    else if (selection >= 2 && selection < 2 + ConnectedLocations.Count)
+                    {
+                        error = false;
+                        ConnectedLocations[selection - 2].StandartLocationAction(true);
+                        break;
+                    }
+                    // Handels going to a Trader from a Semi City
+                    else if (selection == 3)
+                    {
+                        error = false;
+                        Trader[TraderCount - 1].TraderActionChoose(Trader[TraderCount - 1].GetJobName());
+                        break;
+                    }
+                    break;
+
+            }
 
         }
 

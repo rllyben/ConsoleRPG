@@ -18,7 +18,7 @@ namespace ConsoleRPG.Heros
 {
     internal class Hero : IStats
     {
-        enum Selection
+        public enum Selection
         {
             Euipen = 1,
             Unequipen = 2
@@ -389,9 +389,14 @@ namespace ConsoleRPG.Heros
                              "1. Equip Items           2. Unequip Items\n\n" +
                              "close with any other Key");
             selection = Console.ReadKey().KeyChar;
-            if (selection == '1' || selection == '2')
+            switch (selection)
             {
-                SelectItem(selection);
+                case '1':
+                    SelectItem(Selection.Euipen);
+                    break;
+                case '2':
+                    SelectItem(Selection.Unequipen);
+                    break;
             }
 
         }
